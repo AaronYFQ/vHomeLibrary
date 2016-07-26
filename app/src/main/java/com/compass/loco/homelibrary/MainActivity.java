@@ -1,6 +1,8 @@
 package com.compass.loco.homelibrary;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -59,6 +61,11 @@ public class MainActivity extends AppCompatActivity {
         // Do something in response to button
         Intent intent = new Intent(this, CreateLibraryActivity.class);
         EditText editText = (EditText) findViewById(R.id.edit_message);
+
+       SharedPreferences sharedPref = getSharedPreferences("compass.loco.data", Context.MODE_PRIVATE);
+        SharedPreferences.Editor sharedata = sharedPref.edit();
+        sharedata.putString("item","hello");
+        sharedata.commit();
 
         String message = editText.getText().toString();
         intent.putExtra(EXTRA_MESSAGE, message);

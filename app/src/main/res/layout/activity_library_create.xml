@@ -17,19 +17,31 @@
         android:weightSum="1"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true">
+        android:layout_alignParentEnd="true"
+        android:id="@+id/linearLayout">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.20">
+            android:layout_weight="0.08">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="给您的书店起个响当当的名字吧"
-                android:id="@+id/textView" />
+                android:id="@+id/textView"
+                android:textSize="@dimen/abc_text_size_medium_material" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"></FrameLayout>
 
             <EditText
                 android:layout_width="match_parent"
@@ -40,86 +52,123 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"></LinearLayout>
+
         </LinearLayout>
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.20">
+            android:layout_weight="0.20"
+            android:weightSum="1">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="您所在的城市"
-                android:id="@+id/textView2" />
-
-            <EditText
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/city" />
+                android:layout_height="match_parent"
+                android:layout_weight="1.39">
+
+                <TextView
+                    android:layout_width="284dp"
+                    android:layout_height="wrap_content"
+                    android:text="选择你所在的城市"
+                    android:id="@+id/textView2"
+                    android:layout_gravity="left|top"
+                    android:textSize="@dimen/abc_text_size_medium_material" />
+
+                <Spinner
+                    android:layout_width="160dp"
+                    android:layout_height="41dp"
+                    android:id="@+id/citySpinner"
+                    android:layout_gravity="left|center_vertical" />
+
+                <Spinner
+                    android:layout_width="159dp"
+                    android:layout_height="42dp"
+                    android:id="@+id/districtSpinner"
+                    android:layout_gravity="right|center_vertical" />
+
+            </FrameLayout>
+
         </LinearLayout>
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.20">
+            android:layout_weight="0.20"
+            android:weightSum="1">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="您所在的小区"
-                android:id="@+id/textView3" />
+                android:id="@+id/textView3"
+                android:textSize="@dimen/abc_text_size_medium_material"
+                android:textIsSelectable="true" />
 
-            <EditText
+            <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/community" />
+                android:id="@+id/village_spinner"
+                android:layout_weight="0.46" />
+
         </LinearLayout>
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="0.20">
+            android:layout_gravity="bottom|center_horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="给您的书店加一句广告语吧"
-                android:id="@+id/textView4" />
+                android:id="@+id/textView4"
+                android:textSize="@dimen/abc_text_size_medium_material" />
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/advertisement" />
+                android:inputType="textMultiLine"
+                android:ems="10"
+                android:id="@+id/advertisement"
+                android:layout_gravity="center_horizontal"
+                android:lines="4"
+                android:linksClickable="true"
+                android:backgroundTint="@color/design_fab_shadow_mid_color" />
 
         </LinearLayout>
 
+    </LinearLayout>
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="0.20">
+            android:layout_weight="0.20"
+            android:layout_gravity="bottom">
 
             <Button
                 style="?android:attr/buttonStyleSmall"
-                android:layout_width="wrap_content"
+                android:layout_width="126dp"
                 android:layout_height="wrap_content"
-                android:text="提交保存"
+                android:text="创建书店"
                 android:id="@+id/store_library"
                 android:layout_gravity="left|center_vertical"
-                android:onClick="storeLibrary" />
+                android:onClick="storeLibrary"
+                android:focusable="false"
+                android:background="@android:color/holo_green_dark"
+                android:backgroundTint="@android:color/holo_green_light" />
 
             <Button
                 style="?android:attr/buttonStyleSmall"
-                android:layout_width="wrap_content"
+                android:layout_width="126dp"
                 android:layout_height="wrap_content"
-                android:text="取消返回"
+                android:text="取消创建"
                 android:id="@+id/cancel_library"
                 android:layout_gravity="right|center_vertical"
-                android:onClick="cancelReturn" />
+                android:onClick="cancelReturn"
+                android:background="@android:color/holo_green_dark"
+                android:backgroundTint="@android:color/holo_green_light" />
         </FrameLayout>
 
     </LinearLayout>
+
 </RelativeLayout>

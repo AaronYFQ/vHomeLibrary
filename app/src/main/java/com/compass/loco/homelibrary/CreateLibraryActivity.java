@@ -1,9 +1,11 @@
 package com.compass.loco.homelibrary;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,11 +17,13 @@ import android.widget.TextView;
 public class CreateLibraryActivity extends AppCompatActivity {
     private Spinner citySpinner;
     private Spinner districtSpinner;
+    private Spinner villageSpinner;
     private ArrayAdapter<CharSequence> districtAdapter;
     private ArrayAdapter<CharSequence> cityAdapter;
+    private ArrayAdapter<CharSequence> villageAdapter;
     private String cityString = "";
     private String districtString = "";
-
+    private String villageString = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +32,13 @@ public class CreateLibraryActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+
+
+        SharedPreferences sharedata = getSharedPreferences("compass.loco.data", Context.MODE_PRIVATE);
+        String data = sharedata.getString("item", null);
+        Log.v("cola","data="+data);
+        EditText library = (EditText) findViewById(R.id.library_name);
+        library.setText(data);
 
         citySpinner = (Spinner) findViewById(R.id.citySpinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -80,6 +91,36 @@ public class CreateLibraryActivity extends AppCompatActivity {
         });
         //handle the menu screen touch event
         districtSpinner.setOnTouchListener(new Spinner.OnTouchListener(){
+            public boolean onTouch(View v, MotionEvent event) {
+                // TODO Auto-generated method stub
+
+                return false;
+            }
+        });
+
+        villageSpinner = (Spinner) findViewById(R.id.village_spinner);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        villageAdapter = ArrayAdapter.createFromResource(this,
+                R.array.village_array, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        villageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        villageSpinner.setAdapter(villageAdapter);
+        //handle the menu screen touch event
+        villageSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                // TODO Auto-generated method stub
+                villageString = "" + villageAdapter.getItem(arg2);
+                arg0.setVisibility(View.VISIBLE);
+            }
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+                villageString = "";
+                arg0.setVisibility(View.VISIBLE);
+            }
+        });
+        //handle the menu screen touch event
+        villageSpinner.setOnTouchListener(new Spinner.OnTouchListener(){
             public boolean onTouch(View v, MotionEvent event) {
                 // TODO Auto-generated method stub
 
