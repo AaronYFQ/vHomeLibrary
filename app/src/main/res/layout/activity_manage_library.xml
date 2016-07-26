@@ -40,28 +40,58 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="0.03">
+        android:gravity="center">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight = "1"
+            android:gravity="center">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="添加"
+                android:id="@+id/buttonAdd"
+                android:drawableLeft="@android:drawable/ic_input_add"
+                android:singleLine="true" />
+
+   　　　</LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight = "1"
+            android:gravity="center">
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="删除"
+            android:id="@+id/buttonDelete"
+            android:drawableLeft="@android:drawable/ic_delete"
+            android:singleLine="true" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_weight = "1"
-            android:text="添　加"
-            android:id="@+id/buttonAdd" />
+            android:gravity="center">
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight = "1"
-            android:text="删　除"
-            android:id="@+id/buttonDelete" />
+            android:text="保存"
+            android:id="@+id/buttonApply"
+            android:drawableLeft="@android:drawable/ic_menu_save"
+            android:singleLine="true" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight = "1"
-            android:text="更　新"
-            android:id="@+id/buttonApply" />
+        </LinearLayout>
 
     </LinearLayout>
 
