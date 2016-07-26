@@ -6,14 +6,16 @@
     android:weightSum="1">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="管　理　书　店"
+        android:text="书店"
         android:id="@+id/textViewManageLibrary"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:background="@color/accent_material_light"
+        android:textAlignment="center" />
 
-    <TableRow
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.02"
@@ -23,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="书　店　名："
+            android:text="名称："
             android:id="@+id/textViewLibraryLabel"
             android:layout_weight="0.22" />
 
@@ -32,9 +34,9 @@
             android:layout_height="wrap_content"
             android:text="未　知"
             android:id="@+id/textViewLibraryName" />
-    </TableRow>
+    </LinearLayout>
 
-    <TableRow
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -43,26 +45,29 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight = "1"
             android:text="添　加"
             android:id="@+id/buttonAdd" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight = "1"
             android:text="删　除"
             android:id="@+id/buttonDelete" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight = "1"
             android:text="更　新"
             android:id="@+id/buttonApply" />
-    </TableRow>
+
+    </LinearLayout>
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/listViewBooks"
-        tools:listitem="@android:layout/simple_list_item_1" />
+        android:id="@+id/listViewBooks" />
 
 </LinearLayout>
