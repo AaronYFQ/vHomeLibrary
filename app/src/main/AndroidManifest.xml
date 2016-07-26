@@ -18,7 +18,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CreateLibraryActivity"></activity>
+        <activity android:name=".CreateLibraryActivity" />
+        <activity android:name=".ShowMessages"></activity>
     </application>
 
 </manifest>
