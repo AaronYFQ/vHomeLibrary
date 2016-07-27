@@ -29,11 +29,39 @@
                 android:gravity="bottom"
                 android:background="@drawable/header_bg">
 
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:id="@+id/app_title_layout">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:text="您身边的大书房"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/white"
+                        android:textSize="24sp"
+                        android:fontFamily="sans-serif-black"
+                        android:id="@+id/app_title" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:text="百万图书随心分享"
+                        android:textColor="#CCCCCC"
+                        android:textSize="13sp"
+                        android:id="@+id/app_byline" />
+                </LinearLayout>
+
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/corner_border"
+                    android:layout_below="@id/app_title_layout"
                     android:padding="4dp"
                     android:layout_margin="10dp">
 
@@ -342,7 +370,49 @@
                         android:id="@+id/msg_img_3" />
 
                 </LinearLayout>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shadow_border"
+                    android:padding="5dp">
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="5dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="美国图书馆事业｜全美12万图书馆，每2500人一个"
+                            android:id="@+id/msg4_title" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:textSize="12sp"
+                            android:textColor="@android:color/darker_gray"
+                            android:text="全美图书馆周"
+                            android:id="@+id/msg4_byline" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:background="@android:color/holo_orange_light"
+                            android:textSize="10sp"
+                            android:textColor="@android:color/holo_red_dark"
+                            android:text="热点"
+                            android:id="@+id/msg4_tag" />
+                    </LinearLayout>
 
+                    <ImageButton
+                        android:layout_width="100dp"
+                        android:layout_height="75dp"
+                        android:background="@drawable/msg_bg_1"
+                        android:id="@+id/msg_img_4" />
+
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
