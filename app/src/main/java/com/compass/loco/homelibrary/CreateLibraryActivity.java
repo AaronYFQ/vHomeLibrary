@@ -130,12 +130,13 @@ public class CreateLibraryActivity extends AppCompatActivity {
 
     }
 
-    public void storeLibrary(View view)
+    public void createLibrary(View view)
     {
         //get library name @String
      //   EditText library = (EditText) findViewById(R.id.library_name);
      //   String libraryName = library.getText().toString();
-        String libraryName = "aaaaaa";
+       // String libraryName = "aaaaaa";
+        Log.v("errorclick", "error");
 /*
         //get city name @String
         //EditText city = (EditText) findViewById(R.id.city);
@@ -158,7 +159,7 @@ public class CreateLibraryActivity extends AppCompatActivity {
         sharedata.commit();
 */
         //start library management library.
-        Intent manageLibraryIntent = new Intent(this, ManageLibraryActivity.class);
+        Intent manageLibraryIntent = new Intent(this,ManageLibraryActivity.class);
         startActivity(manageLibraryIntent);
 
     }
