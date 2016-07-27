@@ -1,14 +1,20 @@
 package com.compass.loco.homelibrary;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
@@ -22,11 +28,11 @@ import java.util.HashMap;
  */
 public class ManageLibraryActivity extends AppCompatActivity {
 
-    TextView myTextViewLibraryName;
+    TextView myEditTextLibraryName;
 
-    Button myButtonAdd;
-    Button myButtonDelete;
-    Button myButtonApply;
+    ImageButton myButtonAdd;
+    ImageButton myButtonDelete;
+    ImageButton myButtonApply;
 
     ListView myListViewBooks;
 
@@ -40,18 +46,17 @@ public class ManageLibraryActivity extends AppCompatActivity {
         init();
 
         threadGetLibraryBooks();
-        
     }
 
     private void init() {
 
-        myTextViewLibraryName = (TextView)findViewById(R.id.textViewLibraryName);
+        myEditTextLibraryName = (TextView) findViewById(R.id.editTextLibraryName);
 
-        myButtonAdd = (Button)findViewById(R.id.buttonAdd);
-        myButtonDelete = (Button)findViewById(R.id.buttonDelete);
-        myButtonApply = (Button)findViewById(R.id.buttonApply);
+        myButtonAdd = (ImageButton) findViewById(R.id.buttonAdd);
+        myButtonDelete = (ImageButton) findViewById(R.id.buttonDelete);
+        myButtonApply = (ImageButton) findViewById(R.id.buttonApply);
 
-        myListViewBooks = (ListView)findViewById(R.id.listViewBooks);
+        myListViewBooks = (ListView) findViewById(R.id.listViewBooks);
         myListViewBooks.setTextFilterEnabled(true);
 
         myButtonAdd.setOnClickListener(new View.OnClickListener() {
@@ -87,7 +92,7 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
     private void threadGetLibraryBooks() {
 
-        new Thread( new Runnable() {
+        new Thread(new Runnable() {
 
             @Override
             public void run() {
@@ -123,7 +128,7 @@ public class ManageLibraryActivity extends AppCompatActivity {
             myTextViewLibraryName.setText(sb.toString());
             */
 
-            myTextViewLibraryName.setText("Unknown Library");
+            myEditTextLibraryName.setText("exiaoqu的水果书店");
 
             myArrayList = new ArrayList<HashMap<String, String>>();
 
@@ -156,6 +161,51 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
             myArrayList.add(temp);
 
+            temp = new HashMap<String, String>();
+            temp.put("Name", "peach Book");
+            temp.put("Author", "peachAuthor");
+            temp.put("Publisher", "peachPublisher");
+            temp.put("Isbn", "peachIsbn");
+            temp.put("Detail", "peach Detail");
+
+            myArrayList.add(temp);
+
+            temp = new HashMap<String, String>();
+            temp.put("Name", "pear Book");
+            temp.put("Author", "pearAuthor");
+            temp.put("Publisher", "pearPublisher");
+            temp.put("Isbn", "pearIsbn");
+            temp.put("Detail", "pear Detail");
+
+            myArrayList.add(temp);
+
+            temp = new HashMap<String, String>();
+            temp.put("Name", "grape Book");
+            temp.put("Author", "grapeAuthor");
+            temp.put("Publisher", "grapePublisher");
+            temp.put("Isbn", "grapeIsbn");
+            temp.put("Detail", "grape Detail");
+
+            myArrayList.add(temp);
+
+            temp = new HashMap<String, String>();
+            temp.put("Name", "pineapple Book");
+            temp.put("Author", "pineappleAuthor");
+            temp.put("Publisher", "pineapplePublisher");
+            temp.put("Isbn", "pineappleIsbn");
+            temp.put("Detail", "pineapple Detail");
+
+            myArrayList.add(temp);
+
+            temp = new HashMap<String, String>();
+            temp.put("Name", "mango Book");
+            temp.put("Author", "mangoAuthor");
+            temp.put("Publisher", "mangoPublisher");
+            temp.put("Isbn", "mangoIsbn");
+            temp.put("Detail", "mango Detail");
+
+            myArrayList.add(temp);
+
             ListViewAdapterBook myListViewAdapterBook = new ListViewAdapterBook(this, myArrayList);
             myListViewBooks.setAdapter(myListViewAdapterBook);
 
@@ -176,4 +226,5 @@ public class ManageLibraryActivity extends AppCompatActivity {
     private void apply() {
         Toast.makeText(getApplicationContext(), "Apply...", Toast.LENGTH_SHORT).show();
     }
+
 }

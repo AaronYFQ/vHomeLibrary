@@ -22,7 +22,8 @@ public class ListViewAdapterBook extends BaseAdapter {
 
     Activity myActivity;
 
-    CheckBox myCheckBoxBookName;
+    CheckBox myCheckBoxBook;
+    TextView myTextViewBookName;
     TextView myTextViewBookAuthor;
     TextView myTextViewBookPublisher;
     TextView myTextViewBookIsbn;
@@ -57,13 +58,14 @@ public class ListViewAdapterBook extends BaseAdapter {
         {
             convertView = inflater.inflate(R.layout.activity_manage_library_book_row, null);
 
-            myCheckBoxBookName = (CheckBox)convertView.findViewById(R.id.checkBoxBookName);
+            myCheckBoxBook = (CheckBox)convertView.findViewById(R.id.checkBoxBook);
+            myTextViewBookName = (TextView)convertView.findViewById(R.id.textViewBookName);
             myTextViewBookAuthor = (TextView)convertView.findViewById(R.id.textViewBookAuthor);
             myTextViewBookPublisher = (TextView)convertView.findViewById(R.id.textViewBookPublisher);
             myTextViewBookIsbn = (TextView)convertView.findViewById(R.id.textViewBookIsbn);
             myTextViewBookDetail = (TextView)convertView.findViewById(R.id.textViewBookDetail);
 
-            myCheckBoxBookName.setOnClickListener(new View.OnClickListener() {
+            myCheckBoxBook.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     CheckBox cb = (CheckBox)v;
@@ -76,7 +78,7 @@ public class ListViewAdapterBook extends BaseAdapter {
 
         HashMap<String, String> map =  myList.get(position);
 
-        myCheckBoxBookName.setText(map.get("Name"));
+        myTextViewBookName.setText(map.get("Name"));
         myTextViewBookAuthor.setText("作者：" + map.get("Author"));
         myTextViewBookPublisher.setText("出版社：" + map.get("Publisher"));
         myTextViewBookIsbn.setText("ISBN号：" + map.get("Isbn"));
