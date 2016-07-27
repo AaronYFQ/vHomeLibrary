@@ -12,7 +12,8 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
-    public final static String EXTRA_MESSAGE = "com.mycompany.myfirstapp.MESSAGE";
+    public final static String EXTRA_MESSAGE = "com.compass.loco.homelibrary.MainActivity.EXTRA_MESSAGE";
+    public final static String INTENT_KEY_CITY_NAME = MainActivity.class.getName() + ".CITY_NAME";
 
     private final HomeFragment mHomeFragment = new HomeFragment();
     private final MessageFragment mMessageFragment = new MessageFragment();
@@ -92,6 +93,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickHomeBtn(View view) {
+        if(mHomeFragment.isVisible()) {
+            return;
+        }
+
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         // Replace whatever is in the fragment_container view with this fragment,
@@ -104,6 +109,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickMessageBtn(View view) {
+        if(mMessageFragment.isVisible()) {
+            return;
+        }
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
@@ -117,6 +125,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickMeBtn(View view) {
+        if(mMeFragment.isVisible()) {
+            return;
+        }
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 

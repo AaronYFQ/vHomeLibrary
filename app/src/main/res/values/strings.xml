@@ -5,6 +5,18 @@
     <string name="action_settings">Settings</string>
     <string-array name="city_array">
         <item>北京</item>
+        <item>天津</item>
+        <item>上海</item>
+        <item>成都</item>
+        <item>南京</item>
+        <item>杭州</item>
+        <item>青岛</item>
+        <item>大连</item>
+        <item>厦门</item>
+        <item>武汉</item>
+        <item>深圳</item>
+        <item>重庆</item>
+        <item>长沙</item>
     </string-array>
     <string-array name="district_array">
         <item>朝阳</item>
@@ -33,4 +45,5 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_select_city">SelectCityActivity</string>
 </resources>

@@ -52,13 +52,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:onClick="onClickHomeBtn"
             android:layout_weight="1">
 
             <ImageButton
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:background="@drawable/menu_1"
-                android:onClick="onClickHomeBtn"
                 android:id="@+id/menu_1" />
             <TextView
                 android:layout_width="30dp"
@@ -74,13 +74,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:onClick="onClickMessageBtn"
             android:layout_weight="1">
             <ImageButton
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_toRightOf="@id/menu_1"
                 android:background="@drawable/menu_2"
-                android:onClick="onClickMessageBtn"
                 android:id="@+id/menu_2" />
 
             <TextView
@@ -121,13 +121,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:onClick="onClickMeBtn"
             android:layout_weight="1">
             <ImageButton
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_toRightOf="@id/menu_3"
                 android:background="@drawable/menu_4"
-                android:onClick="onClickMeBtn"
                 android:id="@+id/menu_4" />
 
             <TextView
