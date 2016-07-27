@@ -1,29 +1,23 @@
 package com.compass.loco.homelibrary;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.BufferedInputStream;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.HashMap;
+
 
 /**
  * Created by EXIAOQU on 7/25/2016.
  */
 public class ManageLibraryActivity extends AppCompatActivity {
 
+    // Android objects
     TextView myEditTextLibraryName;
 
     ImageButton myButtonAdd;
@@ -32,7 +26,11 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
     ListView myListViewBooks;
 
-    private ArrayList<HashMap<String, String>> myArrayList;
+    // private ArrayList<HashMap<String, String>> myArrayList;
+
+    // selected or non-selected bookinfo arraylist
+    private ArrayList<SelectedBookInfo> myArrayListSelectedBookInfo;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -126,83 +124,20 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
             myEditTextLibraryName.setText("exiaoqu的水果书店");
 
-            myArrayList = new ArrayList<HashMap<String, String>>();
+            myArrayListSelectedBookInfo = new ArrayList<SelectedBookInfo>();
 
-            HashMap<String, String> temp;
+            myArrayListSelectedBookInfo.add(new SelectedBookInfo(new BookInfo("Apple Book", "AppleAuthor", "ApplePublisher", "AppleIsbn", "Apple Detail", null), false));
+            myArrayListSelectedBookInfo.add(new SelectedBookInfo(new BookInfo("Banana Book", "BananaAuthor", "BananaPublisher", "BananaIsbn", "Banana Detail", null), false));
 
-            temp = new HashMap<String, String>();
-            temp.put("Name", "Apple Book");
-            temp.put("Author", "AppleAuthor");
-            temp.put("Publisher", "ApplePublisher");
-            temp.put("Isbn", "AppleIsbn");
-            temp.put("Detail", "Apple Detail");
+            myArrayListSelectedBookInfo.add(new SelectedBookInfo(new BookInfo("Blackberry Book", "BlackberryAuthor", "BlackberryPublisher", "BlackberryIsbn", "Blackberry Detail", null), false));
+            myArrayListSelectedBookInfo.add(new SelectedBookInfo(new BookInfo("Peach Book", "PeachAuthor", "PeachPublisher", "PeachIsbn", "Peach Detail", null), false));
+            myArrayListSelectedBookInfo.add(new SelectedBookInfo(new BookInfo("Pear Book", "PearAuthor", "PearPublisher", "PearIsbn", "Pear Detail", null), false));
 
-            myArrayList.add(temp);
+            myArrayListSelectedBookInfo.add(new SelectedBookInfo(new BookInfo("Grape Book", "GrapeAuthor", "GrapePublisher", "GrapeIsbn", "Grape Detail", null), false));
+            myArrayListSelectedBookInfo.add(new SelectedBookInfo(new BookInfo("Pineapple Book", "PineappleAuthor", "PineapplePublisher", "Pineapple", "Pineapple Detail", null), false));
+            myArrayListSelectedBookInfo.add(new SelectedBookInfo(new BookInfo("Mango Book", "MangoAuthor", "MangoPublisher", "MangoIsbn", "Mango Detail", null), false));
 
-            temp = new HashMap<String, String>();
-            temp.put("Name", "Banana Book");
-            temp.put("Author", "BananaAuthor");
-            temp.put("Publisher", "BananaPublisher");
-            temp.put("Isbn", "BananaIsbn");
-            temp.put("Detail", "Banana Detail");
-
-            myArrayList.add(temp);
-
-            temp = new HashMap<String, String>();
-            temp.put("Name", "Blackberry Book");
-            temp.put("Author", "BlackberryAuthor");
-            temp.put("Publisher", "BlackberryPublisher");
-            temp.put("Isbn", "BlackberryIsbn");
-            temp.put("Detail", "Blackberry Detail");
-
-            myArrayList.add(temp);
-
-            temp = new HashMap<String, String>();
-            temp.put("Name", "peach Book");
-            temp.put("Author", "peachAuthor");
-            temp.put("Publisher", "peachPublisher");
-            temp.put("Isbn", "peachIsbn");
-            temp.put("Detail", "peach Detail");
-
-            myArrayList.add(temp);
-
-            temp = new HashMap<String, String>();
-            temp.put("Name", "pear Book");
-            temp.put("Author", "pearAuthor");
-            temp.put("Publisher", "pearPublisher");
-            temp.put("Isbn", "pearIsbn");
-            temp.put("Detail", "pear Detail");
-
-            myArrayList.add(temp);
-
-            temp = new HashMap<String, String>();
-            temp.put("Name", "grape Book");
-            temp.put("Author", "grapeAuthor");
-            temp.put("Publisher", "grapePublisher");
-            temp.put("Isbn", "grapeIsbn");
-            temp.put("Detail", "grape Detail");
-
-            myArrayList.add(temp);
-
-            temp = new HashMap<String, String>();
-            temp.put("Name", "pineapple Book");
-            temp.put("Author", "pineappleAuthor");
-            temp.put("Publisher", "pineapplePublisher");
-            temp.put("Isbn", "pineappleIsbn");
-            temp.put("Detail", "pineapple Detail");
-
-            myArrayList.add(temp);
-
-            temp = new HashMap<String, String>();
-            temp.put("Name", "mango Book");
-            temp.put("Author", "mangoAuthor");
-            temp.put("Publisher", "mangoPublisher");
-            temp.put("Isbn", "mangoIsbn");
-            temp.put("Detail", "mango Detail");
-
-            myArrayList.add(temp);
-
-            ListViewAdapterBook myListViewAdapterBook = new ListViewAdapterBook(this, myArrayList);
+            ListViewAdapterBook myListViewAdapterBook = new ListViewAdapterBook(this, myArrayListSelectedBookInfo);
             myListViewBooks.setAdapter(myListViewAdapterBook);
 
         } catch (Exception e) {

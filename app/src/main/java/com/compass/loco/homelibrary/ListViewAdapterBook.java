@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,31 +19,33 @@ import java.util.HashMap;
  */
 public class ListViewAdapterBook extends BaseAdapter {
 
-    public ArrayList<HashMap<String, String>> myList;
-
+    // Andorid objects
     Activity myActivity;
-
     CheckBox myCheckBoxBook;
     TextView myTextViewBookName;
     TextView myTextViewBookAuthor;
     TextView myTextViewBookPublisher;
     TextView myTextViewBookIsbn;
     TextView myTextViewBookDetail;
+    ImageView myImageViewBookPicture;
 
-    public ListViewAdapterBook(Activity activity, ArrayList<HashMap<String, String>> list) {
+    // selected or non-selected bookinfo arraylist
+    public ArrayList<SelectedBookInfo> myArrayListSelectedBookInfo;
+
+    public ListViewAdapterBook(Activity activity, ArrayList<SelectedBookInfo> list) {
         super();
         this.myActivity = activity;
-        this.myList = list;
+        this.myArrayListSelectedBookInfo = list;
     }
 
     @Override
     public int getCount() {
-        return myList.size();
+        return myArrayListSelectedBookInfo.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return myList.get(position);
+        return myArrayListSelectedBookInfo.get(position);
     }
 
     @Override
@@ -64,6 +67,7 @@ public class ListViewAdapterBook extends BaseAdapter {
             myTextViewBookPublisher = (TextView)convertView.findViewById(R.id.textViewBookPublisher);
             myTextViewBookIsbn = (TextView)convertView.findViewById(R.id.textViewBookIsbn);
             myTextViewBookDetail = (TextView)convertView.findViewById(R.id.textViewBookDetail);
+            myImageViewBookPicture = (ImageView)convertView.findViewById(R.id.imageViewBookPicture);
 
             myCheckBoxBook.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -76,13 +80,17 @@ public class ListViewAdapterBook extends BaseAdapter {
 
         }
 
-        HashMap<String, String> map =  myList.get(position);
+        SelectedBookInfo selectedBookInfo =  myArrayListSelectedBookInfo.get(position);
 
-        myTextViewBookName.setText(map.get("Name"));
-        myTextViewBookAuthor.setText("作者：" + map.get("Author"));
-        myTextViewBookPublisher.setText("出版社：" + map.get("Publisher"));
-        myTextViewBookIsbn.setText("ISBN号：" + map.get("Isbn"));
-        myTextViewBookDetail.setText("简介：" + map.get("Detail"));
+        myTextViewBookName.setText(selectedBookInfo.getBookInfo().getName());
+        myTextViewBookAuthor.setText("作者：" + selectedBookInfo.getBookInfo().getAuthor());
+        myTextViewBookPublisher.setText("出版社：" +selectedBookInfo.getBookInfo().getPublisher());
+        myTextViewBookIsbn.setText("ISBN号：" + selectedBookInfo.getBookInfo().getIsbn());
+        myTextViewBookDetail.setText("简介：" + selectedBookInfo.getBookInfo().getDetail());
+
+        if(selectedBookInfo.getBookInfo().getBitmap() != null) {
+            myImageViewBookPicture.setImageBitmap(selectedBookInfo.getBookInfo().getBitmap());
+        }
 
         return convertView;
     }
