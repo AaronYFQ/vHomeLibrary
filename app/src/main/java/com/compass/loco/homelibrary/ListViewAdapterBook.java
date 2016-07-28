@@ -73,7 +73,10 @@ public class ListViewAdapterBook extends BaseAdapter {
                 @Override
                 public void onClick(View v) {
                     CheckBox cb = (CheckBox)v;
-                    Toast.makeText(myActivity.getApplicationContext(), cb.getText() + " is " + cb.isChecked(), Toast.LENGTH_SHORT ).show();
+                    SelectedBookInfo selectedBookInfo = (SelectedBookInfo)cb.getTag();
+                    selectedBookInfo.setSelected(cb.isSelected());
+
+                    Toast.makeText(myActivity.getApplicationContext(), selectedBookInfo.getBookInfo().getName() + " is " + cb.isChecked(), Toast.LENGTH_SHORT ).show();
                 }
 
             });
@@ -82,6 +85,7 @@ public class ListViewAdapterBook extends BaseAdapter {
 
         SelectedBookInfo selectedBookInfo =  myArrayListSelectedBookInfo.get(position);
 
+        myCheckBoxBook.setTag(selectedBookInfo);
         myTextViewBookName.setText(selectedBookInfo.getBookInfo().getName());
         myTextViewBookAuthor.setText("作者：" + selectedBookInfo.getBookInfo().getAuthor());
         myTextViewBookPublisher.setText("出版社：" +selectedBookInfo.getBookInfo().getPublisher());
