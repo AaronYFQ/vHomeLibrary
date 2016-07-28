@@ -1,6 +1,7 @@
 package com.compass.loco.homelibrary;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,33 +56,37 @@ public class ListViewAdapterBook extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        LayoutInflater inflater = activity.getLayoutInflater();
         if(convertView == null)
         {
+            Log.v("convertView null, position=", new Integer(position).toString());
+
+            LayoutInflater inflater = activity.getLayoutInflater();
             convertView = inflater.inflate(R.layout.activity_manage_library_book_row, null);
-
-            checkBoxBook = (CheckBox)convertView.findViewById(R.id.checkBoxBook);
-            textViewBookName = (TextView)convertView.findViewById(R.id.textViewBookName);
-            textViewBookAuthor = (TextView)convertView.findViewById(R.id.textViewBookAuthor);
-            textViewBookPublisher = (TextView)convertView.findViewById(R.id.textViewBookPublisher);
-            textViewBookIsbn = (TextView)convertView.findViewById(R.id.textViewBookIsbn);
-            textViewBookDetail = (TextView)convertView.findViewById(R.id.textViewBookDetail);
-            textViewBookState = (TextView)convertView.findViewById(R.id.textViewBookState);
-            imageViewBookPicture = (ImageView)convertView.findViewById(R.id.imageViewBookPicture);
-
-            checkBoxBook.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    CheckBox cb = (CheckBox)v;
-                    SelectedBookInfo selectedBookInfo = (SelectedBookInfo)cb.getTag();
-                    selectedBookInfo.setSelected(cb.isSelected());
-
-                    Toast.makeText(activity.getApplicationContext(), selectedBookInfo.getBookInfo().getName() + " is " + cb.isChecked(), Toast.LENGTH_SHORT ).show();
-                }
-
-            });
-
         }
+        else {
+            Log.v("convertView not null, position=", new Integer(position).toString());
+        }
+
+        checkBoxBook = (CheckBox)convertView.findViewById(R.id.checkBoxBook);
+        textViewBookName = (TextView)convertView.findViewById(R.id.textViewBookName);
+        textViewBookAuthor = (TextView)convertView.findViewById(R.id.textViewBookAuthor);
+        textViewBookPublisher = (TextView)convertView.findViewById(R.id.textViewBookPublisher);
+        textViewBookIsbn = (TextView)convertView.findViewById(R.id.textViewBookIsbn);
+        textViewBookDetail = (TextView)convertView.findViewById(R.id.textViewBookDetail);
+        textViewBookState = (TextView)convertView.findViewById(R.id.textViewBookState);
+        imageViewBookPicture = (ImageView)convertView.findViewById(R.id.imageViewBookPicture);
+
+        checkBoxBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CheckBox cb = (CheckBox)v;
+                SelectedBookInfo selectedBookInfo = (SelectedBookInfo)cb.getTag();
+                selectedBookInfo.setSelected(cb.isSelected());
+
+                Toast.makeText(activity.getApplicationContext(), selectedBookInfo.getBookInfo().getName() + " is " + cb.isChecked(), Toast.LENGTH_SHORT ).show();
+            }
+
+        });
 
         SelectedBookInfo selectedBookInfo =  arrayListSelectedBookInfo.get(position);
 

@@ -3,17 +3,21 @@ package com.compass.loco.homelibrary;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageButton;
 
 public class MainActivity extends AppCompatActivity {
 
     public final static String EXTRA_MESSAGE = "com.compass.loco.homelibrary.MainActivity.EXTRA_MESSAGE";
     public final static String INTENT_KEY_CITY_NAME = MainActivity.class.getName() + ".CITY_NAME";
+    public final static String INTENT_KEY_USER_NAME = MainActivity.class.getName() + ".USER_NAME";
+    public final static String INTENT_KEY_LOGIN_RESULT = MainActivity.class.getName() + ".LOGIN_RESULT";
 
     private final HomeFragment mHomeFragment = new HomeFragment();
     private final MessageFragment mMessageFragment = new MessageFragment();
@@ -46,13 +50,15 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            // In case this activity was started with special instructions from an
-            // Intent, pass the Intent's extras to the fragment as arguments
-            mHomeFragment.setArguments(getIntent().getExtras());
-
-            // Add the fragment to the 'fragment_container' FrameLayout
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, mHomeFragment).commit();
+            if (getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().containsKey(INTENT_KEY_LOGIN_RESULT)) {
+                mMeFragment.setArguments(getIntent().getExtras());
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, mMeFragment).commit();
+            } else {
+                mHomeFragment.setArguments(getIntent().getExtras());
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fragment_container, mHomeFragment).commit();
+            }
         }
 
     }
@@ -79,23 +85,30 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /** Called when the user clicks the Send button */
+    /**
+     * Called when the user clicks the Send button
+     */
     public void sendMessage(View view) {
         // Do something in response to button
         Intent intent = new Intent(this, CreateLibraryActivity.class);
 //        EditText editText = (EditText) findViewById(R.id.name1);
 
-       SharedPreferences sharedPref = getSharedPreferences("compass.loco.data", Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences("compass.loco.data", Context.MODE_PRIVATE);
         SharedPreferences.Editor sharedata = sharedPref.edit();
-        sharedata.putString("item","hello");
+        sharedata.putString("item", "hello");
         sharedata.commit();
         startActivity(intent);
     }
 
     public void onClickHomeBtn(View view) {
-        if(mHomeFragment.isVisible()) {
+        if (mHomeFragment.isVisible()) {
             return;
         }
+
+        disableAllMainMenuBtn();
+        ImageButton homeBtn = (ImageButton) findViewById(R.id.menu_1);
+        Drawable homeBtnGreen = getResources().getDrawable(R.drawable.mainmenu_home);
+        homeBtn.setBackgroundDrawable(homeBtnGreen);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
@@ -109,9 +122,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickMessageBtn(View view) {
-        if(mMessageFragment.isVisible()) {
+        if (mMessageFragment.isVisible()) {
             return;
         }
+
+        disableAllMainMenuBtn();
+        ImageButton messageBtn = (ImageButton) findViewById(R.id.menu_2);
+        Drawable messageBtnGreen = getResources().getDrawable(R.drawable.mainmenu_message);
+        messageBtn.setBackgroundDrawable(messageBtnGreen);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
@@ -125,9 +143,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickMeBtn(View view) {
-        if(mMeFragment.isVisible()) {
+        if (mMeFragment.isVisible()) {
             return;
         }
+
+        disableAllMainMenuBtn();
+        ImageButton meBtn = (ImageButton) findViewById(R.id.menu_4);
+        Drawable meBtnGray = getResources().getDrawable(R.drawable.mainmenu_me);
+        meBtn.setBackgroundDrawable(meBtnGray);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
@@ -138,5 +161,19 @@ public class MainActivity extends AppCompatActivity {
 
         // Commit the transaction
         transaction.commit();
+    }
+
+    public void disableAllMainMenuBtn() {
+        ImageButton homeBtn = (ImageButton) findViewById(R.id.menu_1);
+        Drawable homeBtnGray = getResources().getDrawable(R.drawable.mainmenu_home_gray);
+        homeBtn.setBackgroundDrawable(homeBtnGray);
+
+        ImageButton messageBtn = (ImageButton) findViewById(R.id.menu_2);
+        Drawable messageBtnGray = getResources().getDrawable(R.drawable.mainmenu_message_gray);
+        messageBtn.setBackgroundDrawable(messageBtnGray);
+
+        ImageButton meBtn = (ImageButton) findViewById(R.id.menu_4);
+        Drawable meBtnGray = getResources().getDrawable(R.drawable.mainmenu_me_gray);
+        meBtn.setBackgroundDrawable(meBtnGray);
     }
 }
