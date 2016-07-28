@@ -3,12 +3,14 @@ package com.compass.loco.homelibrary;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageButton;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -97,6 +99,11 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        disableAllMainMenuBtn();
+        ImageButton homeBtn = (ImageButton) findViewById(R.id.menu_1);
+        Drawable homeBtnGreen = getResources().getDrawable(R.drawable.mainmenu_home);
+        homeBtn.setBackgroundDrawable(homeBtnGreen);
+
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         // Replace whatever is in the fragment_container view with this fragment,
@@ -112,6 +119,11 @@ public class MainActivity extends AppCompatActivity {
         if(mMessageFragment.isVisible()) {
             return;
         }
+
+        disableAllMainMenuBtn();
+        ImageButton messageBtn = (ImageButton) findViewById(R.id.menu_2);
+        Drawable messageBtnGreen = getResources().getDrawable(R.drawable.mainmenu_message);
+        messageBtn.setBackgroundDrawable(messageBtnGreen);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
@@ -129,6 +141,11 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        disableAllMainMenuBtn();
+        ImageButton meBtn = (ImageButton) findViewById(R.id.menu_4);
+        Drawable meBtnGray = getResources().getDrawable(R.drawable.mainmenu_me);
+        meBtn.setBackgroundDrawable(meBtnGray);
+
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         // Replace whatever is in the fragment_container view with this fragment,
@@ -138,5 +155,19 @@ public class MainActivity extends AppCompatActivity {
 
         // Commit the transaction
         transaction.commit();
+    }
+
+    public void disableAllMainMenuBtn() {
+        ImageButton homeBtn = (ImageButton) findViewById(R.id.menu_1);
+        Drawable homeBtnGray = getResources().getDrawable(R.drawable.mainmenu_home_gray);
+        homeBtn.setBackgroundDrawable(homeBtnGray);
+
+        ImageButton messageBtn = (ImageButton) findViewById(R.id.menu_2);
+        Drawable messageBtnGray = getResources().getDrawable(R.drawable.mainmenu_message_gray);
+        messageBtn.setBackgroundDrawable(messageBtnGray);
+
+        ImageButton meBtn = (ImageButton) findViewById(R.id.menu_4);
+        Drawable meBtnGray = getResources().getDrawable(R.drawable.mainmenu_me_gray);
+        meBtn.setBackgroundDrawable(meBtnGray);
     }
 }
