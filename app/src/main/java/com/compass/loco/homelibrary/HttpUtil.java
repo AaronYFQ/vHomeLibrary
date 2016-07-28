@@ -15,15 +15,15 @@ import com.loopj.android.http.RequestParams;
 
 
 public class HttpUtil {
-    //String url = "http://54.204.114.208:8000/";
-    String registUrl = "http://192.168.56.1:8000/book/regist/";
-    String loginUrl = "http://192.168.56.1:8000/book/login/";
-    String creatShopUrl = "http://192.168.56.1:8000/book/createShop/";
-    String manageShopUrl = "http://192.168.56.1:8000/book/manageShop/";
-    String getBookInfoUrl = "http://192.168.56.1:8000/book/getBook/";
-    String searchBookUrl = "http://192.168.56.1:8000/book/searchBook/";
-    String addBookUrl = "http://192.168.56.1:8000/book/addBook/";
-    String searchAreaUrl = "http://192.168.56.1:8000/book/searchArea/";
+    String remoteUrl = "http://54.204.114.208:8000";
+    String registUrl = remoteUrl+"/book/regist/";
+    String loginUrl = remoteUrl+"/book/login/";
+    String creatShopUrl = remoteUrl+"/book/createShop/";
+    String manageShopUrl = remoteUrl+"/book/manageShop/";
+    String getBookInfoUrl = remoteUrl+"/book/getBook/";
+    String searchBookUrl = remoteUrl+"/book/searchBook/";
+    String addBookUrl = remoteUrl+"/book/addBook/";
+    String searchAreaUrl = remoteUrl+"/book/searchArea/";
 
     public void submitAsyncHttpClientPostRegisterUser(String userName, String pwd, final Handler handler) {
 
