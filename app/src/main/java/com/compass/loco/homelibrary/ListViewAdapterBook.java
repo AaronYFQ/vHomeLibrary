@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by EXIAOQU on 7/26/2016.
@@ -20,32 +18,33 @@ import java.util.HashMap;
 public class ListViewAdapterBook extends BaseAdapter {
 
     // Andorid objects
-    Activity myActivity;
-    CheckBox myCheckBoxBook;
-    TextView myTextViewBookName;
-    TextView myTextViewBookAuthor;
-    TextView myTextViewBookPublisher;
-    TextView myTextViewBookIsbn;
-    TextView myTextViewBookDetail;
-    ImageView myImageViewBookPicture;
+    private Activity activity;
+    private CheckBox checkBoxBook;
+    private TextView textViewBookName;
+    private TextView textViewBookAuthor;
+    private TextView textViewBookPublisher;
+    private TextView textViewBookIsbn;
+    private TextView textViewBookDetail;
+    private TextView textViewBookState;
+    private ImageView imageViewBookPicture;
 
     // selected or non-selected bookinfo arraylist
-    public ArrayList<SelectedBookInfo> myArrayListSelectedBookInfo;
+    public ArrayList<SelectedBookInfo> arrayListSelectedBookInfo;
 
     public ListViewAdapterBook(Activity activity, ArrayList<SelectedBookInfo> list) {
         super();
-        this.myActivity = activity;
-        this.myArrayListSelectedBookInfo = list;
+        this.activity = activity;
+        this.arrayListSelectedBookInfo = list;
     }
 
     @Override
     public int getCount() {
-        return myArrayListSelectedBookInfo.size();
+        return arrayListSelectedBookInfo.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return myArrayListSelectedBookInfo.get(position);
+        return arrayListSelectedBookInfo.get(position);
     }
 
     @Override
@@ -56,44 +55,55 @@ public class ListViewAdapterBook extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        LayoutInflater inflater = myActivity.getLayoutInflater();
+        LayoutInflater inflater = activity.getLayoutInflater();
         if(convertView == null)
         {
             convertView = inflater.inflate(R.layout.activity_manage_library_book_row, null);
 
-            myCheckBoxBook = (CheckBox)convertView.findViewById(R.id.checkBoxBook);
-            myTextViewBookName = (TextView)convertView.findViewById(R.id.textViewBookName);
-            myTextViewBookAuthor = (TextView)convertView.findViewById(R.id.textViewBookAuthor);
-            myTextViewBookPublisher = (TextView)convertView.findViewById(R.id.textViewBookPublisher);
-            myTextViewBookIsbn = (TextView)convertView.findViewById(R.id.textViewBookIsbn);
-            myTextViewBookDetail = (TextView)convertView.findViewById(R.id.textViewBookDetail);
-            myImageViewBookPicture = (ImageView)convertView.findViewById(R.id.imageViewBookPicture);
+            checkBoxBook = (CheckBox)convertView.findViewById(R.id.checkBoxBook);
+            textViewBookName = (TextView)convertView.findViewById(R.id.textViewBookName);
+            textViewBookAuthor = (TextView)convertView.findViewById(R.id.textViewBookAuthor);
+            textViewBookPublisher = (TextView)convertView.findViewById(R.id.textViewBookPublisher);
+            textViewBookIsbn = (TextView)convertView.findViewById(R.id.textViewBookIsbn);
+            textViewBookDetail = (TextView)convertView.findViewById(R.id.textViewBookDetail);
+            textViewBookState = (TextView)convertView.findViewById(R.id.textViewBookState);
+            imageViewBookPicture = (ImageView)convertView.findViewById(R.id.imageViewBookPicture);
 
-            myCheckBoxBook.setOnClickListener(new View.OnClickListener() {
+            checkBoxBook.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     CheckBox cb = (CheckBox)v;
                     SelectedBookInfo selectedBookInfo = (SelectedBookInfo)cb.getTag();
                     selectedBookInfo.setSelected(cb.isSelected());
 
-                    Toast.makeText(myActivity.getApplicationContext(), selectedBookInfo.getBookInfo().getName() + " is " + cb.isChecked(), Toast.LENGTH_SHORT ).show();
+                    Toast.makeText(activity.getApplicationContext(), selectedBookInfo.getBookInfo().getName() + " is " + cb.isChecked(), Toast.LENGTH_SHORT ).show();
                 }
 
             });
 
         }
 
-        SelectedBookInfo selectedBookInfo =  myArrayListSelectedBookInfo.get(position);
+        SelectedBookInfo selectedBookInfo =  arrayListSelectedBookInfo.get(position);
 
-        myCheckBoxBook.setTag(selectedBookInfo);
-        myTextViewBookName.setText(selectedBookInfo.getBookInfo().getName());
-        myTextViewBookAuthor.setText("作者：" + selectedBookInfo.getBookInfo().getAuthor());
-        myTextViewBookPublisher.setText("出版社：" +selectedBookInfo.getBookInfo().getPublisher());
-        myTextViewBookIsbn.setText("ISBN号：" + selectedBookInfo.getBookInfo().getIsbn());
-        myTextViewBookDetail.setText("简介：" + selectedBookInfo.getBookInfo().getDetail());
+        checkBoxBook.setTag(selectedBookInfo);
+
+        textViewBookName.setText(selectedBookInfo.getBookInfo().getName());
+        textViewBookAuthor.setText("作者：" + selectedBookInfo.getBookInfo().getAuthor());
+        textViewBookPublisher.setText("出版社：" +selectedBookInfo.getBookInfo().getPublisher());
+        textViewBookIsbn.setText("ISBN号：" + selectedBookInfo.getBookInfo().getIsbn());
+        textViewBookDetail.setText("简介：" + selectedBookInfo.getBookInfo().getDetail());
+
+        if(selectedBookInfo.getBookInfo().getState()) {
+            textViewBookState.setText("未借");
+        }
+        else
+        {
+            textViewBookState.setText("借出");
+            checkBoxBook.setEnabled(false);
+        }
 
         if(selectedBookInfo.getBookInfo().getBitmap() != null) {
-            myImageViewBookPicture.setImageBitmap(selectedBookInfo.getBookInfo().getBitmap());
+            imageViewBookPicture.setImageBitmap(selectedBookInfo.getBookInfo().getBitmap());
         }
 
         return convertView;

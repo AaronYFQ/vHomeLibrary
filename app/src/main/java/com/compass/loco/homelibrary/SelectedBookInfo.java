@@ -6,23 +6,23 @@ package com.compass.loco.homelibrary;
 
 public class SelectedBookInfo {
 
-    private BookInfo myBookInfo;
-    private Boolean  mySelected = false;
+    private BookInfo bookInfo;
+    private Boolean selected = false;
 
     public SelectedBookInfo(BookInfo bookinfo, Boolean selected) {
-        myBookInfo = bookinfo;
-        mySelected = selected;
+        this.bookInfo = bookinfo;
+        this.selected = selected;
     }
 
     public BookInfo getBookInfo() {
-        return myBookInfo;
+        return bookInfo;
     }
 
     public void setSelected(Boolean selected) {
-        mySelected = selected;
+        this.selected = selected;
     }
 
     public Boolean isSelected() {
-        return mySelected;
+        return selected;
     }
 }
