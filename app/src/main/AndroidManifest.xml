@@ -19,7 +19,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".CreateLibraryActivity" />
-        <activity android:name=".ShowMessages" />
         <activity
             android:name=".SelectCityActivity"
             android:label="选择城市"
@@ -29,6 +28,7 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+        <activity android:name=".ShowMessagesActivity"></activity>
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
 </manifest>
