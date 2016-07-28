@@ -83,8 +83,8 @@
                             <EditText
                                 android:id="@+id/login_username"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:password="true" />
+                                android:layout_height="wrap_content"/>
+
                         </TableRow>
 
                         <TableRow
@@ -102,7 +102,8 @@
                             <EditText
                                 android:id="@+id/login_password"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="wrap_content"
+                                android:password="true" />
                         </TableRow>
                     </TableLayout>
 
