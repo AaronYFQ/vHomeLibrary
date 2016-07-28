@@ -44,6 +44,7 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@android:color/white"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp">
 
@@ -58,7 +59,7 @@
             <ImageButton
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:background="@drawable/menu_1"
+                android:background="@drawable/mainmenu_home_gray"
                 android:id="@+id/menu_1" />
             <TextView
                 android:layout_width="30dp"
@@ -80,7 +81,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_toRightOf="@id/menu_1"
-                android:background="@drawable/menu_2"
+                android:background="@drawable/mainmenu_message_gray"
                 android:id="@+id/menu_2" />
 
             <TextView
@@ -103,7 +104,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_toRightOf="@id/menu_2"
-                android:background="@drawable/menu_3"
+                android:background="@drawable/mainmenu_community"
                 android:id="@+id/menu_3" />
 
             <TextView
@@ -127,7 +128,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_toRightOf="@id/menu_3"
-                android:background="@drawable/menu_4"
+                android:background="@drawable/mainmenu_me_gray"
                 android:id="@+id/menu_4" />
 
             <TextView

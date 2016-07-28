@@ -69,7 +69,7 @@
                         android:paddingRight="5dp"
                         android:text="北京"
                         android:textColor="@android:color/darker_gray"
-                        android:textSize="12sp"
+                        android:textSize="14sp"
                         android:id="@+id/city_btn" />
 
                     <LinearLayout
@@ -87,7 +87,7 @@
                         android:gravity="center_vertical"
                         android:text="输入图书馆或图书开始找书咯~"
                         android:textColor="@android:color/darker_gray"
-                        android:textSize="12sp"
+                        android:textSize="14sp"
                         android:id="@+id/imageButton" />
                 </LinearLayout>
 
