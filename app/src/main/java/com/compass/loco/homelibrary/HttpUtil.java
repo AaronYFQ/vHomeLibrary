@@ -23,7 +23,8 @@ public class HttpUtil {
     String getBookInfoUrl = remoteUrl+"/book/getBook/";
     String searchBookUrl = remoteUrl+"/book/searchBook/";
     String addBookUrl = remoteUrl+"/book/addBook/";
-    String searchAreaUrl = remoteUrl+"/book/searchArea/";
+    static final String CHECK_MESSAGE_URL  = remoteUrl + "/book/checkMessage/";
+    static final String GET_MESSAGE_URL = remoteUrl + "/book/getMessage/";
 
     public void submitAsyncHttpClientPostRegisterUser(String userName, String pwd, final Handler handler) {
 
