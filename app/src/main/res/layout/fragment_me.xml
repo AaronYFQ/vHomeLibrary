@@ -32,7 +32,8 @@
                     android:layout_marginTop="10dp"
                     android:text="登录/注册"
                     android:textColor="@android:color/white"
-                    android:background="@drawable/corner_border_transparent"/>
+                    android:background="@drawable/corner_border_transparent"
+                    android:id="@+id/user_login_btn"/>
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"
