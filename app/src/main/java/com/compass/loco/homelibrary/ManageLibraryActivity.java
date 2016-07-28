@@ -1,7 +1,10 @@
 package com.compass.loco.homelibrary;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
@@ -9,6 +12,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import java.util.ArrayList;
 
 
@@ -30,7 +35,6 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
     // selected or non-selected bookinfo arraylist
     private ArrayList<SelectedBookInfo> myArrayListSelectedBookInfo;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -146,8 +150,37 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
     }
 
+    String token = "yang";
     private void add() {
         Toast.makeText(getApplicationContext(), "Add...", Toast.LENGTH_SHORT).show();
+
+        final Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+
+                String json = msg.getData().getString("responseBody");
+                Log.v("handleMessage", json);
+                try {
+                    // handler item from Json
+                    JSONObject item = new JSONObject(json);
+                    String comment = item.getString("result");
+                    token = item.getString("token");
+                    Log.v("handleMessage", ": " + comment);
+                    Log.v("handleMessage", ": " + token);
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+            }
+        };
+
+        HttpUtil httptd = new HttpUtil();
+       // httptd.submitAsyncHttpClientPostRegisterUser("yang", "456", handler);
+       // httptd.submitAsyncHttpClientPostLogin("yang", "456", handler);
+       // httptd.submitAsyncHttpClientPostCreateShop(token,"xinhua","BJ","Welcome", handler);
+       // httptd.submitAsyncHttpClientPostAddBook(token, "xinhua", "Book1l", "luxun", "China", "Good book", handler);
+       // httptd.submitAsyncHttpClientGetManageShop(token, "xinhua", handler);q
     }
 
     private void delete() {
@@ -157,5 +190,4 @@ public class ManageLibraryActivity extends AppCompatActivity {
     private void apply() {
         Toast.makeText(getApplicationContext(), "Apply...", Toast.LENGTH_SHORT).show();
     }
-
 }
