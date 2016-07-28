@@ -23,6 +23,7 @@ public class HttpUtil {
     String getBookInfoUrl = "http://192.168.56.1:8000/book/getBook/";
     String searchBookUrl = "http://192.168.56.1:8000/book/searchBook/";
     String addBookUrl = "http://192.168.56.1:8000/book/addBook/";
+    String searchAreaUrl = "http://192.168.56.1:8000/book/searchArea/";
 
     public void submitAsyncHttpClientPostRegisterUser(String userName, String pwd, final Handler handler) {
 
@@ -143,7 +144,7 @@ public class HttpUtil {
     }
 
     public void submitAsyncHttpClientPostAddBook(String token, String shopName, String bookName,String bookAuthor,
-                                                 String bookPublisher, String bookComments, final Handler handler){
+                                                 String bookPublisher, String bookIsdn, String bookComments, final Handler handler){
 
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams param = new RequestParams();
@@ -153,8 +154,9 @@ public class HttpUtil {
         param.put("bookname", bookName);
         param.put("bookauthor", bookAuthor);
         param.put("bookpublisher", bookPublisher);
+        param.put("bookisdn", bookIsdn);
         param.put("bookcomments", bookComments);
-
+     //   Log.v("handleMessage", token);
         client.post(url, param, new AsyncHttpResponseHandler() {
 
             @Override
@@ -208,7 +210,7 @@ public class HttpUtil {
     public void submitAsyncHttpClientSearchBook(String bookName,final Handler handler) {
 
         AsyncHttpClient client = new AsyncHttpClient();
-        String url = searchBookUrl + "?" + "&bookname=" + bookName;
+        String url = searchBookUrl + "?" + "bookname=" + bookName;
 
         client.get(url, new AsyncHttpResponseHandler() {
 
@@ -235,7 +237,7 @@ public class HttpUtil {
     public void submitAsyncHttpClientSearchArea(String areaName,final Handler handler) {
 
         AsyncHttpClient client = new AsyncHttpClient();
-        String url = searchBookUrl + "?" + "&areaName=" + areaName;
+        String url = searchAreaUrl + "?" + "areaname=" + areaName;
 
         client.get(url, new AsyncHttpResponseHandler() {
 
