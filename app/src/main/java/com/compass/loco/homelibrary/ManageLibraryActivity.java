@@ -105,9 +105,10 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
     }
 
-    String token = "yang";
-
+    String token = "zhong";
     private void getLibraryBooks() {
+
+        final ManageLibraryActivity activity = this;
 
         final Handler handler = new Handler() {
 
@@ -124,6 +125,10 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
                     JSONArray jsonArray = jsonObj.getJSONArray("books");
 
+                    arrayListSelectedBookInfo = new ArrayList<SelectedBookInfo>();
+
+                    Log.v("number of books: ", new Integer(jsonArray.length()).toString());
+
                     for (int i = 0; i < jsonArray.length(); ++i) {
 
                         jsonObj = jsonArray.getJSONObject(i);
@@ -134,13 +139,15 @@ public class ManageLibraryActivity extends AppCompatActivity {
                                                 jsonObj.getString("name"),
                                                 jsonObj.getString("author"),
                                                 jsonObj.getString("publisher"),
-                                                jsonObj.getString("isbn"),
+                                                jsonObj.getString("isdn"),
                                                 jsonObj.getString("detail"),
                                                 null,
-                                                jsonObj.getBoolean("state")),
+                                                (jsonObj.getInt("state") == 1)),
                                         false));
-
                     }
+
+                    ListViewAdapterBook myListViewAdapterBook = new ListViewAdapterBook(activity, arrayListSelectedBookInfo);
+                    listViewBooks.setAdapter(myListViewAdapterBook);
 
                 } catch (JSONException e) {
 
