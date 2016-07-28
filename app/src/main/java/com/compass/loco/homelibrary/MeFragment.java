@@ -21,14 +21,17 @@ public class MeFragment extends Fragment implements View.OnClickListener {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_me, container, false);
         mLoginBtn = (Button)view.findViewById(R.id.user_login_btn);
-        mLoginBtn.setOnClickListener(this);
+        if (getArguments() != null && getArguments().containsKey(MainActivity.INTENT_KEY_LOGIN_RESULT)) {
+            mLoginBtn.setText(getArguments().getString(MainActivity.INTENT_KEY_USER_NAME));
+        } else {
+            mLoginBtn.setOnClickListener(this);
+        }
         return view;
     }
 

@@ -16,6 +16,8 @@ public class MainActivity extends AppCompatActivity {
 
     public final static String EXTRA_MESSAGE = "com.compass.loco.homelibrary.MainActivity.EXTRA_MESSAGE";
     public final static String INTENT_KEY_CITY_NAME = MainActivity.class.getName() + ".CITY_NAME";
+    public final static String INTENT_KEY_USER_NAME = MainActivity.class.getName() + ".USER_NAME";
+    public final static String INTENT_KEY_LOGIN_RESULT = MainActivity.class.getName() + ".LOGIN_RESULT";
 
     private final HomeFragment mHomeFragment = new HomeFragment();
     private final MessageFragment mMessageFragment = new MessageFragment();
@@ -48,13 +50,15 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            // In case this activity was started with special instructions from an
-            // Intent, pass the Intent's extras to the fragment as arguments
-            mHomeFragment.setArguments(getIntent().getExtras());
-
-            // Add the fragment to the 'fragment_container' FrameLayout
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, mHomeFragment).commit();
+            if (getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().containsKey(INTENT_KEY_LOGIN_RESULT)) {
+                mMeFragment.setArguments(getIntent().getExtras());
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, mMeFragment).commit();
+            } else {
+                mHomeFragment.setArguments(getIntent().getExtras());
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fragment_container, mHomeFragment).commit();
+            }
         }
 
     }
@@ -81,21 +85,23 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /** Called when the user clicks the Send button */
+    /**
+     * Called when the user clicks the Send button
+     */
     public void sendMessage(View view) {
         // Do something in response to button
         Intent intent = new Intent(this, CreateLibraryActivity.class);
 //        EditText editText = (EditText) findViewById(R.id.name1);
 
-       SharedPreferences sharedPref = getSharedPreferences("compass.loco.data", Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences("compass.loco.data", Context.MODE_PRIVATE);
         SharedPreferences.Editor sharedata = sharedPref.edit();
-        sharedata.putString("item","hello");
+        sharedata.putString("item", "hello");
         sharedata.commit();
         startActivity(intent);
     }
 
     public void onClickHomeBtn(View view) {
-        if(mHomeFragment.isVisible()) {
+        if (mHomeFragment.isVisible()) {
             return;
         }
 
@@ -116,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickMessageBtn(View view) {
-        if(mMessageFragment.isVisible()) {
+        if (mMessageFragment.isVisible()) {
             return;
         }
 
@@ -137,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickMeBtn(View view) {
-        if(mMeFragment.isVisible()) {
+        if (mMeFragment.isVisible()) {
             return;
         }
 

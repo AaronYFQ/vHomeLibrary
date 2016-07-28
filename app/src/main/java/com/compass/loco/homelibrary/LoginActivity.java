@@ -266,7 +266,8 @@ public class LoginActivity extends Activity {
         //store Username
         //back to user profile pages
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(username, isSuccess);
+        intent.putExtra(MainActivity.INTENT_KEY_USER_NAME, username);
+        intent.putExtra(MainActivity.INTENT_KEY_LOGIN_RESULT, isSuccess);
         startActivity(intent);
     }
 
