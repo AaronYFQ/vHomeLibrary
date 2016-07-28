@@ -13,15 +13,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
-
 
 /**
  * Created by EXIAOQU on 7/25/2016.
@@ -39,11 +34,6 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
     // selected or non-selected bookinfo arraylist
     private ArrayList<SelectedBookInfo> arrayListSelectedBookInfo;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,9 +43,7 @@ public class ManageLibraryActivity extends AppCompatActivity {
         init();
 
         threadGetLibraryBooks();
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
     }
 
     private void init() {
@@ -102,16 +90,18 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
     private void threadGetLibraryBooks() {
 
-        new Thread(new Runnable() {
+        getLibraryBooks();
 
-            @Override
-            public void run() {
-
-                getLibraryBooks();
-
-            }
-
-        }).start();
+//        new Thread(new Runnable() {
+//
+//            @Override
+//            public void run() {
+//
+//                getLibraryBooks();
+//
+//            }
+//
+//        }).start();
 
     }
 
@@ -124,13 +114,13 @@ public class ManageLibraryActivity extends AppCompatActivity {
             @Override
             public void handleMessage(Message msg) {
 
-                String json = msg.getData().getString("responseBody");
+                String jsonText = msg.getData().getString("responseBody");
+
+                Log.v("responseBody", jsonText);
 
                 try {
 
-                    JSONObject jsonObj = new JSONObject(json);
-
-                    editTextLibraryName.setText(jsonObj.getString("shop"));
+                    JSONObject jsonObj = new JSONObject(jsonText);
 
                     JSONArray jsonArray = jsonObj.getJSONArray("books");
 
@@ -152,17 +142,20 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
                     }
 
-
                 } catch (JSONException e) {
+
+                    Toast.makeText(getApplicationContext(), "remote service down!", Toast.LENGTH_SHORT).show();
+
                     e.printStackTrace();
                 }
             }
         };
 
+        editTextLibraryName.setText("wangfujing");
+
         HttpUtil httptd = new HttpUtil();
 
-        httptd.submitAsyncHttpClientGetManageShop(token, "xinhua", handler);
-
+        httptd.submitAsyncHttpClientGetManageShop(token, "wangfujing", handler);
 
 //        try {
 //            /*
@@ -247,45 +240,5 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
     private void apply() {
         Toast.makeText(getApplicationContext(), "Apply...", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "ManageLibrary Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app URL is correct.
-                Uri.parse("android-app://com.compass.loco.homelibrary/http/host/path")
-        );
-        AppIndex.AppIndexApi.start(client, viewAction);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        Action viewAction = Action.newAction(
-                Action.TYPE_VIEW, // TODO: choose an action type.
-                "ManageLibrary Page", // TODO: Define a title for the content shown.
-                // TODO: If you have web page content that matches this app activity's content,
-                // make sure this auto-generated web page URL is correct.
-                // Otherwise, set the URL to null.
-                Uri.parse("http://host/path"),
-                // TODO: Make sure this auto-generated app URL is correct.
-                Uri.parse("android-app://com.compass.loco.homelibrary/http/host/path")
-        );
-        AppIndex.AppIndexApi.end(client, viewAction);
-        client.disconnect();
     }
 }
