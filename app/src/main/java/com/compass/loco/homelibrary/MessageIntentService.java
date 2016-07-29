@@ -73,7 +73,7 @@ public class MessageIntentService extends IntentService {
             final String action = intent.getAction();
             if (ACTION_POLL.equals(action)) {
                 final String token = intent.getStringExtra(USER_TOKEN);
-                handleActionPoll(token);
+                handleActionPoll("zhong");
             }
             /*else if (ACTION_BAZ.equals(action)) {
                 final String param1 = intent.getStringExtra(EXTRA_PARAM1);
@@ -116,10 +116,10 @@ public class MessageIntentService extends IntentService {
                 JSONObject item = null;
                 try {
                     item = new JSONObject(jsonString);
-                    boolean hasNewMsg = item.getBoolean("hasNewMessage");
-                    if(hasNewMsg)
+                    int numOfNewMsg = item.getInt("count");
+                    if(numOfNewMsg > 0)
                     {
-                        sendNotification();
+                        sendNotification(numOfNewMsg);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -133,13 +133,13 @@ public class MessageIntentService extends IntentService {
         });
     }
 
-    private void sendNotification()
+    private void sendNotification(int numOfMessage)
     {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setContentTitle("My notification")
-                        .setContentText("Receive new messages!");
+                        .setContentText("Receive" + numOfMessage +  "new messages!");
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         // Adds the back stack for the Intent (but not the Intent itself)

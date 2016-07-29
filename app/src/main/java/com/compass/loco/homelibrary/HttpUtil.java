@@ -178,7 +178,7 @@ public class HttpUtil {
 
     public void submitAsyncHttpClientGetMessage(String token, final Handler handler) {
 
-        String url = SEARCHAREA_URL + "?" + "token=" + token;
+        String url = GET_MESSAGE_URL + "?" + "token=" + token;
         asyncHttpClientGetHandler(url, handler);
         return;
     }
