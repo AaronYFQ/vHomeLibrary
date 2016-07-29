@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -38,17 +40,13 @@ public class ScanBookActivity extends AppCompatActivity {
             String re = scanResult.getContents();
             Log.d("code", re);
 
-            new DownloadWebpageTask((TextView) findViewById(R.id.scan_content)).execute("https://api.douban.com/v2/book/isbn/:" + re);
+            new DownloadWebpageTask().execute("https://api.douban.com/v2/book/isbn/:" + re);
         }
         // else continue with any other code you need in the method
 
     }
 
     private class DownloadWebpageTask extends AsyncTask<String, Void, DoubanBook> {
-        TextView view;
-        public DownloadWebpageTask(TextView view) {
-            this.view = view;
-        }
         @Override
         protected DoubanBook doInBackground(String... urls) {
 
@@ -77,7 +75,25 @@ public class ScanBookActivity extends AppCompatActivity {
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(DoubanBook result) {
-            view.setText(result.getTitle() + "\n" + result.getAuthor()[0] + "\n" + result.getPublisher() + "\n" + result.getAlt());
+            TextView titleView = (TextView) ScanBookActivity.this.findViewById(R.id.book_title);
+            titleView.setText(result.getTitle());
+
+            TextView authorView = (TextView) ScanBookActivity.this.findViewById(R.id.book_author);
+            StringBuilder sb = new StringBuilder();
+            for (String a : result.getAuthor()) {
+                if (sb.length() > 0) {
+                    sb.append(",");
+                }
+                sb.append(a);
+            }
+            authorView.setText(sb.toString());
+
+            TextView publisherView = (TextView) ScanBookActivity.this.findViewById(R.id.book_publisher);
+            publisherView.setText(result.getPublisher());
+
+            TextView linkView = (TextView) ScanBookActivity.this.findViewById(R.id.douban_link);
+            linkView.setText(Html.fromHtml("<a href=\"" + result.getAlt() + "\">豆瓣链接</a>"));
+            linkView.setMovementMethod(LinkMovementMethod.getInstance());
         }
     }
 }

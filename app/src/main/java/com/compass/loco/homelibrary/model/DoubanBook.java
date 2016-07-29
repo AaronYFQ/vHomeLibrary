@@ -10,6 +10,7 @@ public class DoubanBook {
     private String publisher;
     private String isbn13;
     private String[] author;
+    private String alt;
 
     public String getAlt() {
         return alt;
@@ -50,8 +51,6 @@ public class DoubanBook {
     public void setIsbn13(String isbn13) {
         this.isbn13 = isbn13;
     }
-
-    private String alt;
 
     public String[] getAuthor() {
         return author;
