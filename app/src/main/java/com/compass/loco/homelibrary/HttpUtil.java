@@ -23,8 +23,9 @@ public class HttpUtil {
     String getBookInfoUrl = remoteUrl+"/book/getBook/";
     String searchBookUrl = remoteUrl+"/book/searchBook/";
     String addBookUrl = remoteUrl+"/book/addBook/";
-    static final String CHECK_MESSAGE_URL  = remoteUrl + "/book/checkMessage/";
-    static final String GET_MESSAGE_URL = remoteUrl + "/book/getMessage/";
+    // FIXME: 7/29/2016
+    static final String CHECK_MESSAGE_URL  = "";//remoteUrl + "/book/checkMessage/";
+    static final String GET_MESSAGE_URL = "";//remoteUrl + "/book/getMessage/";
 
     public void submitAsyncHttpClientPostRegisterUser(String userName, String pwd, final Handler handler) {
 
@@ -238,7 +239,9 @@ public class HttpUtil {
     public void submitAsyncHttpClientSearchArea(String areaName,final Handler handler) {
 
         AsyncHttpClient client = new AsyncHttpClient();
-        String url = searchAreaUrl + "?" + "areaname=" + areaName;
+        //String url = searchAreaUrl + "?" + "areaname=" + areaName;
+        // FIXME: 7/29/2016
+        String url = "";
 
         client.get(url, new AsyncHttpResponseHandler() {
 
