@@ -15,23 +15,24 @@ import com.loopj.android.http.RequestParams;
 
 
 public class HttpUtil {
-    String remoteUrl = "http://54.204.114.208:8000";
-    String registUrl = remoteUrl+"/book/regist/";
-    String loginUrl = remoteUrl+"/book/login/";
-    String creatShopUrl = remoteUrl+"/book/createShop/";
-    String manageShopUrl = remoteUrl+"/book/manageShop/";
-    String getBookInfoUrl = remoteUrl+"/book/getBook/";
-    String searchBookUrl = remoteUrl+"/book/searchBook/";
-    String addBookUrl = remoteUrl+"/book/addBook/";
-    // FIXME: 7/29/2016
-    static final String CHECK_MESSAGE_URL  = "";//remoteUrl + "/book/checkMessage/";
-    static final String GET_MESSAGE_URL = "";//remoteUrl + "/book/getMessage/";
+    static final String REMOTE_URL = "http://54.204.114.208:8000";
+    final String REGIST_URL = REMOTE_URL+"/book/regist/";
+    final String LOGIN_URL = REMOTE_URL+"/book/login/";
+    final String CREATESHOP_URL = REMOTE_URL+"/book/createShop/";
+    final String MANAGESHOP_URL = REMOTE_URL+"/book/manageShop/";
+    final String MODIFYSHOP_URL = REMOTE_URL+"/book/modifyShop/";
+    final String GETBOOKINFO_URL = REMOTE_URL+"/book/getBook/";
+    final String SEARCHBOOK_URL = REMOTE_URL+"/book/searchBook/";
+    final String ADDBOOK_URL = REMOTE_URL+"/book/addBook/";
+    final String SEARCHAREA_URL = REMOTE_URL+"/book/searchArea/";
+    static final String CHECK_MESSAGE_URL  = REMOTE_URL + "/book/checkMessage/";
+    static final String GET_MESSAGE_URL = REMOTE_URL + "/book/getMessage/";
 
     public void submitAsyncHttpClientPostRegisterUser(String userName, String pwd, final Handler handler) {
 
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams param = new RequestParams();
-        String url = registUrl;
+        String url = REGIST_URL;
         param.put("username", userName);
         param.put("password", pwd);
 
@@ -60,7 +61,7 @@ public class HttpUtil {
 
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams param = new RequestParams();
-        String url = loginUrl;
+        String url = LOGIN_URL;
         param.put("username", userName);
         param.put("password", pwd);
 
@@ -90,7 +91,7 @@ public class HttpUtil {
 
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams param = new RequestParams();
-        String url = creatShopUrl;
+        String url = CREATESHOP_URL;
         param.put("token", token);
         param.put("shopname", shopName);
         param.put("shopaddr", shopAddr);
@@ -121,7 +122,7 @@ public class HttpUtil {
     public void submitAsyncHttpClientGetManageShop(String token, String shopName, final Handler handler) {
 
         AsyncHttpClient client = new AsyncHttpClient();
-        String url = manageShopUrl + "?" + "token=" + token + "&shopname=" + shopName;
+        String url = MANAGESHOP_URL + "?" + "token=" + token + "&shopname=" + shopName;
 
         client.get(url, new AsyncHttpResponseHandler() {
 
@@ -145,12 +146,42 @@ public class HttpUtil {
         return;
     }
 
+    public void submitAsyncHttpClientPostModifyShop(String token, String shopOldName, String shopNewName, final Handler handler){
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams param = new RequestParams();
+        String url = MODIFYSHOP_URL;
+        param.put("token", token);
+        param.put("oldname", shopOldName);
+        param.put("newname", shopNewName);
+
+        client.post(url, param, new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+                String iString = new String(responseBody);
+                Bundle bundle = new Bundle();
+                bundle.putString("responseBody", iString);
+                Message message = new Message();
+                message.setData(bundle);
+                handler.sendMessage(message);
+            }
+
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+
+        });
+
+        return;
+    }
     public void submitAsyncHttpClientPostAddBook(String token, String shopName, String bookName,String bookAuthor,
                                                  String bookPublisher, String bookIsdn, String bookComments, final Handler handler){
 
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams param = new RequestParams();
-        String url = addBookUrl;
+        String url = ADDBOOK_URL;
         param.put("token", token);
         param.put("shopname", shopName);
         param.put("bookname", bookName);
@@ -184,7 +215,7 @@ public class HttpUtil {
     public void submitAsyncHttpClientGetViewBook(String token, String shopName, String bookName,final Handler handler) {
 
         AsyncHttpClient client = new AsyncHttpClient();
-        String url = getBookInfoUrl + "?" + "token=" + token + "&shopname=" + shopName + "&bookname=" + bookName;
+        String url = GETBOOKINFO_URL + "?" + "token=" + token + "&shopname=" + shopName + "&bookname=" + bookName;
 
         client.get(url, new AsyncHttpResponseHandler() {
 
@@ -212,7 +243,7 @@ public class HttpUtil {
     public void submitAsyncHttpClientSearchBook(String bookName,final Handler handler) {
 
         AsyncHttpClient client = new AsyncHttpClient();
-        String url = searchBookUrl + "?" + "bookname=" + bookName;
+        String url = SEARCHBOOK_URL + "?" + "bookname=" + bookName;
 
         client.get(url, new AsyncHttpResponseHandler() {
 
@@ -239,9 +270,7 @@ public class HttpUtil {
     public void submitAsyncHttpClientSearchArea(String areaName,final Handler handler) {
 
         AsyncHttpClient client = new AsyncHttpClient();
-        //String url = searchAreaUrl + "?" + "areaname=" + areaName;
-        // FIXME: 7/29/2016
-        String url = "";
+        String url = SEARCHAREA_URL + "?" + "areaname=" + areaName;
 
         client.get(url, new AsyncHttpResponseHandler() {
 
