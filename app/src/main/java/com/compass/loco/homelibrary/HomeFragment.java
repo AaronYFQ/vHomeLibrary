@@ -10,11 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private String mCityName = "北京";
     private Button mSelectCityBtn;
+    private ImageButton mAddBookBtn;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -36,6 +38,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }
         mSelectCityBtn.setText(mCityName);
 
+        mAddBookBtn = (ImageButton) view.findViewById(R.id.add_book_btn);
+        mAddBookBtn.setOnClickListener(this);
+
         return view;
     }
 
@@ -44,11 +49,19 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         startActivity(intent);
     }
 
+    public void onAddBookBtnClick(View view) {
+        Intent intent = new Intent(this.getContext(), ScanBookActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     public void onClick(View view) {
         switch(view.getId()) {
             case R.id.city_btn:
                 onSelectCityBtn(view);
+                break;
+            case R.id.add_book_btn:
+                onAddBookBtnClick(view);
                 break;
             default:
                 // do nothing
