@@ -6,46 +6,45 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 /**
- * Created by EXIAOQU on 7/26/2016.
+ * Created by EXIAOQU on 7/29/2016.
  */
-public class ListViewAdapterBook extends BaseAdapter {
+public class ListViewAdapterBrowseBook extends BaseAdapter {
 
     // Andorid objects
     private Activity activity;
-    private CheckBox checkBoxBook;
+
     private TextView textViewBookName;
     private TextView textViewBookAuthor;
     private TextView textViewBookPublisher;
     private TextView textViewBookIsbn;
     private TextView textViewBookDetail;
     private TextView textViewBookState;
+
     private ImageView imageViewBookPicture;
 
     // selected or non-selected bookinfo arraylist
-    public ArrayList<SelectedBookInfo> arrayListSelectedBookInfo;
+    public ArrayList<BookInfo> arrayListBookInfo;
 
-    public ListViewAdapterBook(Activity activity, ArrayList<SelectedBookInfo> list) {
+    public ListViewAdapterBrowseBook(Activity activity, ArrayList<BookInfo> list) {
         super();
         this.activity = activity;
-        this.arrayListSelectedBookInfo = list;
+        this.arrayListBookInfo = list;
     }
 
     @Override
     public int getCount() {
-        return arrayListSelectedBookInfo.size();
+        return arrayListBookInfo.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return arrayListSelectedBookInfo.get(position);
+        return arrayListBookInfo.get(position);
     }
 
     @Override
@@ -61,13 +60,12 @@ public class ListViewAdapterBook extends BaseAdapter {
             Log.v("convertView null, position=", new Integer(position).toString());
 
             LayoutInflater inflater = activity.getLayoutInflater();
-            convertView = inflater.inflate(R.layout.activity_manage_library_book_row, null);
+            convertView = inflater.inflate(R.layout.activity_browse_library_book_row, null);
         }
         else {
             Log.v("convertView not null, position=", new Integer(position).toString());
         }
 
-        checkBoxBook = (CheckBox)convertView.findViewById(R.id.checkBoxBook);
         textViewBookName = (TextView)convertView.findViewById(R.id.textViewBookName);
         textViewBookAuthor = (TextView)convertView.findViewById(R.id.textViewBookAuthor);
         textViewBookPublisher = (TextView)convertView.findViewById(R.id.textViewBookPublisher);
@@ -76,41 +74,30 @@ public class ListViewAdapterBook extends BaseAdapter {
         textViewBookState = (TextView)convertView.findViewById(R.id.textViewBookState);
         imageViewBookPicture = (ImageView)convertView.findViewById(R.id.imageViewBookPicture);
 
-        checkBoxBook.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CheckBox cb = (CheckBox)v;
-                SelectedBookInfo selectedBookInfo = (SelectedBookInfo)cb.getTag();
-                selectedBookInfo.setSelected(cb.isSelected());
 
-                Toast.makeText(activity.getApplicationContext(), selectedBookInfo.getBookInfo().getName() + " is " + cb.isChecked(), Toast.LENGTH_SHORT ).show();
-            }
+        BookInfo bookInfo =  arrayListBookInfo.get(position);
+        
+        textViewBookName.setText(bookInfo.getName());
+        textViewBookName.setTag(bookInfo);
+        
+        textViewBookAuthor.setText("作者：" + bookInfo.getAuthor());
+        textViewBookPublisher.setText("出版社：" +bookInfo.getPublisher());
+        textViewBookIsbn.setText("ISBN号：" + bookInfo.getIsbn());
+        textViewBookDetail.setText("简介：" + bookInfo.getDetail());
 
-        });
-
-        SelectedBookInfo selectedBookInfo =  arrayListSelectedBookInfo.get(position);
-
-        checkBoxBook.setTag(selectedBookInfo);
-
-        textViewBookName.setText(selectedBookInfo.getBookInfo().getName());
-        textViewBookAuthor.setText("作者：" + selectedBookInfo.getBookInfo().getAuthor());
-        textViewBookPublisher.setText("出版社：" +selectedBookInfo.getBookInfo().getPublisher());
-        textViewBookIsbn.setText("ISBN号：" + selectedBookInfo.getBookInfo().getIsbn());
-        textViewBookDetail.setText("简介：" + selectedBookInfo.getBookInfo().getDetail());
-
-        if(selectedBookInfo.getBookInfo().getState()) {
+        if(bookInfo.getState()) {
             textViewBookState.setText("未借");
         }
         else
         {
             textViewBookState.setText("借出");
-            checkBoxBook.setEnabled(false);
         }
 
-        if(selectedBookInfo.getBookInfo().getBitmap() != null) {
-            imageViewBookPicture.setImageBitmap(selectedBookInfo.getBookInfo().getBitmap());
+        if(bookInfo.getBitmap() != null) {
+            imageViewBookPicture.setImageBitmap(bookInfo.getBitmap());
         }
 
         return convertView;
     }
+
 }

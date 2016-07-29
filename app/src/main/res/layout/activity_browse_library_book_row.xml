@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
+        android:layout_toLeftOf="@+id/imageViewBookPicture"
+        android:layout_marginLeft="24sp">
+
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/textViewBookName"
+                android:text="书名："
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:textSize="14sp"
+                android:textStyle="bold">
+            </TextView>
+
+            <TextView
+                android:id="@+id/textViewBookState"
+                android:text="未借出"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:textSize="10sp">
+            </TextView>
+
+        </RelativeLayout>
+
+        <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/textViewBookAuthor"
+            android:text="作者："
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textSize="10sp">
+        </TextView>
+
+        <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/textViewBookPublisher"
+            android:text="出版社："
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textSize="10sp" >
+        </TextView>
+
+        <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/textViewBookIsbn"
+            android:text="ISBN号："
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textSize="10sp" >
+        </TextView>
+
+        <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/textViewBookDetail"
+            android:text="简介："
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textSize="8sp" >
+        </TextView>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageViewBookPicture"
+        android:src="@drawable/default_book_picture"
+        android:layout_width="60dp"
+        android:layout_height="80dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:scaleType="fitXY" />
+
+</RelativeLayout>
