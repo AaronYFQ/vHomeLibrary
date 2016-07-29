@@ -79,9 +79,12 @@ public class ListViewAdapterManageBook extends BaseAdapter {
         checkBoxBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 CheckBox cb = (CheckBox)v;
+
                 SelectedBookInfo selectedBookInfo = (SelectedBookInfo)cb.getTag();
-                selectedBookInfo.setSelected(cb.isSelected());
+
+                selectedBookInfo.setSelected(cb.isChecked());
 
                 Toast.makeText(activity.getApplicationContext(), selectedBookInfo.getBookInfo().getName() + " is " + cb.isChecked(), Toast.LENGTH_SHORT ).show();
             }

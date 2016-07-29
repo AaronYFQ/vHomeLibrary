@@ -1,5 +1,6 @@
 package com.compass.loco.homelibrary;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -35,6 +36,10 @@ public class ManageLibraryActivity extends AppCompatActivity {
     private ArrayList<SelectedBookInfo> arrayListSelectedBookInfo;
 
     private int removeBookCount;
+
+    private String token;
+    private String shopName;
+    private String newShopName;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -93,11 +98,12 @@ public class ManageLibraryActivity extends AppCompatActivity {
         // get input parameter from application global data
         // 1. token
         // 2. shop name
+        token = "zhong";
+        shopName = "wangfujing";
 
     }
 
 
-    String token = "zhong";
     private void getLibraryBooks() {
 
         final ManageLibraryActivity activity = this;
@@ -131,10 +137,10 @@ public class ManageLibraryActivity extends AppCompatActivity {
                                                 jsonObj.getString("name"),
                                                 jsonObj.getString("author"),
                                                 jsonObj.getString("publisher"),
-                                                jsonObj.getString("isdn"),
+                                                jsonObj.getString("isbn"),
                                                 jsonObj.getString("detail"),
                                                 null,
-                                                (jsonObj.getInt("state") == 1)),
+                                                (jsonObj.getBoolean("state"))),
                                         false));
                     }
 
@@ -150,20 +156,26 @@ public class ManageLibraryActivity extends AppCompatActivity {
             }
         };
 
-        editTextLibraryName.setText("wangfujing");
+        editTextLibraryName.setText(shopName);
 
         HttpUtil httptd = new HttpUtil();
 
-        httptd.submitAsyncHttpClientGetManageShop(token, "wangfujing", handler);
+        httptd.submitAsyncHttpClientGetManageShop(token, shopName, handler);
 
     }
 
 
     private void add() {
         Toast.makeText(getApplicationContext(), "Add...", Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(this, BrowseLibraryActivity.class);
+        intent.putExtra("token", token);
+        intent.putExtra("shopname", shopName);
+        startActivity(intent);
     }
 
     private void delete() {
+
         Toast.makeText(getApplicationContext(), "Delete...", Toast.LENGTH_SHORT).show();
 
         final Handler handler = new Handler() {
@@ -171,15 +183,39 @@ public class ManageLibraryActivity extends AppCompatActivity {
             @Override
             public void handleMessage(Message msg) {
 
-                if(--removeBookCount == 0) {
-                    getLibraryBooks(); // refresh listview
+                String jsonText = msg.getData().getString("responseBody");
+
+                Log.v("responseBody", jsonText);
+
+                try {
+
+                    JSONObject jsonObj = new JSONObject(jsonText);
+
+                    String result = jsonObj.getString("result");
+
+                    if(result != "Success")
+                    {
+                        Toast.makeText(getApplicationContext(), "delete book failed! result=" + result, Toast.LENGTH_SHORT).show();
+                    }
+
+                    if(--removeBookCount == 0) {
+
+                        getLibraryBooks(); // refresh listview
+
+                    }
+
+                } catch (JSONException e) {
+
+                    Toast.makeText(getApplicationContext(), "unknown response remote service!", Toast.LENGTH_SHORT).show();
+
+                    e.printStackTrace();
                 }
+
+
             }
         };
 
         HttpUtil httptd = new HttpUtil();
-
-        // get shop name from gloabl data
 
         removeBookCount = 0;
 
@@ -187,7 +223,9 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
             if(selectedBookInfo.isSelected()) {
 
-                // httptd.submitAsyncHttpClientPostRemoveBook(token, "wangfujing", selectedBookInfo.getBookInfo().getName(), handler);
+                Log.v("delete book request - ", selectedBookInfo.getBookInfo().getName());
+
+                httptd.submitAsyncHttpClientPostRemoveBook(token, shopName, selectedBookInfo.getBookInfo().getName(), handler);
 
                 ++removeBookCount;
             }
@@ -198,8 +236,8 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
         Toast.makeText(getApplicationContext(), "Save...", Toast.LENGTH_SHORT).show();
 
-        String libraryName = editTextLibraryName.getText().toString();
-        if(libraryName.length() > 0) {
+        newShopName = editTextLibraryName.getText().toString();
+        if(newShopName.length() > 0) {
 
             final Handler handler = new Handler() {
 
@@ -214,8 +252,23 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
                         JSONObject jsonObj = new JSONObject(jsonText);
 
-                        //  store new shop name into global data if succeed
-                        // or Toast error message
+                        String result = jsonObj.getString("result");
+
+                        if(result.equals("success"))
+                        {
+                            //  store new shop name into global data
+
+                            shopName = newShopName;
+
+                            editTextLibraryName.setText(newShopName);
+
+                            Log.v("change shop name response ", "new shop name is " + shopName);
+
+                        }
+                        else
+                        {
+                            Toast.makeText(getApplicationContext(), "modify shop name failed! result=" + result, Toast.LENGTH_SHORT).show();
+                        }
 
                     } catch (JSONException e) {
 
@@ -228,9 +281,9 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
             HttpUtil httptd = new HttpUtil();
 
-            // get shop name from application global data
+            Log.v("change shop name request ", "from " + shopName + " to " + newShopName);
 
-            // httptd.submitAsyncHttpClientPostModifyShopName(token, "wangfujing", libraryName, handler);
+            httptd.submitAsyncHttpClientPostModifyShopName(token, shopName, newShopName, handler);
 
         }
         else {

@@ -1,5 +1,7 @@
 package com.compass.loco.homelibrary;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -30,6 +32,9 @@ public class BrowseLibraryActivity extends AppCompatActivity {
     // bookinfo arraylist
     private ArrayList<BookInfo> arrayListBookInfo;
 
+    private String token;
+    private String shopName;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +43,6 @@ public class BrowseLibraryActivity extends AppCompatActivity {
         init();
 
         getLibraryBooks();
-
     }
 
     private void init() {
@@ -54,14 +58,22 @@ public class BrowseLibraryActivity extends AppCompatActivity {
 
                 // show a toast with the TextView test when clicked
                 Toast.makeText(getApplicationContext(),
-                        arrayListBookInfo.get(position).getName() + "(line " + Integer.toString(position) + ") clicked!" ,
+                        arrayListBookInfo.get(position).getName() + "(line " + Integer.toString(position) + ") clicked!",
                         Toast.LENGTH_SHORT).show();
 
             }
         });
+
+
+        Intent intent = getIntent();
+
+        token = intent.getStringExtra("token");
+        shopName = intent.getStringExtra("shopname");
+
+        Log.v("pass through intent", "token=" + token + " shopname=" + shopName);
+
     }
 
-    String token = "zhong";
     private void getLibraryBooks() {
 
         final BrowseLibraryActivity activity = this;
@@ -94,10 +106,10 @@ public class BrowseLibraryActivity extends AppCompatActivity {
                                         jsonObj.getString("name"),
                                         jsonObj.getString("author"),
                                         jsonObj.getString("publisher"),
-                                        jsonObj.getString("isdn"),
+                                        jsonObj.getString("isbn"),
                                         jsonObj.getString("detail"),
                                         null,
-                                        (jsonObj.getInt("state") == 1)));
+                                        (jsonObj.getBoolean("state"))));
                     }
 
                     ListViewAdapterBrowseBook myListViewAdapterBrowseBook = new ListViewAdapterBrowseBook(activity, arrayListBookInfo);
@@ -112,11 +124,11 @@ public class BrowseLibraryActivity extends AppCompatActivity {
             }
         };
 
-        textViewLibraryName.setText("wangfujing");
+        textViewLibraryName.setText(shopName);
 
         HttpUtil httptd = new HttpUtil();
 
-        httptd.submitAsyncHttpClientGetManageShop(token, "wangfujing", handler);
+        httptd.submitAsyncHttpClientGetManageShop(token, shopName, handler);
 
     }
 
