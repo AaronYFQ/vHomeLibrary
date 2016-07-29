@@ -9,9 +9,11 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TabHost;
+import android.widget.TextView;
 
 public class LoginActivity extends Activity {
 
@@ -34,22 +36,26 @@ public class LoginActivity extends Activity {
         tabHost.setup();
         //LayoutInflater.from(this).inflate(R.layout.activity_main,
         //   tabHost.getTabContentView(), true);
-        tabHost.addTab(tabHost.newTabSpec("取消").setIndicator("取消")
-                .setContent(R.id.cancel_form));
+        //TextView loginTab = (TextView) LayoutInflater.from(this).inflate(R.layout.login_tab_bg, null);
+        //loginTab.setText("登陆");
         tabHost.addTab(tabHost.newTabSpec("登陆").setIndicator("登陆")
                 .setContent(R.id.login_form));
+        TextView x = (TextView) tabHost.getTabWidget().getChildAt(0).findViewById(android.R.id.title);
+        x.setTextSize(17);
+
+        //TextView registerTab = (TextView) LayoutInflater.from(this).inflate(R.layout.login_tab_bg, null);
+        //registerTab.setText("注册");
         tabHost.addTab(tabHost.newTabSpec("注册").setIndicator("注册")
                 .setContent(R.id.register_form));
+        x = (TextView) tabHost.getTabWidget().getChildAt(1).findViewById(android.R.id.title);
+        x.setTextSize(17);
+
         tabHost.setCurrentTabByTag("登陆");
 
         //标签切换事件处理，setOnTabChangedListener
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
             public void onTabChanged(String tabId) {
-                if (tabId.equals("取消")) {   //第一个
-                    tabHost.setCurrentTabByTag("取消");
-                    backToMainActivity(false,"Guest");
-                }
                 if (tabId.equals("登陆")) {   //第二个标签
                     tabHost.setCurrentTabByTag("登陆");
                 }
@@ -58,6 +64,10 @@ public class LoginActivity extends Activity {
                 }
             }
         });
+    }
+
+    public void onClickCancel(View view) {
+        backToMainActivity(false,"Guest");
     }
 
     public void onClickLogin(View view) {
