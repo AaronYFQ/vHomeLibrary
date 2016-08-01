@@ -13,6 +13,7 @@ import android.util.Log;
  */
 public class DBAdapter {
     static final String KEY_ID = "_id";
+    static final String KEY_NEW = "new";
     static final String KEY_BOOK_NAME = "book";
     static final String KEY_SHOP_NAME = "shop";
     static final String KEY_ACTION = "action";
@@ -27,6 +28,7 @@ public class DBAdapter {
 
     static final String DATABASE_CREATE =
             "create table Messages (_id integer primary key autoincrement," +
+                    "new integer," +
                     "book text," +
                     "shop text, " +
                     "owner text," +
@@ -66,7 +68,7 @@ public class DBAdapter {
         {
             Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
                     + newVersion + ", which will destroy all old data");
-            db.execSQL("DROP TABLE IF EXISTS messages");
+            db.execSQL("DROP TABLE IF EXISTS Messages");
             onCreate(db);
         }
     }
@@ -88,6 +90,7 @@ public class DBAdapter {
     public long insertMessage(MessageInfo message)
     {
         ContentValues initialValues = new ContentValues();
+        initialValues.put(KEY_NEW,1);
         initialValues.put(KEY_BOOK_NAME, message.getBook());
         initialValues.put(KEY_SHOP_NAME, message.getShop());
         initialValues.put(KEY_OWNER, message.getOwner());
@@ -103,6 +106,10 @@ public class DBAdapter {
         return db.delete(DATABASE_TABLE, KEY_ID + "=" + id, null) > 0;
     }
 
+    public void deleteTable()
+    {
+        db.execSQL("DROP Messages IF EXISTS Messages");
+    }
     //---deletes a particular message---
 /*    public boolean deleteMessage(String str)
     {
@@ -111,7 +118,7 @@ public class DBAdapter {
 
     public boolean cleanMessage()
     {
-      return db.delete(DATABASE_TABLE, null, null) > 0;
+        return db.delete(DATABASE_TABLE, null, null) > 0;
     }
 
     //---retrieves all the messages---
@@ -134,6 +141,15 @@ public class DBAdapter {
         }
 
         return mCursor;
+    }
+
+    public boolean resetState(long id)
+    {
+        ContentValues args = new ContentValues();
+        args.put(KEY_NEW, 0);
+
+        Boolean result = db.update(DATABASE_TABLE, args, KEY_ID + "=" + id, null) > 0;
+        return result;
     }
 
     //---updates a message---

@@ -2,6 +2,7 @@ package com.compass.loco.homelibrary;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,8 +38,17 @@ public class MessageCursorAdapter extends CursorAdapter {
         String borrower = cursor.getString(cursor.getColumnIndexOrThrow("borrower"));
         String action = cursor.getString(cursor.getColumnIndexOrThrow("action"));
         String time = cursor.getString(cursor.getColumnIndexOrThrow("time"));
+        int index = cursor.getColumnIndex("new");
+        int i = cursor.getInt(index);
+        Boolean newMsg = i > 0;
         // Populate fields with extracted properties
         tvBook.setText(book);
+        if(newMsg) {
+            tvBook.setTextColor(Color.BLUE);
+        }
+        else {
+            tvBook.setTextColor(Color.BLACK);
+        }
         tvShop.setText(shop);
         tvOwner.setText(owner);
         tvBorrower.setText(borrower);
