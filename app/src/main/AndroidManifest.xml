@@ -44,7 +44,16 @@
             android:name=".MessageIntentService"
             android:exported="false" />
 
-        <activity android:name=".ScanBookActivity"></activity>
+        <activity android:name=".ScanBookActivity" />
+        <activity
+            android:name=".SaveBookActivity"
+            android:label="保存图书"
+            android:parentActivityName=".ScanBookActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.compass.loco.homelibrary.ScanBookActivity" />
+        </activity>
     </application>
 
 </manifest>

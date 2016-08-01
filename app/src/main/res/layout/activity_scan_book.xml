@@ -14,28 +14,4 @@
         android:background="@color/colorBackgroundGreen"
         android:onClick="onScanBtnClick"
         android:text="扫描图书条形码" />
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@drawable/shadow_border"
-        android:id="@+id/book_image_view"/>
-    <TextView
-        android:id="@+id/book_title"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"/>
-    <TextView
-        android:id="@+id/book_author"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"/>
-    <TextView
-        android:id="@+id/book_publisher"
-        android:layout_width="match_parent"
-        android:layout_height="30dp" />
-    <TextView
-        android:id="@+id/douban_link"
-        android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:drawableLeft="@drawable/douban"
-        android:autoLink="web"
-        android:linksClickable="true"/>
 </LinearLayout>
