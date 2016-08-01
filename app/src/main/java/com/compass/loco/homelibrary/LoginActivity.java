@@ -196,9 +196,9 @@ public class LoginActivity extends Activity {
             SharedPreferences.Editor sharedata = sharedPref.edit();
             sharedata.putString("username", username);
             sharedata.putString("token", mtoken);
+            intent.putExtra(MainActivity.INTENT_KEY_USER_NAME, username);
             sharedata.commit();
         }
-        intent.putExtra(MainActivity.INTENT_KEY_USER_NAME, username);
         intent.putExtra(MainActivity.INTENT_KEY_LOGIN_RESULT, isSuccess);
         startActivity(intent);
     }
