@@ -60,26 +60,22 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
     public void onMyLibraryBtnClick(View view) {
-        SharedPreferences sharedPref = this.getContext().getSharedPreferences(GlobalParams.PREF_NAME,Context.MODE_PRIVATE);
 
+        SharedPreferences sharedPref = this.getContext().getSharedPreferences(GlobalParams.PREF_NAME,Context.MODE_PRIVATE);
         String username = sharedPref.getString("username", null);
         String shopname = sharedPref.getString("shopname", null);
-
-        //TO BE DELETED
-        username = "zhong";
-        shopname = "";
 
         if (null != username && !username.equals(""))
         {
             //if shop exist, show the shop manage activity, otherwise show the create library actvity
-            if(null != shopname && shopname.equals(""))
+            if(null != shopname && !shopname.equals(""))
             {
-                Intent intent = new Intent(this.getContext(), CreateLibraryActivity.class);
+                Intent intent = new Intent(this.getContext(), ManageLibraryActivity.class);
                 startActivity(intent);
             }
             else
             {
-                Intent intent = new Intent(this.getContext(), ManageLibraryActivity.class);
+                Intent intent = new Intent(this.getContext(), CreateLibActivity.class);
                 startActivity(intent);
             }
 

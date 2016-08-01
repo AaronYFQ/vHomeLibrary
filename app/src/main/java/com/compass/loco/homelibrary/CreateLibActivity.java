@@ -1,15 +1,14 @@
 package com.compass.loco.homelibrary;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -18,7 +17,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public class CreateLibraryActivity extends AppCompatActivity {
+public class CreateLibActivity extends AppCompatActivity {
     private Spinner citySpinner;
     private Spinner districtSpinner;
     private AutoCompleteTextView villageTextView;
@@ -38,9 +37,10 @@ public class CreateLibraryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-     //   requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-        setContentView(R.layout.activity_library_create);
-      //  getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_titlebar);
+        setContentView(R.layout.activity_create_lib);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
 
         Intent intent = getIntent();
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
@@ -124,8 +124,8 @@ public class CreateLibraryActivity extends AppCompatActivity {
 
         adEditText = (EditText) findViewById(R.id.ad_edit_text);
         libraryEditText = (EditText) findViewById(R.id.library_name);
-    }
 
+    }
     public void createLibrary(View view)
     {
         //get library name @String
@@ -143,8 +143,8 @@ public class CreateLibraryActivity extends AppCompatActivity {
         //TODO
 
         //SharedPreferences.Editor sharedata = getSharedPreferences("data", 0).edit();
-       // sharedata.putString("libraryName",libraryName);
-       // sharedata.commit();
+        // sharedata.putString("libraryName",libraryName);
+        // sharedata.commit();
 
         //start library management library.
         Intent manageLibraryIntent = new Intent(this,ManageLibraryActivity.class);
@@ -156,5 +156,4 @@ public class CreateLibraryActivity extends AppCompatActivity {
         Intent mainIntent = new Intent(this,MainActivity.class);
         startActivity(mainIntent);
     }
-
 }
