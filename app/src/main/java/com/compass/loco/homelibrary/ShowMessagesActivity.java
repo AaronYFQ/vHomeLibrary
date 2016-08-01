@@ -1,12 +1,19 @@
 package com.compass.loco.homelibrary;
 
 import android.database.Cursor;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -20,58 +27,100 @@ public class ShowMessagesActivity extends AppCompatActivity implements SwipeRefr
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeViewMessages);
         swipeRefreshLayout.setOnRefreshListener(this);
 
-        messageArrayList = new ArrayList<String>();
         messageList=(ListView)findViewById(R.id.listViewMessages);
-        arrayAdapter =
-                new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, messageArrayList);
+        cursorAdapter = new MessageCursorAdapter(this, null, 0);
+        messageList.setAdapter(cursorAdapter);
 
-        messageList.setAdapter(arrayAdapter);
+        db.open();
+        db.cleanMessage();
+        db.close();
+
+         MessageIntentService.startActionPoll(this, "Test");
     }
 
     DBAdapter db = new DBAdapter(this);
-    ArrayList<String> messageArrayList;
-    ArrayAdapter<String> arrayAdapter;
+    MessageCursorAdapter cursorAdapter;
     ListView messageList;
     SwipeRefreshLayout swipeRefreshLayout;
 
-    public void listMessages()
+    public void getNewMessages()
     {
-        ArrayList<String> messageArrayList = new ArrayList<String>();
+        final Handler handler = new Handler() {
+
+            @Override
+            public void handleMessage(Message msg) {
+                String json = msg.getData().getString("responseBody");
+                Log.v("handleMessage", json);
+                try {
+                    // handler item from Json
+                    JSONObject jsonObj = new JSONObject(json);
+                    JSONArray jsonArray = jsonObj.getJSONArray("messages");
+
+                    Log.v("number of Messages: ", new Integer(jsonArray.length()).toString());
+
+                    if(jsonArray.length() == 0)
+                        return;
+
+                    db.open();
+
+                    for (int i = 0; i < jsonArray.length(); ++i) {
+                        jsonObj = jsonArray.getJSONObject(i);
+
+                        Log.v("Message: ", jsonObj.toString());
+
+                        MessageInfo msgInfo = new MessageInfo(
+                                jsonObj.getString("book"),
+                                jsonObj.getString("shop"),
+                                jsonObj.getString("owner"),
+                                jsonObj.getString("borrower"),
+                                jsonObj.getString("action"),
+                                jsonObj.getString("time"));
+
+                        db.insertMessage(msgInfo);
+                    }
+
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                finally {
+                    db.close();
+                }
+            }
+        };
+
+        HttpUtil httptd = new HttpUtil();
+        httptd.submitAsyncHttpClientGetMessage("zhong", handler);
+    }
+
+    private int count = 0;
+    public void DisplayMessages()
+    {
         db.open();
-        db.cleanMessage();
 
         try {
-            db.insertMessage("new message1.");
-            db.insertMessage("new message2.");
-            db.insertMessage("new message3.");
-            db.insertMessage("new message4.");
-            db.insertMessage("new message5.");
+            count++;
+            //MessageInfo msgInfo = new MessageInfo("Book" + count, "Shop", "Owner", "Borrower", "Action", "Time");
+            //db.insertMessage(msgInfo);
 
             Cursor cursor = db.getAllMessages();
-
-            if (cursor.moveToLast()) {
-                do {
-                    messageArrayList.add(cursor.getString(cursor.getColumnIndex(DBAdapter.KEY_CONTENT)));
-                } while (cursor.moveToPrevious());
-            }
+            cursorAdapter.swapCursor(cursor);
         }
         finally {
             db.close();
         }
-
-        //myThread.start();
-        MessageIntentService.startActionPoll(this, "Test");
     }
 
     @Override
     public void onRefresh() {
         swipeRefreshLayout.setRefreshing(true);
-        arrayAdapter.insert("number", 0);
-        arrayAdapter.notifyDataSetChanged();
+        getNewMessages();
+        DisplayMessages();
         swipeRefreshLayout.setRefreshing(false);
     }
 
-    private class CheckingThread extends Thread
+
+/*    private class CheckingThread extends Thread
     {
         @Override
         public void run()
@@ -99,8 +148,7 @@ public class ShowMessagesActivity extends AppCompatActivity implements SwipeRefr
                 {
                     db.close();
                 }
-
             }
         }
-    }
+    }*/
 }

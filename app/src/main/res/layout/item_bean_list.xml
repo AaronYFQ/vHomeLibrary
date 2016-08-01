@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal">
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:orientation="vertical" >
+
+       <!-- <ImageView
+            android:src="@drawable/icon"
+            android:id="@+id/item_search_iv_book_icon"
+            android:layout_marginLeft="20dp"
+            android:layout_centerVertical="true"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+
+            android:layout_toRightOf="@id/item_search_iv_book_icon"
+           />-->
+
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/textViewBookName"
+                android:text="书名："
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:textSize="24sp"
+                android:textColor="@drawable/search_result_listview_style"
+                android:textColorHighlight="@color/orchid"
+                android:textStyle="bold">
+            </TextView>
+
+            <TextView
+                android:id="@+id/textViewBookState"
+                android:text="未借出"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/book_state_edittext_shape"
+                android:textColor="@color/myred"
+                android:textSize="12sp">
+            </TextView>
+
+        </RelativeLayout>
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+        <TextView
+            android:id="@+id/textViewBookAuthor"
+            android:text="作者："
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:textSize="12sp"
+            android:maxEms="10">
+        </TextView>
+
+        <TextView
+            android:id="@+id/textViewBookPublisher"
+            android:text="出版社："
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:textSize="12sp"
+            android:maxEms="10"
+            android:textColor="@color/accent_material_dark">
+        </TextView>
+
+    </RelativeLayout>
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+        <TextView
+            android:id="@+id/textViewBookShop"
+            android:text="书店："
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:textSize="12sp"
+            android:maxEms="10">
+        </TextView>
+
+        <TextView
+            android:id="@+id/textViewBookAddr"
+            android:text="小区："
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:textSize="12sp"
+            android:singleLine="true"
+            android:maxEms="10" >
+        </TextView>
+    </RelativeLayout>
+
+    </LinearLayout>
+
+    <!-- <ImageView
+         android:src="@drawable/icon"
+         android:id="@+id/item_search_iv_icon"
+         android:layout_marginLeft="20dp"
+         android:layout_centerVertical="true"
+         android:layout_width="60dp"
+         android:layout_height="60dp"/>&ndash;&gt;
+    <TextView
+        android:id="@+id/item_search_book_name"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/item_search_iv_icon"
+        android:text="bookName"
+        android:textSize="18sp"
+        android:textColor="#000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/item_search_shop_name"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="50dp"
+        android:layout_toRightOf="@id/item_search_iv_icon"
+        android:layout_below="@id/item_search_book_name"
+        android:text="shopName"
+        android:textSize="16sp"
+        android:textColor="#777"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/item_search_book_addr"
+        android:layout_marginRight="20dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:text="bookAddr"
+        android:singleLine="true"
+        android:textSize="14sp"
+        android:textColor="#777"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+-->
+
+</RelativeLayout>

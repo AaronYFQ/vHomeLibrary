@@ -1,6 +1,6 @@
 package com.compass.loco.homelibrary;
 
-import android.net.Uri;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -35,6 +35,12 @@ public class ManageLibraryActivity extends AppCompatActivity {
     // selected or non-selected bookinfo arraylist
     private ArrayList<SelectedBookInfo> arrayListSelectedBookInfo;
 
+    private int removeBookCount;
+
+    private String token;
+    private String shopName;
+    private String newShopName;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +48,7 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
         init();
 
-        threadGetLibraryBooks();
+        getLibraryBooks();
 
     }
 
@@ -52,7 +58,7 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
         buttonAdd = (ImageButton) findViewById(R.id.buttonAdd);
         buttonDelete = (ImageButton) findViewById(R.id.buttonDelete);
-        buttonSave = (ImageButton) findViewById(R.id.buttonApply);
+        buttonSave = (ImageButton) findViewById(R.id.buttonSave);
 
         listViewBooks = (ListView) findViewById(R.id.listViewBooks);
         listViewBooks.setTextFilterEnabled(true);
@@ -74,38 +80,30 @@ public class ManageLibraryActivity extends AppCompatActivity {
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                apply();
+                save();
             }
         });
 
         listViewBooks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
+
                 // show a toast with the TextView test when clicked
-                Toast.makeText(getApplicationContext(), "line " + Integer.toString(position + 1) + " clicked!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),
+                        arrayListSelectedBookInfo.get(position).getBookInfo().getName() + "(line " + Integer.toString(position) + ") clicked!",
+                        Toast.LENGTH_SHORT).show();
             }
         });
 
-    }
-
-    private void threadGetLibraryBooks() {
-
-        getLibraryBooks();
-
-//        new Thread(new Runnable() {
-//
-//            @Override
-//            public void run() {
-//
-//                getLibraryBooks();
-//
-//            }
-//
-//        }).start();
+        // get input parameter from application global data
+        // 1. token
+        // 2. shop name
+        token = "zhong";
+        shopName = "wangfujing";
 
     }
 
-    String token = "zhong";
+
     private void getLibraryBooks() {
 
         final ManageLibraryActivity activity = this;
@@ -139,72 +137,30 @@ public class ManageLibraryActivity extends AppCompatActivity {
                                                 jsonObj.getString("name"),
                                                 jsonObj.getString("author"),
                                                 jsonObj.getString("publisher"),
-                                                jsonObj.getString("isdn"),
+                                                jsonObj.getString("isbn"),
                                                 jsonObj.getString("detail"),
                                                 null,
-                                                (jsonObj.getInt("state") == 1)),
+                                                (jsonObj.getBoolean("state"))),
                                         false));
                     }
 
-                    ListViewAdapterBook myListViewAdapterBook = new ListViewAdapterBook(activity, arrayListSelectedBookInfo);
-                    listViewBooks.setAdapter(myListViewAdapterBook);
+                    ListViewAdapterManageBook myListViewAdapterManageBook = new ListViewAdapterManageBook(activity, arrayListSelectedBookInfo);
+                    listViewBooks.setAdapter(myListViewAdapterManageBook);
 
                 } catch (JSONException e) {
 
-                    Toast.makeText(getApplicationContext(), "remote service down!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "unknown response from remote service!", Toast.LENGTH_SHORT).show();
 
                     e.printStackTrace();
                 }
             }
         };
 
-        editTextLibraryName.setText("wangfujing");
+        editTextLibraryName.setText(shopName);
 
         HttpUtil httptd = new HttpUtil();
 
-        httptd.submitAsyncHttpClientGetManageShop(token, "wangfujing", handler);
-
-//        try {
-//            /*
-//            URL uri =  new URL("http://ec2-54-67-32-254.us-west-1.compute.amazonaws.com/1");
-//            URLConnection ucon = uri.openConnection();
-//
-//            InputStream is = ucon.getInputStream();
-//
-//            BufferedInputStream bis = new BufferedInputStream(is);
-//
-//            StringBuffer sb = new StringBuffer();
-//
-//            byte[] bytes = new byte[200];
-//            int count;
-//            while ((count = bis.read(bytes)) != -1) {
-//                sb.append(new String(bytes, 0, count));
-//            }
-//
-//            myTextViewLibraryName.setText(sb.toString());
-//            */
-//
-//            editTextLibraryName.setText("exiaoqu的水果书店");
-//
-//            arrayListSelectedBookInfo = new ArrayList<SelectedBookInfo>();
-//
-//            arrayListSelectedBookInfo.add(new SelectedBookInfo(new BookInfo("Apple Book", "AppleAuthor", "ApplePublisher", "AppleIsbn", "Apple Detail", null, true), false));
-//            arrayListSelectedBookInfo.add(new SelectedBookInfo(new BookInfo("Banana Book", "BananaAuthor", "BananaPublisher", "BananaIsbn", "Banana Detail", null, true), false));
-//
-//            arrayListSelectedBookInfo.add(new SelectedBookInfo(new BookInfo("Blackberry Book", "BlackberryAuthor", "BlackberryPublisher", "BlackberryIsbn", "Blackberry Detail", null, true), false));
-//            arrayListSelectedBookInfo.add(new SelectedBookInfo(new BookInfo("Peach Book", "PeachAuthor", "PeachPublisher", "PeachIsbn", "Peach Detail", null, true), false));
-//            arrayListSelectedBookInfo.add(new SelectedBookInfo(new BookInfo("Pear Book", "PearAuthor", "PearPublisher", "PearIsbn", "Pear Detail", null, false), false));
-//
-//            arrayListSelectedBookInfo.add(new SelectedBookInfo(new BookInfo("Grape Book", "GrapeAuthor", "GrapePublisher", "GrapeIsbn", "Grape Detail", null, false), false));
-//            arrayListSelectedBookInfo.add(new SelectedBookInfo(new BookInfo("Pineapple Book", "PineappleAuthor", "PineapplePublisher", "Pineapple", "Pineapple Detail", null, false), false));
-//            arrayListSelectedBookInfo.add(new SelectedBookInfo(new BookInfo("Mango Book", "MangoAuthor", "MangoPublisher", "MangoIsbn", "Mango Detail", null, false), false));
-//
-//            ListViewAdapterBook myListViewAdapterBook = new ListViewAdapterBook(this, arrayListSelectedBookInfo);
-//            listViewBooks.setAdapter(myListViewAdapterBook);
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        httptd.submitAsyncHttpClientGetManageShop(token, shopName, handler);
 
     }
 
@@ -212,40 +168,129 @@ public class ManageLibraryActivity extends AppCompatActivity {
     private void add() {
         Toast.makeText(getApplicationContext(), "Add...", Toast.LENGTH_SHORT).show();
 
+        Intent intent = new Intent(this, BrowseLibraryActivity.class);
+        intent.putExtra("token", token);
+        intent.putExtra("shopname", shopName);
+        startActivity(intent);
+    }
+
+    private void delete() {
+
+        Toast.makeText(getApplicationContext(), "Delete...", Toast.LENGTH_SHORT).show();
+
         final Handler handler = new Handler() {
+
             @Override
             public void handleMessage(Message msg) {
 
-                String json = msg.getData().getString("responseBody");
-                Log.v("handleMessage", json);
+                String jsonText = msg.getData().getString("responseBody");
+
+                Log.v("responseBody", jsonText);
+
                 try {
-                    // handler item from Json
-                    JSONObject item = new JSONObject(json);
-                    String comment = item.getString("result");
-                    token = item.getString("token");
-                    Log.v("handleMessage", ": " + comment);
-                    Log.v("handleMessage", ": " + token);
+
+                    JSONObject jsonObj = new JSONObject(jsonText);
+
+                    String result = jsonObj.getString("result");
+
+                    if(result != "Success")
+                    {
+                        Toast.makeText(getApplicationContext(), "delete book failed! result=" + result, Toast.LENGTH_SHORT).show();
+                    }
+
+                    if(--removeBookCount == 0) {
+
+                        getLibraryBooks(); // refresh listview
+
+                    }
+
                 } catch (JSONException e) {
-                    // TODO Auto-generated catch block
+
+                    Toast.makeText(getApplicationContext(), "unknown response remote service!", Toast.LENGTH_SHORT).show();
+
                     e.printStackTrace();
                 }
+
 
             }
         };
 
         HttpUtil httptd = new HttpUtil();
-        // httptd.submitAsyncHttpClientPostRegisterUser("yang", "456", handler);
-        // httptd.submitAsyncHttpClientPostLogin("yang", "456", handler);
-        // httptd.submitAsyncHttpClientPostCreateShop(token,"xinhua","BJ","Welcome", handler);
-        // httptd.submitAsyncHttpClientPostAddBook(token, "xinhua", "Book1l", "luxun", "China", "Good book", handler);
-        // httptd.submitAsyncHttpClientGetManageShop(token, "xinhua", handler);
+
+        removeBookCount = 0;
+
+        for(SelectedBookInfo selectedBookInfo : arrayListSelectedBookInfo) {
+
+            if(selectedBookInfo.isSelected()) {
+
+                Log.v("delete book request - ", selectedBookInfo.getBookInfo().getName());
+
+                httptd.submitAsyncHttpClientPostRemoveBook(token, shopName, selectedBookInfo.getBookInfo().getName(), handler);
+
+                ++removeBookCount;
+            }
+        }
     }
 
-    private void delete() {
-        Toast.makeText(getApplicationContext(), "Delete...", Toast.LENGTH_SHORT).show();
-    }
+    private void save() {
 
-    private void apply() {
-        Toast.makeText(getApplicationContext(), "Apply...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Save...", Toast.LENGTH_SHORT).show();
+
+        newShopName = editTextLibraryName.getText().toString();
+        if(newShopName.length() > 0) {
+
+            final Handler handler = new Handler() {
+
+                @Override
+                public void handleMessage(Message msg) {
+
+                    String jsonText = msg.getData().getString("responseBody");
+
+                    Log.v("responseBody", jsonText);
+
+                    try {
+
+                        JSONObject jsonObj = new JSONObject(jsonText);
+
+                        String result = jsonObj.getString("result");
+
+                        if(result.equals("success"))
+                        {
+                            //  store new shop name into global data
+
+                            shopName = newShopName;
+
+                            editTextLibraryName.setText(newShopName);
+
+                            Log.v("change shop name response ", "new shop name is " + shopName);
+
+                        }
+                        else
+                        {
+                            Toast.makeText(getApplicationContext(), "modify shop name failed! result=" + result, Toast.LENGTH_SHORT).show();
+                        }
+
+                    } catch (JSONException e) {
+
+                        Toast.makeText(getApplicationContext(), "unknown response from remote service!", Toast.LENGTH_SHORT).show();
+
+                        e.printStackTrace();
+                    }
+                }
+            };
+
+            HttpUtil httptd = new HttpUtil();
+
+            Log.v("change shop name request ", "from " + shopName + " to " + newShopName);
+
+            httptd.submitAsyncHttpClientPostModifyShopName(token, shopName, newShopName, handler);
+
+        }
+        else {
+
+            Toast.makeText(getApplicationContext(), "Please input the name...", Toast.LENGTH_SHORT).show();
+
+        }
+
     }
 }

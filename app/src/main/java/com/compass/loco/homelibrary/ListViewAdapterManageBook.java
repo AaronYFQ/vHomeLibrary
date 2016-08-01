@@ -16,7 +16,7 @@ import java.util.ArrayList;
 /**
  * Created by EXIAOQU on 7/26/2016.
  */
-public class ListViewAdapterBook extends BaseAdapter {
+public class ListViewAdapterManageBook extends BaseAdapter {
 
     // Andorid objects
     private Activity activity;
@@ -32,7 +32,7 @@ public class ListViewAdapterBook extends BaseAdapter {
     // selected or non-selected bookinfo arraylist
     public ArrayList<SelectedBookInfo> arrayListSelectedBookInfo;
 
-    public ListViewAdapterBook(Activity activity, ArrayList<SelectedBookInfo> list) {
+    public ListViewAdapterManageBook(Activity activity, ArrayList<SelectedBookInfo> list) {
         super();
         this.activity = activity;
         this.arrayListSelectedBookInfo = list;
@@ -79,9 +79,12 @@ public class ListViewAdapterBook extends BaseAdapter {
         checkBoxBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 CheckBox cb = (CheckBox)v;
+
                 SelectedBookInfo selectedBookInfo = (SelectedBookInfo)cb.getTag();
-                selectedBookInfo.setSelected(cb.isSelected());
+
+                selectedBookInfo.setSelected(cb.isChecked());
 
                 Toast.makeText(activity.getApplicationContext(), selectedBookInfo.getBookInfo().getName() + " is " + cb.isChecked(), Toast.LENGTH_SHORT ).show();
             }
