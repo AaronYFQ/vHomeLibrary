@@ -60,12 +60,30 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
     public void onMyLibraryBtnClick(View view) {
-        SharedPreferences.Editor sharedata = this.getContext().getSharedPreferences("compass.loco.userinfo", Context.MODE_PRIVATE).edit();
-        sharedata.putString("username","loco_1");
-        sharedata.commit();
+        SharedPreferences sharedata = this.getContext().getSharedPreferences(GlobalParams.PREF_NAME,Context.MODE_PRIVATE);
+        String username = sharedata.getString("username", null);
+        String shopname = sharedata.getString("shopname", null);
 
-        Intent intent = new Intent(this.getContext(), CreateLibraryActivity.class);
-        startActivity(intent);
+        if (null != username && username.equals(""))
+        {
+            //if shop exist, show the shop manage activity, otherwise show the create library actvity
+            if(null != shopname && shopname.equals(""))
+            {
+                Intent intent = new Intent(this.getContext(), CreateLibraryActivity.class);
+                startActivity(intent);
+            }
+            else
+            {
+                Intent intent = new Intent(this.getContext(), ManageLibraryActivity.class);
+                startActivity(intent);
+            }
+
+        }
+        else
+        {
+            Intent intent = new Intent(this.getContext(), LoginActivity.class);
+            startActivity(intent);
+        }
     }
 
     @Override
