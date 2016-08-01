@@ -1,32 +1,39 @@
 package com.compass.loco.homelibrary;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class LoginActivity extends Activity {
 
     TabHost tabHost;
     // UI references.
-    private EditText mLoginUsernameView;
-    private EditText mLoginPasswordView;
-    private EditText mRegisterUsernameView;
-    private EditText mRegisterPasswordView;
-    private UserLoginTask mAuthTask = null;
-    private UserRegisterTask mRegisterTask = null;
+    private EditText mLoginRegUsernameView;
+    private EditText mLoginRegPasswordView;
     private View mProgressView;
-    private View mLoginRegisterView;
+    private View mLoginRegisterFormView;
+    String mtoken;
+    enum ActionType {LOGIN, REGISTER};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,36 +74,36 @@ public class LoginActivity extends Activity {
     }
 
     public void onClickCancel(View view) {
-        backToMainActivity(false,"Guest");
+        backToMainActivity(false, "Guest");
     }
 
     public void onClickLogin(View view) {
 
-        mLoginUsernameView = (EditText) findViewById(R.id.login_username);
-        mLoginPasswordView = (EditText) findViewById(R.id.login_password);
-        mLoginRegisterView = findViewById(R.id.login_form);
+        mLoginRegUsernameView = (EditText) findViewById(R.id.login_username);
+        mLoginRegPasswordView = (EditText) findViewById(R.id.login_password);
+        mLoginRegisterFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
         // Store values at the time of the login attempt.
-        String username = mLoginUsernameView.getText().toString();
-        String password = mLoginPasswordView.getText().toString();
+        String username = mLoginRegUsernameView.getText().toString();
+        String password = mLoginRegPasswordView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mLoginPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mLoginPasswordView;
+            mLoginRegPasswordView.setError(getString(R.string.error_invalid_password));
+            focusView = mLoginRegPasswordView;
             cancel = true;
         }
         // Check for a valid username.
         if (TextUtils.isEmpty(username)) {
-            mLoginUsernameView.setError(getString(R.string.error_field_required));
-            focusView = mLoginUsernameView;
+            mLoginRegUsernameView.setError(getString(R.string.error_field_required));
+            focusView = mLoginRegUsernameView;
             cancel = true;
         } else if (!isUsernameValid(username)) {
-            mLoginUsernameView.setError(getString(R.string.error_invalid_username));
-            focusView = mLoginUsernameView;
+            mLoginRegUsernameView.setError(getString(R.string.error_invalid_username));
+            focusView = mLoginRegUsernameView;
             cancel = true;
         }
         if (cancel) {
@@ -106,12 +113,10 @@ public class LoginActivity extends Activity {
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            showProgress(true);
-            mAuthTask = new UserLoginTask(username, password);
-            mAuthTask.execute((Void) null);
+            //showProgress(true);
+            connectServer(username, password, ActionType.LOGIN);
         }
     }
-
     private boolean isUsernameValid(String username) {
         //TODO: Replace this with your own logic
         return username.length() > 4;
@@ -119,87 +124,48 @@ public class LoginActivity extends Activity {
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return true;
     }
-
     /**
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+   /* private boolean UserLoginRegisterTask(String username, String password, ActionType type) {
 
-        private final String mUsername;
-        private final String mPassword;
-
-        UserLoginTask(String username, String password) {
-            mUsername = username;
-            mPassword = password;
+        connectServer(username, password, type);
+        //showProgress(false);
+        if (commentFromServer.equals("success")) {
+            boolean isSuccess = true;
+            backToMainActivity(isSuccess, username);
+            return true;
         }
+        return false;
+    }*/
 
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            try {
-                // Simulate network access.
-                Thread.sleep(300);
-                if (mUsername.equals("lanying") && mPassword.equals("123456")) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } catch (InterruptedException e) {
-                return false;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-            if (success) {
-                backToMainActivity(success,mUsername);
-                finish();
-            } else {
-                mLoginPasswordView.setError(getString(R.string.error_incorrect_password));
-                mLoginPasswordView.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            showProgress(false);
-            mAuthTask = null;
-            backToMainActivity(false,"Guest");
-        }
-    }
 
     public void onClickRegister(View view) {
 
-        mRegisterUsernameView = (EditText) findViewById(R.id.register_username);
-        mRegisterPasswordView = (EditText) findViewById(R.id.register_password);
-        mLoginRegisterView = findViewById(R.id.register_form);
+        mLoginRegUsernameView = (EditText) findViewById(R.id.register_username);
+        mLoginRegPasswordView = (EditText) findViewById(R.id.register_password);
+        mLoginRegisterFormView = findViewById(R.id.register_form);
         mProgressView = findViewById(R.id.register_progress);
         // Store values at the time of the login attempt.
-        String username = mRegisterUsernameView.getText().toString();
-        String password = mRegisterPasswordView.getText().toString();
+        String username = mLoginRegUsernameView.getText().toString();
+        String password = mLoginRegPasswordView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mRegisterUsernameView.setError(getString(R.string.error_invalid_password));
-            focusView = mRegisterPasswordView;
+            mLoginRegPasswordView.setError(getString(R.string.error_invalid_password));
+            focusView = mLoginRegPasswordView;
             cancel = true;
         }
         // Check for a valid username.
         if (TextUtils.isEmpty(username)) {
-            mRegisterUsernameView.setError(getString(R.string.error_field_required));
-            focusView = mRegisterUsernameView;
-            cancel = true;
-        } else if (!isUsernameValid(username)) {
-            mRegisterUsernameView.setError(getString(R.string.error_invalid_username));
-            focusView = mRegisterUsernameView;
+            mLoginRegUsernameView.setError(getString(R.string.error_field_required));
+            focusView = mLoginRegUsernameView;
             cancel = true;
         }
         if (cancel) {
@@ -207,11 +173,12 @@ public class LoginActivity extends Activity {
             // form field with an error.
             focusView.requestFocus();
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            showProgress(true);
-            mRegisterTask = new UserRegisterTask(username, password);
-            mRegisterTask.execute((Void) null);
+          // Show a progress spinner, and kick off a background task to
+          // perform the user login attempt.
+          // showProgress(true);
+           connectServer(username, password, ActionType.REGISTER);
+          //showProgress(false);
+          //mLoginRegPasswordView.requestFocus();
         }
     }
 
@@ -219,64 +186,19 @@ public class LoginActivity extends Activity {
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
-    public class UserRegisterTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mUsername;
-        private final String mPassword;
-
-        UserRegisterTask(String username, String password) {
-            mUsername = username;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            try {
-                // Simulate network access.
-                Thread.sleep(300);
-                if (mUsername.equals("lanying") && mPassword.equals("123456")) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } catch (InterruptedException e) {
-                return false;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mRegisterTask = null;
-            showProgress(false);
-            if (success) {
-                RegisterSuccess(success);
-                finish();
-            } else {
-                mRegisterPasswordView.setError(getString(R.string.error_invalid_password));
-                mRegisterPasswordView.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mRegisterTask = null;
-            showProgress(false);
-            backToMainActivity(false,"Guest");
-        }
-
-        //new function : handlle register success
-        protected void RegisterSuccess(boolean isSuccess) {
-            //store Username
-            backToMainActivity(isSuccess, mUsername);
-        }
-    }
-
     public void backToMainActivity(boolean isSuccess, String username) {
         //store Username
         //back to user profile pages
+        //showProgress(false);
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(MainActivity.INTENT_KEY_USER_NAME, username);
+        if (isSuccess) {
+            SharedPreferences sharedPref = getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
+            SharedPreferences.Editor sharedata = sharedPref.edit();
+            sharedata.putString("username", username);
+            sharedata.putString("token", mtoken);
+            intent.putExtra(MainActivity.INTENT_KEY_USER_NAME, username);
+            sharedata.commit();
+        }
         intent.putExtra(MainActivity.INTENT_KEY_LOGIN_RESULT, isSuccess);
         startActivity(intent);
     }
@@ -290,15 +212,15 @@ public class LoginActivity extends Activity {
         // for very easy animations. If available, use these APIs to fade-in
         // the progress spinner.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_longAnimTime);
+            int shortAnimTime = 2000;
             //mLoginRegisterView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginRegisterView.setVisibility(show ?  View.VISIBLE:View.GONE );
-            mLoginRegisterView.animate().setDuration(shortAnimTime).alpha(
+            mLoginRegisterFormView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mLoginRegisterFormView.animate().setDuration(shortAnimTime).alpha(
                     show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     // mLoginRegisterView.setVisibility(show ? View.GONE : View.VISIBLE);
-                    mLoginRegisterView.setVisibility(show ?  View.VISIBLE:View.GONE );
+                    mLoginRegisterFormView.setVisibility(show ? View.VISIBLE : View.GONE);
 
                 }
             });
@@ -316,7 +238,62 @@ public class LoginActivity extends Activity {
             // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
             // mLoginRegisterView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginRegisterView.setVisibility(show ?  View.VISIBLE:View.GONE );
+            mLoginRegisterFormView.setVisibility(show ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    private void connectServer(final String username, String password, final ActionType type) {
+        mtoken = "";
+        Log.v("Lanying", "Connect to server request");
+        final Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                String json = msg.getData().getString("responseBody");
+                Log.v("Login_Register", json);
+                Log.v("Login_Register", "username"+":" + username);
+                try {
+                    // showProgress(false)
+                    // handler item from Json
+                    Log.v("Login_Register", "username"+":" + username);
+                    JSONObject item = new JSONObject(json);
+                    String comment = item.getString("result");
+                    if (comment.equals("success")) {
+                        mtoken = item.getString("token");
+                        Log.v("Login_Register", "token" + ": " + mtoken);
+                        boolean isSuccess = true;
+                        backToMainActivity(isSuccess, username);
+                    }
+                    else
+                    {
+                        Log.v("Login_Register",":" + "login/register error");
+                        if(type == ActionType.REGISTER) {
+
+                            mLoginRegUsernameView.setError(getString(R.string.error_existed_username));
+                        }
+                        else
+                        {
+                            mLoginRegUsernameView.setError(getString(R.string.error_username_or_password));
+                        }
+                        mLoginRegUsernameView.requestFocus();
+
+                    }
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+
+                }
+            }
+        };
+        HttpUtil httptd = new HttpUtil();
+
+        if (type == ActionType.LOGIN) {
+            //login in action
+            httptd.submitAsyncHttpClientPostLogin(username, password, handler);
+            Log.v("Login_Register", "Login  request");
+        } else if (type == ActionType.REGISTER) {
+            //register in action
+            httptd.submitAsyncHttpClientPostRegisterUser(username, password, handler);
+            Log.v("Login_Register", "Register request");
         }
     }
 }

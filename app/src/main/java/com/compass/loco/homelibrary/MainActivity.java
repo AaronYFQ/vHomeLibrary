@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageButton;
 
+
 public class MainActivity extends AppCompatActivity {
 
     public final static String EXTRA_MESSAGE = "com.compass.loco.homelibrary.MainActivity.EXTRA_MESSAGE";
@@ -22,6 +23,11 @@ public class MainActivity extends AppCompatActivity {
     private final HomeFragment mHomeFragment = new HomeFragment();
     private final MessageFragment mMessageFragment = new MessageFragment();
     private final MeFragment mMeFragment = new MeFragment();
+
+    final  GlobalParams mGlobal = new GlobalParams();
+    /*public MainActivity() {
+        mGlobal.initSharedPreferences(getSharedPreferences("com.compass.loco.homelibrary.data", Context.MODE_PRIVATE));
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, CreateLibraryActivity.class);
 //        EditText editText = (EditText) findViewById(R.id.name1);
 
-        SharedPreferences sharedPref = getSharedPreferences("compass.loco.data", Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences("com.compass.loco.homelibrary.data", Context.MODE_PRIVATE);
         SharedPreferences.Editor sharedata = sharedPref.edit();
         sharedata.putString("item", "hello");
         sharedata.commit();
