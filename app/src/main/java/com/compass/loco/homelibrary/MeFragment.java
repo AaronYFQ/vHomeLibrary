@@ -33,9 +33,8 @@ public class MeFragment extends Fragment implements View.OnClickListener {
         mLoginBtn = (Button)view.findViewById(R.id.user_login_btn);
         if (getArguments() != null && getArguments().containsKey(MainActivity.INTENT_KEY_LOGIN_RESULT)) {
             mLoginBtn.setText(getArguments().getString(MainActivity.INTENT_KEY_USER_NAME));
-        } else {
-            mLoginBtn.setOnClickListener(this);
         }
+        mLoginBtn.setOnClickListener(this);
 
         mLoginOut = (LinearLayout)view.findViewById(R.id.user_login_out);
         mLoginOut.setOnClickListener(this);
@@ -43,6 +42,11 @@ public class MeFragment extends Fragment implements View.OnClickListener {
     }
 
     public void onUserLoginBtnClick(View view) {
+        SharedPreferences sharedPref = getContext().getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
+        String userName = sharedPref.getString("username", "");
+        if (!"".endsWith(userName)) {
+            return;
+        }
         Intent intent = new Intent(this.getContext(), LoginActivity.class);
         startActivity(intent);
     }
