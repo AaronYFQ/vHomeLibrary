@@ -74,7 +74,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             //if shop exist, show the shop manage activity, otherwise show the create library actvity
             if(null != shopname && shopname.equals(""))
             {
-                Intent intent = new Intent(this.getContext(), CreateLibraryActivity.class);
+                Intent intent = new Intent(this.getContext(), CreateLibActivity.class);
                 startActivity(intent);
             }
             else
