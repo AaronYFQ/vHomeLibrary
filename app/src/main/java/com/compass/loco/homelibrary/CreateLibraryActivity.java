@@ -10,20 +10,25 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 public class CreateLibraryActivity extends AppCompatActivity {
     private Spinner citySpinner;
     private Spinner districtSpinner;
-    private Spinner villageSpinner;
+    private AutoCompleteTextView villageTextView;
+
     private ArrayAdapter<CharSequence> districtAdapter;
     private ArrayAdapter<CharSequence> cityAdapter;
     private ArrayAdapter<CharSequence> villageAdapter;
+
     private String cityString = "";
     private String districtString = "";
     private String villageString = "";
+    private String library = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,13 +37,6 @@ public class CreateLibraryActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
-
-
-        SharedPreferences sharedata = getSharedPreferences("compass.loco.data", Context.MODE_PRIVATE);
-        String data = sharedata.getString("item", null);
-        Log.v("cola","data="+data);
-        EditText library = (EditText) findViewById(R.id.library_name);
-        library.setText(data);
 
         citySpinner = (Spinner) findViewById(R.id.citySpinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -98,33 +96,21 @@ public class CreateLibraryActivity extends AppCompatActivity {
             }
         });
 
-        villageSpinner = (Spinner) findViewById(R.id.village_spinner);
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        villageAdapter = ArrayAdapter.createFromResource(this,
-                R.array.village_array, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        villageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        villageSpinner.setAdapter(villageAdapter);
-        //handle the menu screen touch event
-        villageSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
-            public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                // TODO Auto-generated method stub
-                villageString = "" + villageAdapter.getItem(arg2);
-                arg0.setVisibility(View.VISIBLE);
-            }
-            public void onNothingSelected(AdapterView<?> arg0) {
-                // TODO Auto-generated method stub
-                villageString = "";
-                arg0.setVisibility(View.VISIBLE);
-            }
-        });
-        //handle the menu screen touch event
-        villageSpinner.setOnTouchListener(new Spinner.OnTouchListener(){
-            public boolean onTouch(View v, MotionEvent event) {
-                // TODO Auto-generated method stub
+        villageTextView = (AutoCompleteTextView) findViewById(R.id.village_text_view);
 
-                return false;
+        villageAdapter = ArrayAdapter.createFromResource(this,
+                R.array.village_array, android.R.layout.simple_dropdown_item_1line);
+
+        villageTextView.setAdapter(villageAdapter);
+
+        villageTextView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                ListView listview = (ListView) parent;
+                ArrayAdapter<String> adapter  =  (ArrayAdapter<String>) parent.getAdapter();
+                TextView textview = (TextView) view;
+                villageString = textview.getText().toString();
             }
         });
 
@@ -133,41 +119,22 @@ public class CreateLibraryActivity extends AppCompatActivity {
     public void createLibrary(View view)
     {
         //get library name @String
-     //   EditText library = (EditText) findViewById(R.id.library_name);
-     //   String libraryName = library.getText().toString();
-       // String libraryName = "aaaaaa";
-        Log.v("errorclick", "error");
-/*
-        //get city name @String
-        //EditText city = (EditText) findViewById(R.id.city);
-        //String cityName = city.getText().toString();
+        EditText library = (EditText) findViewById(R.id.library_name);
+        String libraryName = library.getText().toString();
 
-        //get city name @String
-        EditText community = (EditText) findViewById(R.id.community);
-        String communityName = community.getText().toString();
 
-        //get city name @String
-        EditText advertisement = (EditText) findViewById(R.id.advertisement);
-        String advertisementDesc = community.getText().toString();
-        */
         //call httpClient API to store the data to server
         //@libraryName, @cityString, @districtString, @community，@advertisement
         //TODO
-/*
+
         SharedPreferences.Editor sharedata = getSharedPreferences("data", 0).edit();
         sharedata.putString("libraryName",libraryName);
         sharedata.commit();
-*/
+
         //start library management library.
         Intent manageLibraryIntent = new Intent(this,ManageLibraryActivity.class);
         startActivity(manageLibraryIntent);
 
     }
 
-    public void cancelReturn(View view) {
-
-        //return to main activity.
-        Intent mainIntent = new Intent(this, MainActivity.class);
-        startActivity(mainIntent);
-    }
 }

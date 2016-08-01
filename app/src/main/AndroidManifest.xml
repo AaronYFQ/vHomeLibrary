@@ -22,6 +22,7 @@
         </activity>
         <activity android:name=".CreateLibraryActivity" />
         <activity android:name=".ManageLibraryActivity" />
+        <activity android:name=".BrowseLibraryActivity" />
         <activity android:name=".LoginActivity" />
         <activity
             android:name=".SelectCityActivity"

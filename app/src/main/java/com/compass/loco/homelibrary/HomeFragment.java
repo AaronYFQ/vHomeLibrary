@@ -2,6 +2,7 @@ package com.compass.loco.homelibrary;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private String mCityName = "北京";
     private Button mSelectCityBtn;
     private ImageButton mAddBookBtn;
+    private ImageButton mMylibraryBtn;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -41,6 +43,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         mAddBookBtn = (ImageButton) view.findViewById(R.id.add_book_btn);
         mAddBookBtn.setOnClickListener(this);
 
+        mMylibraryBtn = (ImageButton) view.findViewById(R.id.my_library_btn);
+        mMylibraryBtn.setOnClickListener(this);
+
         return view;
     }
 
@@ -54,6 +59,33 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         startActivity(intent);
     }
 
+    public void onMyLibraryBtnClick(View view) {
+        SharedPreferences sharedata = this.getContext().getSharedPreferences(GlobalParams.PREF_NAME,Context.MODE_PRIVATE);
+        String username = sharedata.getString("username", null);
+        String shopname = sharedata.getString("shopname", null);
+
+        if (null != username && username.equals(""))
+        {
+            //if shop exist, show the shop manage activity, otherwise show the create library actvity
+            if(null != shopname && shopname.equals(""))
+            {
+                Intent intent = new Intent(this.getContext(), CreateLibraryActivity.class);
+                startActivity(intent);
+            }
+            else
+            {
+                Intent intent = new Intent(this.getContext(), ManageLibraryActivity.class);
+                startActivity(intent);
+            }
+
+        }
+        else
+        {
+            Intent intent = new Intent(this.getContext(), LoginActivity.class);
+            startActivity(intent);
+        }
+    }
+
     @Override
     public void onClick(View view) {
         switch(view.getId()) {
@@ -62,6 +94,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.add_book_btn:
                 onAddBookBtnClick(view);
+                break;
+            case R.id.my_library_btn:
+                onMyLibraryBtnClick(view);
                 break;
             default:
                 // do nothing

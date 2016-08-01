@@ -111,7 +111,8 @@
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:background="@drawable/btn_1"
-                        android:id="@+id/btn_1" />
+                        android:id="@+id/my_library_btn"
+                        android:clickable="false" />
 
                     <TextView
                         android:layout_width="60dp"
