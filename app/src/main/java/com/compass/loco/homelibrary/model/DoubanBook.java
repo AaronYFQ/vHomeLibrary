@@ -1,9 +1,11 @@
 package com.compass.loco.homelibrary.model;
 
+import java.io.Serializable;
+
 /**
  * Created by ejanlng on 7/29/2016.
  */
-public class DoubanBook {
+public class DoubanBook implements Serializable {
     private String id;
     private String title;
     private String image;

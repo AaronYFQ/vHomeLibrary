@@ -75,25 +75,9 @@ public class ScanBookActivity extends AppCompatActivity {
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(DoubanBook result) {
-            TextView titleView = (TextView) ScanBookActivity.this.findViewById(R.id.book_title);
-            titleView.setText(result.getTitle());
-
-            TextView authorView = (TextView) ScanBookActivity.this.findViewById(R.id.book_author);
-            StringBuilder sb = new StringBuilder();
-            for (String a : result.getAuthor()) {
-                if (sb.length() > 0) {
-                    sb.append(",");
-                }
-                sb.append(a);
-            }
-            authorView.setText(sb.toString());
-
-            TextView publisherView = (TextView) ScanBookActivity.this.findViewById(R.id.book_publisher);
-            publisherView.setText(result.getPublisher());
-
-            TextView linkView = (TextView) ScanBookActivity.this.findViewById(R.id.douban_link);
-            linkView.setText(Html.fromHtml("<a href=\"" + result.getAlt() + "\">豆瓣链接</a>"));
-            linkView.setMovementMethod(LinkMovementMethod.getInstance());
+            Intent intent = new Intent(ScanBookActivity.this, SaveBookActivity.class);
+            intent.putExtra(SaveBookActivity.INTENT_KEY_DOUBAN_BOOK, result);
+            startActivity(intent);
         }
     }
 }

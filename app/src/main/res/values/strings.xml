@@ -60,6 +60,7 @@
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">Contacts permissions are needed for providing email completions.</string>
     <string name="hello_blank_fragment">hello world!</string>
-    <string name="error_existed_username">用户已存在!</string>
+    <string name="error_existed_username">用户已存�</string>
+    <string name="title_activity_save_book">SaveBookActivity</string>
    <string name="error_username_or_password">用户名或密码错误! </string>
 </resources>
