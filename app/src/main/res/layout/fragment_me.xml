@@ -2,7 +2,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="#DDDDDD"
         android:fillViewport="false">
         <LinearLayout
             android:layout_width="wrap_content"
@@ -98,8 +97,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/shadow_border">
+                android:orientation="vertical">
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -213,8 +211,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/shadow_border">
+                android:orientation="vertical">
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -249,8 +246,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/shadow_border">
+                android:orientation="vertical">
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -344,10 +340,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="10dp"/>
             <LinearLayout
+                android:id="@+id/user_login_out"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:background="@drawable/shadow_border">
+                android:background="@drawable/shadow_border"
+                android:onClick="onClickLoginout">
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -355,7 +353,6 @@
                     android:paddingRight="13dp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
-                    android:background="@drawable/shadow_border"
                     android:orientation="horizontal">
                     <ImageView
                         android:layout_width="20dp"
@@ -366,7 +363,7 @@
                         android:layout_height="wrap_content"
                         android:paddingLeft="30dp"
                         android:textSize="15sp"
-                        android:text="设置"/>
+                        android:text="退出"/>
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"

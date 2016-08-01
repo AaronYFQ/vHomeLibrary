@@ -1,9 +1,6 @@
 package com.compass.loco.homelibrary.adapter;
 
 import android.content.Context;
-import android.view.View;
-import android.app.Activity;
-
 
 import com.compass.loco.homelibrary.R;
 import com.compass.loco.homelibrary.model.Bean;

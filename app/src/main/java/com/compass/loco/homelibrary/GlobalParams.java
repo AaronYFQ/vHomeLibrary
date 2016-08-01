@@ -1,5 +1,6 @@
 package com.compass.loco.homelibrary;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 
 import java.util.Map;
