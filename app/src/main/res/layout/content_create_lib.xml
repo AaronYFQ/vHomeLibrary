@@ -125,7 +125,8 @@
                     android:lines="4"
                     android:linksClickable="true"
                     android:backgroundTint="@color/design_fab_shadow_mid_color"
-                    android:layout_weight="0.05" />
+                    android:layout_weight="0.05"
+                    android:visibility="visible" />
 
             </LinearLayout>
 
@@ -144,7 +145,8 @@
                 android:id="@+id/store_library"
                 android:layout_gravity="left|center_vertical"
                 android:onClick="createLibrary"
-                android:background="@color/colorBackgroundGreen"/>
+                android:background="@color/colorBackgroundGreen"
+                android:textColor="#ffffff" />
 
             <Button
                 style="?android:attr/buttonStyleSmall"
@@ -154,7 +156,8 @@
                 android:id="@+id/button"
                 android:layout_gravity="right|center_vertical"
                 android:onClick="cancelReturn"
-                android:background="@color/colorBackgroundGreen" />
+                android:background="@color/colorBackgroundGreen"
+                android:textColor="#ffffff" />
 
         </FrameLayout>
 

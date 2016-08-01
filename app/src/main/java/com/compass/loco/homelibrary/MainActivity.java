@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void sendMessage(View view) {
         // Do something in response to button
-        Intent intent = new Intent(this, CreateLibraryActivity.class);
+        Intent intent = new Intent(this, CreateLibActivity.class);
 //        EditText editText = (EditText) findViewById(R.id.name1);
 
         SharedPreferences sharedPref = getSharedPreferences("com.compass.loco.homelibrary.data", Context.MODE_PRIVATE);
