@@ -5,4 +5,13 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorBackgroundGreen">#39ac6a</color>
     <color name="colorBackgroundGray">#f6f6f6</color>
+    <color name="orchid">#DA70D6</color><!--淡紫色 -->
+    <color name="myred">#eb4f38</color>
+    <color name="darkgray">#cccc</color>
+    <color name="color_white">#ffffff</color>
+    <color name="btn_press_color">#5677fc</color>
+    <color name="btn_pressed_color">#3ca0ec</color>
+    <color name="turquoise">#40E0D0</color><!--青绿色 -->
+    <color name="lavender">#E6E6FA</color><!--淡紫色 -->
+    <color name="steelblue">#4682B4</color><!--钢兰色 -->
 </resources>
