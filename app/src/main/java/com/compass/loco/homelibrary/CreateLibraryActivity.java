@@ -3,11 +3,13 @@ package com.compass.loco.homelibrary;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -20,6 +22,8 @@ public class CreateLibraryActivity extends AppCompatActivity {
     private Spinner citySpinner;
     private Spinner districtSpinner;
     private AutoCompleteTextView villageTextView;
+    private EditText adEditText;
+    private EditText libraryEditText;
 
     private ArrayAdapter<CharSequence> districtAdapter;
     private ArrayAdapter<CharSequence> cityAdapter;
@@ -28,17 +32,20 @@ public class CreateLibraryActivity extends AppCompatActivity {
     private String cityString = "";
     private String districtString = "";
     private String villageString = "";
+    private String advertisement = "";
     private String library = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+       // requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.activity_library_create);
+       // getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_titlebar);
 
         Intent intent = getIntent();
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
 
-        citySpinner = (Spinner) findViewById(R.id.citySpinner);
+        citySpinner = (Spinner) findViewById(R.id.city_spinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
         cityAdapter = ArrayAdapter.createFromResource(this,
                 R.array.city_array, android.R.layout.simple_spinner_item);
@@ -66,7 +73,7 @@ public class CreateLibraryActivity extends AppCompatActivity {
             }
         });
 
-        districtSpinner = (Spinner) findViewById(R.id.districtSpinner);
+        districtSpinner = (Spinner) findViewById(R.id.district_spinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
         districtAdapter = ArrayAdapter.createFromResource(this,
                 R.array.district_array, android.R.layout.simple_spinner_item);
@@ -111,25 +118,33 @@ public class CreateLibraryActivity extends AppCompatActivity {
                 ArrayAdapter<String> adapter  =  (ArrayAdapter<String>) parent.getAdapter();
                 TextView textview = (TextView) view;
                 villageString = textview.getText().toString();
+
             }
         });
 
+        adEditText = (EditText) findViewById(R.id.ad_edit_text);
+        libraryEditText = (EditText) findViewById(R.id.library_name);
     }
 
     public void createLibrary(View view)
     {
         //get library name @String
-        EditText library = (EditText) findViewById(R.id.library_name);
-        String libraryName = library.getText().toString();
+        advertisement = adEditText.getText().toString();
+        library = libraryEditText.getText().toString();
 
+        Log.v("library name", library);
+        Log.v("city", cityString);
+        Log.v("district", districtString);
+        Log.v("village", villageString);
+        Log.v("advertisement", advertisement);
 
         //call httpClient API to store the data to server
         //@libraryName, @cityString, @districtString, @community，@advertisement
         //TODO
 
-        SharedPreferences.Editor sharedata = getSharedPreferences("data", 0).edit();
-        sharedata.putString("libraryName",libraryName);
-        sharedata.commit();
+        //SharedPreferences.Editor sharedata = getSharedPreferences("data", 0).edit();
+       // sharedata.putString("libraryName",libraryName);
+       // sharedata.commit();
 
         //start library management library.
         Intent manageLibraryIntent = new Intent(this,ManageLibraryActivity.class);
