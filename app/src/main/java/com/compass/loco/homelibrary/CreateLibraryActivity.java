@@ -38,9 +38,9 @@ public class CreateLibraryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       // requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+     //   requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.activity_library_create);
-       // getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_titlebar);
+      //  getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_titlebar);
 
         Intent intent = getIntent();
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
@@ -150,6 +150,11 @@ public class CreateLibraryActivity extends AppCompatActivity {
         Intent manageLibraryIntent = new Intent(this,ManageLibraryActivity.class);
         startActivity(manageLibraryIntent);
 
+    }
+    public void cancelReturn(View view)
+    {
+        Intent mainIntent = new Intent(this,MainActivity.class);
+        startActivity(mainIntent);
     }
 
 }
