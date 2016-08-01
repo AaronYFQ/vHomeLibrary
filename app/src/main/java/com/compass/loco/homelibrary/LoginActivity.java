@@ -1,4 +1,5 @@
 package com.compass.loco.homelibrary;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -6,8 +7,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,10 +17,14 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TabHost;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,8 +37,57 @@ public class LoginActivity extends Activity {
     private EditText mLoginRegPasswordView;
     private View mProgressView;
     private View mLoginRegisterFormView;
-    String mtoken;
+    String mToken;
+    String mShopname;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Login Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://com.compass.loco.homelibrary/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Login Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app URL is correct.
+                Uri.parse("android-app://com.compass.loco.homelibrary/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
+    }
+
     enum ActionType {LOGIN, REGISTER};
+    Button mButtonView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,18 +125,24 @@ public class LoginActivity extends Activity {
                 }
             }
         });
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
+    //cancel tag handler
     public void onClickCancel(View view) {
         backToMainActivity(false, "Guest");
     }
 
+    // login button handler
     public void onClickLogin(View view) {
 
         mLoginRegUsernameView = (EditText) findViewById(R.id.login_username);
         mLoginRegPasswordView = (EditText) findViewById(R.id.login_password);
         mLoginRegisterFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+        mButtonView = (Button)findViewById(R.id.sign_in_button);
         // Store values at the time of the login attempt.
         String username = mLoginRegUsernameView.getText().toString();
         String password = mLoginRegPasswordView.getText().toString();
@@ -117,6 +177,7 @@ public class LoginActivity extends Activity {
             connectServer(username, password, ActionType.LOGIN);
         }
     }
+
     private boolean isUsernameValid(String username) {
         //TODO: Replace this with your own logic
         return username.length() > 4;
@@ -126,29 +187,16 @@ public class LoginActivity extends Activity {
         //TODO: Replace this with your own logic
         return true;
     }
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-   /* private boolean UserLoginRegisterTask(String username, String password, ActionType type) {
-
-        connectServer(username, password, type);
-        //showProgress(false);
-        if (commentFromServer.equals("success")) {
-            boolean isSuccess = true;
-            backToMainActivity(isSuccess, username);
-            return true;
-        }
-        return false;
-    }*/
 
 
+    // register button handler
     public void onClickRegister(View view) {
 
         mLoginRegUsernameView = (EditText) findViewById(R.id.register_username);
         mLoginRegPasswordView = (EditText) findViewById(R.id.register_password);
         mLoginRegisterFormView = findViewById(R.id.register_form);
         mProgressView = findViewById(R.id.register_progress);
+        mButtonView = (Button)findViewById(R.id.register_button);
         // Store values at the time of the login attempt.
         String username = mLoginRegUsernameView.getText().toString();
         String password = mLoginRegPasswordView.getText().toString();
@@ -173,12 +221,12 @@ public class LoginActivity extends Activity {
             // form field with an error.
             focusView.requestFocus();
         } else {
-          // Show a progress spinner, and kick off a background task to
-          // perform the user login attempt.
-          // showProgress(true);
-           connectServer(username, password, ActionType.REGISTER);
-          //showProgress(false);
-          //mLoginRegPasswordView.requestFocus();
+            // Show a progress spinner, and kick off a background task to
+            // perform the user login attempt.
+            // showProgress(true);
+            connectServer(username, password, ActionType.REGISTER);
+            //showProgress(false);
+            //mLoginRegPasswordView.requestFocus();
         }
     }
 
@@ -195,7 +243,8 @@ public class LoginActivity extends Activity {
             SharedPreferences sharedPref = getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
             SharedPreferences.Editor sharedata = sharedPref.edit();
             sharedata.putString("username", username);
-            sharedata.putString("token", mtoken);
+            sharedata.putString("token", mToken);
+            sharedata.putString("shopname", mShopname);
             intent.putExtra(MainActivity.INTENT_KEY_USER_NAME, username);
             sharedata.commit();
         }
@@ -243,39 +292,40 @@ public class LoginActivity extends Activity {
     }
 
     private void connectServer(final String username, String password, final ActionType type) {
-        mtoken = "";
-        Log.v("Lanying", "Connect to server request");
+        //handle server connect  response
+        mToken = "";
+        mShopname = "";
         final Handler handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 String json = msg.getData().getString("responseBody");
                 Log.v("Login_Register", json);
-                Log.v("Login_Register", "username"+":" + username);
                 try {
                     // showProgress(false)
                     // handler item from Json
-                    Log.v("Login_Register", "username"+":" + username);
+                    Log.v("Login_Register", "username" + ":" + username);
                     JSONObject item = new JSONObject(json);
                     String comment = item.getString("result");
                     if (comment.equals("success")) {
-                        mtoken = item.getString("token");
-                        Log.v("Login_Register", "token" + ": " + mtoken);
-                        boolean isSuccess = true;
-                        backToMainActivity(isSuccess, username);
-                    }
-                    else
-                    {
-                        Log.v("Login_Register",":" + "login/register error");
-                        if(type == ActionType.REGISTER) {
-
-                            mLoginRegUsernameView.setError(getString(R.string.error_existed_username));
+                        mToken = item.getString("token");
+                        if (type == ActionType.LOGIN) {
+                            mShopname = item.getString("shopname");
                         }
-                        else
-                        {
+                        Log.v("Login_Register", "token" + ": " + mToken + "shop name" + ":" + mShopname);
+                        backToMainActivity(true, username);
+                    } else {
+
+                        Log.v("Login_Register", ":" + "login/register error");
+                        if (type == ActionType.REGISTER) {
+                            mLoginRegUsernameView.setError(getString(R.string.error_existed_username));
+                        } else {
                             mLoginRegUsernameView.setError(getString(R.string.error_username_or_password));
                         }
                         mLoginRegUsernameView.requestFocus();
-
+                        //recover button clickable and background resource
+                        mButtonView.setClickable(true);
+                        mButtonView.setBackgroundResource(R.color.colorBackgroundGreen);
+                        mButtonView.setTextColor(Color.WHITE);
                     }
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
@@ -295,6 +345,10 @@ public class LoginActivity extends Activity {
             httptd.submitAsyncHttpClientPostRegisterUser(username, password, handler);
             Log.v("Login_Register", "Register request");
         }
+        mButtonView.setClickable(false);
+        mButtonView.setBackgroundResource(R.color.colorBackgroundGray);
+        mButtonView.setTextColor(Color.BLACK);
+
     }
 }
 
