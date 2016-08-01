@@ -1,10 +1,15 @@
 package com.compass.loco.homelibrary;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,12 +21,12 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 
-/**
- * Created by EXIAOQU on 7/25/2016.
- */
 public class ManageLibraryActivity extends AppCompatActivity {
+
+    private static final String TAG = "ManageLibraryActivity";
 
     // Android objects
     private TextView editTextLibraryName;
@@ -42,14 +47,48 @@ public class ManageLibraryActivity extends AppCompatActivity {
     private String newShopName;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_library);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        Log.d(TAG, "onCreate() called");
 
         init();
 
         getLibraryBooks();
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart() called");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause() called");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume() called");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop() called");
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.d(TAG, "onDestroy() called");
+        super.onDestroy();
     }
 
     private void init() {
@@ -92,15 +131,30 @@ public class ManageLibraryActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),
                         arrayListSelectedBookInfo.get(position).getBookInfo().getName() + "(line " + Integer.toString(position) + ") clicked!",
                         Toast.LENGTH_SHORT).show();
+
+                String bookName = arrayListSelectedBookInfo.get(position).getBookInfo().getName();
+
+                Intent intent = new Intent(getApplicationContext(), ManageBookActivity.class);
+
+                intent.putExtra("token", token);
+                intent.putExtra("shopname", shopName);
+                intent.putExtra("bookname",  bookName);
+
+                startActivity(intent);
+
             }
         });
 
-        // get input parameter from application global data
-        // 1. token
-        // 2. shop name
-        token = "zhong";
-        shopName = "wangfujing";
+        // get application private shared preference
+        SharedPreferences sharePref = getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
 
+        // 1. token
+        token = sharePref.getString("token", "zhong");
+
+        // 2. shop name
+        shopName = sharePref.getString("shopname", "wangfujing");
+
+        Log.d(TAG, "from private shared preference: token = " + token + ", shopname = " + shopName);
     }
 
 
@@ -115,43 +169,53 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
                 String jsonText = msg.getData().getString("responseBody");
 
-                Log.v("responseBody", jsonText);
+                Log.d(TAG, "jsonText = " + jsonText);
+
+                arrayListSelectedBookInfo = new ArrayList<SelectedBookInfo>();
 
                 try {
 
                     JSONObject jsonObj = new JSONObject(jsonText);
 
-                    JSONArray jsonArray = jsonObj.getJSONArray("books");
+                    String result = jsonObj.getString("result");
 
-                    arrayListSelectedBookInfo = new ArrayList<SelectedBookInfo>();
+                    if(result.equals("success")) {
 
-                    Log.v("number of books: ", new Integer(jsonArray.length()).toString());
+                        JSONArray jsonArray = jsonObj.getJSONArray("books");
 
-                    for (int i = 0; i < jsonArray.length(); ++i) {
+                        Log.d(TAG, "total of books = " + new Integer(jsonArray.length()).toString());
 
-                        jsonObj = jsonArray.getJSONObject(i);
+                        for (int i = 0; i < jsonArray.length(); ++i) {
 
-                        arrayListSelectedBookInfo.add(
-                                new SelectedBookInfo(
-                                        new BookInfo(
-                                                jsonObj.getString("name"),
-                                                jsonObj.getString("author"),
-                                                jsonObj.getString("publisher"),
-                                                jsonObj.getString("isbn"),
-                                                jsonObj.getString("detail"),
-                                                null,
-                                                (jsonObj.getBoolean("state"))),
-                                        false));
+                            jsonObj = jsonArray.getJSONObject(i);
+
+                            arrayListSelectedBookInfo.add(
+                                    new SelectedBookInfo(
+                                            new BookInfo(
+                                                    jsonObj.getString("name"),
+                                                    jsonObj.getString("author"),
+                                                    jsonObj.getString("publisher"),
+                                                    jsonObj.getString("isbn"),
+                                                    jsonObj.getString("detail"),
+                                                    null,
+                                                    (jsonObj.getBoolean("state"))),
+                                            false));
+                        }
                     }
-
-                    ListViewAdapterManageBook myListViewAdapterManageBook = new ListViewAdapterManageBook(activity, arrayListSelectedBookInfo);
-                    listViewBooks.setAdapter(myListViewAdapterManageBook);
+                    else
+                    {
+                        Toast.makeText(getApplicationContext(), "no book found!", Toast.LENGTH_SHORT).show();
+                    }
 
                 } catch (JSONException e) {
 
                     Toast.makeText(getApplicationContext(), "unknown response from remote service!", Toast.LENGTH_SHORT).show();
 
                     e.printStackTrace();
+
+                } finally {
+                    ListViewAdapterManageBook myListViewAdapterManageBook = new ListViewAdapterManageBook(activity, arrayListSelectedBookInfo);
+                    listViewBooks.setAdapter(myListViewAdapterManageBook);
                 }
             }
         };
@@ -169,8 +233,10 @@ public class ManageLibraryActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "Add...", Toast.LENGTH_SHORT).show();
 
         Intent intent = new Intent(this, BrowseLibraryActivity.class);
+
         intent.putExtra("token", token);
         intent.putExtra("shopname", shopName);
+
         startActivity(intent);
     }
 
@@ -185,7 +251,7 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
                 String jsonText = msg.getData().getString("responseBody");
 
-                Log.v("responseBody", jsonText);
+                Log.d(TAG, "jsonText = " + jsonText);
 
                 try {
 
@@ -193,14 +259,9 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
                     String result = jsonObj.getString("result");
 
-                    if(result != "Success")
-                    {
+                    if(!result.equals("success")) {
+
                         Toast.makeText(getApplicationContext(), "delete book failed! result=" + result, Toast.LENGTH_SHORT).show();
-                    }
-
-                    if(--removeBookCount == 0) {
-
-                        getLibraryBooks(); // refresh listview
 
                     }
 
@@ -209,8 +270,15 @@ public class ManageLibraryActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "unknown response remote service!", Toast.LENGTH_SHORT).show();
 
                     e.printStackTrace();
-                }
 
+                } finally {
+
+                    if(--removeBookCount == 0) {
+
+                        getLibraryBooks(); // refresh listview
+
+                    }
+                }
 
             }
         };
@@ -223,7 +291,7 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
             if(selectedBookInfo.isSelected()) {
 
-                Log.v("delete book request - ", selectedBookInfo.getBookInfo().getName());
+                Log.d(TAG, "delete book = " + selectedBookInfo.getBookInfo().getName());
 
                 httptd.submitAsyncHttpClientPostRemoveBook(token, shopName, selectedBookInfo.getBookInfo().getName(), handler);
 
@@ -246,7 +314,7 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
                     String jsonText = msg.getData().getString("responseBody");
 
-                    Log.v("responseBody", jsonText);
+                    Log.d(TAG, "jsonText = " + jsonText);
 
                     try {
 
@@ -256,18 +324,24 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
                         if(result.equals("success"))
                         {
-                            //  store new shop name into global data
+                            // get application private shared preference
+                            SharedPreferences sharedPref  = getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
+
+                            // store new shop name
+                            SharedPreferences.Editor sharedata = sharedPref.edit();
+                            sharedata.putString("shopname", newShopName);
+                            sharedata.commit();
+
+                            Log.d(TAG, "change shop name response received: " + shopName + "==>" + newShopName);
 
                             shopName = newShopName;
-
-                            editTextLibraryName.setText(newShopName);
-
-                            Log.v("change shop name response ", "new shop name is " + shopName);
 
                         }
                         else
                         {
+
                             Toast.makeText(getApplicationContext(), "modify shop name failed! result=" + result, Toast.LENGTH_SHORT).show();
+
                         }
 
                     } catch (JSONException e) {
@@ -275,13 +349,18 @@ public class ManageLibraryActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "unknown response from remote service!", Toast.LENGTH_SHORT).show();
 
                         e.printStackTrace();
+
+                    } finally {
+
+                        editTextLibraryName.setText(shopName);
+
                     }
                 }
             };
 
             HttpUtil httptd = new HttpUtil();
 
-            Log.v("change shop name request ", "from " + shopName + " to " + newShopName);
+            Log.d(TAG, "send change shop name request: " + shopName + "==>" + newShopName);
 
             httptd.submitAsyncHttpClientPostModifyShopName(token, shopName, newShopName, handler);
 
@@ -289,8 +368,8 @@ public class ManageLibraryActivity extends AppCompatActivity {
         else {
 
             Toast.makeText(getApplicationContext(), "Please input the name...", Toast.LENGTH_SHORT).show();
-
         }
 
     }
+
 }
