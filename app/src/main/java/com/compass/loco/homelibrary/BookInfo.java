@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 /**
  * Created by EXIAOQU on 7/27/2016.
  */
-public class BookInfo {
+public class  BookInfo {
 
     public String getName() {
         return name;
