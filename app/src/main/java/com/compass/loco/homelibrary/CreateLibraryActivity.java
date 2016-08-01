@@ -34,9 +34,9 @@ public class CreateLibraryActivity extends AppCompatActivity {
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
 
 
-        SharedPreferences sharedata = getSharedPreferences("compass.loco.data", Context.MODE_PRIVATE);
-        String data = sharedata.getString("item", null);
-        Log.v("cola","data="+data);
+        SharedPreferences sharedata = getSharedPreferences("compass.loco.userinfo", Context.MODE_PRIVATE);
+        String data = sharedata.getString("username", null);
+        Log.v("cola","username="+data);
         EditText library = (EditText) findViewById(R.id.library_name);
         library.setText(data);
 

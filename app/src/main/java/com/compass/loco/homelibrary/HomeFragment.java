@@ -2,6 +2,7 @@ package com.compass.loco.homelibrary;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private String mCityName = "北京";
     private Button mSelectCityBtn;
     private ImageButton mAddBookBtn;
+    private ImageButton mMylibraryBtn;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -41,6 +43,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         mAddBookBtn = (ImageButton) view.findViewById(R.id.add_book_btn);
         mAddBookBtn.setOnClickListener(this);
 
+        mMylibraryBtn = (ImageButton) view.findViewById(R.id.my_library_btn);
+        mMylibraryBtn.setOnClickListener(this);
+
         return view;
     }
 
@@ -54,6 +59,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         startActivity(intent);
     }
 
+    public void onMyLibraryBtnClick(View view) {
+        SharedPreferences.Editor sharedata = this.getContext().getSharedPreferences("compass.loco.userinfo", Context.MODE_PRIVATE).edit();
+        sharedata.putString("username","loco_1");
+        sharedata.commit();
+
+        Intent intent = new Intent(this.getContext(), CreateLibraryActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     public void onClick(View view) {
         switch(view.getId()) {
@@ -62,6 +76,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.add_book_btn:
                 onAddBookBtnClick(view);
+                break;
+            case R.id.my_library_btn:
+                onMyLibraryBtnClick(view);
                 break;
             default:
                 // do nothing
