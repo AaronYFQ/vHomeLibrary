@@ -8,6 +8,8 @@ import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.compass.loco.homelibrary.model.DoubanBook;
@@ -28,7 +30,6 @@ public class ScanBookActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan_book);
     }
-
 
     public void onScanBtnClick(View view) {
         new IntentIntegrator(this).initiateScan();
