@@ -1,7 +1,11 @@
 package com.compass.loco.homelibrary;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +20,10 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class CreateLibActivity extends AppCompatActivity {
     private Spinner citySpinner;
@@ -33,6 +41,8 @@ public class CreateLibActivity extends AppCompatActivity {
     private String villageString = "";
     private String advertisement = "";
     private String library = "";
+
+    final CreateLibActivity curActivity = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,28 +142,75 @@ public class CreateLibActivity extends AppCompatActivity {
         advertisement = adEditText.getText().toString();
         library = libraryEditText.getText().toString();
 
-        Log.v("library name", library);
-        Log.v("city", cityString);
-        Log.v("district", districtString);
-        Log.v("village", villageString);
-        Log.v("advertisement", advertisement);
-
+        //Log.v("library name", library);
+        //Log.v("city", cityString);
+        //Log.v("district", districtString);
+        //Log.v("village", villageString);
+        //Log.v("advertisement", advertisement);
+        if(library.equals(""))
+        {
+            libraryEditText.requestFocus();
+            return;
+        }
+        if(villageString.equals(""))
+        {
+            villageTextView.requestFocus();
+            return;
+        }
         //call httpClient API to store the data to server
         //@libraryName, @cityString, @districtString, @community，@advertisement
         //TODO
 
-        //SharedPreferences.Editor sharedata = getSharedPreferences("data", 0).edit();
-        // sharedata.putString("libraryName",libraryName);
-        // sharedata.commit();
+        final Handler handler = new Handler() {
 
-        //start library management library.
-        Intent manageLibraryIntent = new Intent(this,ManageLibraryActivity.class);
-        startActivity(manageLibraryIntent);
+            @Override
+            public void handleMessage(Message msg) {
+
+
+
+                String jsonText = msg.getData().getString("responseBody");
+
+                Log.v("responseBody", jsonText);
+
+                try {
+
+                    JSONObject jsonObj = new JSONObject(jsonText);
+
+                    String result = jsonObj.getString("result");
+
+                    if(result != "Success")
+                    {
+                        Toast.makeText(getApplicationContext(), "create shop failed! result=" + result, Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                    {
+                        Intent manageLibraryIntent = new Intent(curActivity, ManageLibraryActivity.class);
+                        startActivity(manageLibraryIntent);;
+                    }
+
+                } catch (JSONException e) {
+
+                    Toast.makeText(getApplicationContext(), "unknown response remote service!", Toast.LENGTH_SHORT).show();
+
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        SharedPreferences sharedata = getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
+        String token = sharedata.getString("token", null);
+        String shopaddr = cityString + " " + districtString + " " + villageString;
+
+        HttpUtil httptd = new HttpUtil();
+        httptd.submitAsyncHttpClientPostCreateShop(token, library,
+                shopaddr, advertisement, handler);
 
     }
+
     public void cancelReturn(View view)
     {
         Intent mainIntent = new Intent(this,MainActivity.class);
         startActivity(mainIntent);
     }
+
 }
