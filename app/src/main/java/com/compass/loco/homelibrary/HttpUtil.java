@@ -26,6 +26,14 @@ public class HttpUtil {
     final String ADDBOOK_URL = REMOTE_URL+"/book/addBook/";
     final String REMOVEBOOK_URL = REMOTE_URL+"/book/removeBook/";
     final String SEARCHAREA_URL = REMOTE_URL+"/book/searchArea/";
+
+    final String GET_ATTENTION_SHOP_URL = REMOTE_URL+"/book/getAttentionBook/";
+    final String GET_ATTENTION_BOOK_URL = REMOTE_URL+"/book/getAttentionShop/";
+    final String GET_CURRENT_BORROW_URL = REMOTE_URL+"/book/getCurrentBorrowBook/";
+    final String GET_HISTORY_BORROW_URL = REMOTE_URL+"/book/getHistoryBorrowBook/";
+    final String GET_REQ_BORROW_BOOK_URL = REMOTE_URL+"/book/getBorrowBook/";
+    final String POST_BORROW_ACTION_URL = REMOTE_URL+"/book/postBorrowAction/";
+
     static final String CHECK_MESSAGE_URL  = REMOTE_URL + "/book/checkMessage/";
     static final String GET_MESSAGE_URL = REMOTE_URL + "/book/getMessage/";
     private AsyncHttpClient client = new AsyncHttpClient();
@@ -161,6 +169,53 @@ public class HttpUtil {
         return;
     }
 
+    public void submitAsyncHttpClientGetRequestBorrowBook(String token, String borrower, String shopName, String bookName, final Handler handler) {
+        String url = GET_REQ_BORROW_BOOK_URL + "?" + "token=" + token + "&borrower" + borrower + "&shopname=" + shopName + "&bookname=" + bookName;
+        asyncHttpClientGetHandler(url, handler);
+        return;
+    }
+
+    public void submitAsyncHttpClientPostBorrowAction(String token, String borrower, String shopName,
+                                                    String bookName, String action, final Handler handler) {
+
+        RequestParams param = new RequestParams();
+        String url = POST_BORROW_ACTION_URL;
+        param.put("token", token);
+        param.put("borrower", borrower);
+        param.put("shopname", shopName);
+        param.put("bookname", bookName);
+        param.put("action", action);
+
+        asyncHttpClientPostHandler(url, param, handler);
+        return;
+
+    }
+
+    public void submitAsyncHttpClientGetCurrentBorrowBook(String token, final Handler handler)
+    {
+        String url = GET_CURRENT_BORROW_URL + "?" + "token=" + token;
+        asyncHttpClientGetHandler(url, handler);
+        return;
+    }
+
+    public void submitAsyncHttpClientGetHistoryBorrowBook(String token, final Handler handler)
+    {
+        String url = GET_HISTORY_BORROW_URL + "?" + "token=" + token;
+        asyncHttpClientGetHandler(url, handler);
+        return;
+    }
+
+    public void submitAsyncHttpClientGetAttentionBook(String token, final Handler handler) {
+        String url = GET_ATTENTION_BOOK_URL + "?" + "token=" + token;
+        asyncHttpClientGetHandler(url, handler);
+        return;
+    }
+
+    public void submitAsyncHttpClientGetAttentionShop(String token, final Handler handler) {
+        String url = GET_ATTENTION_SHOP_URL + "?" + "token=" + token;
+        asyncHttpClientGetHandler(url, handler);
+        return;
+    }
 
     public void submitAsyncHttpClientGetSearchBook(String bookName,final Handler handler) {
 
