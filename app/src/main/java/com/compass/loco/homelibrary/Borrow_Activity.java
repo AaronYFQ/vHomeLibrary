@@ -25,7 +25,6 @@ public class Borrow_Activity extends AppCompatActivity {
 
     private void getWaitingApprovedList() {
 
-
         final Handler handler = new Handler() {
 
             @Override

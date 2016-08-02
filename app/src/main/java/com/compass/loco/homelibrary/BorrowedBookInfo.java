@@ -9,10 +9,11 @@ public class BorrowedBookInfo {
     private String shopName;
     private String state;
 
-    public BorrowedBookInfo(BookInfo bookinfo, String shopname, String state) {
+    public void BorrowedBookInfo(BookInfo bookinfo, String shopname, String state) {
         this.bookInfo = bookinfo;
         this.shopName = shopname;
         this.state = state;
+        return;
     }
 
     public BookInfo getBookInfo() {
