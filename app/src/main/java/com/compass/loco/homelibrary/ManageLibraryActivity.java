@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -31,7 +32,7 @@ public class ManageLibraryActivity extends AppCompatActivity {
     private static final String TAG = "ManageLibraryActivity";
 
     // Android objects
-    private TextView editTextLibraryName;
+    private EditText editTextLibraryName;
 
     private ImageButton buttonAdd;
     private ImageButton buttonDelete;
@@ -95,7 +96,7 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
     private void init() {
 
-        editTextLibraryName = (TextView) findViewById(R.id.editTextLibraryName);
+        editTextLibraryName = (EditText) findViewById(R.id.editTextLibraryName);
 
         buttonAdd = (ImageButton) findViewById(R.id.buttonAdd);
         buttonDelete = (ImageButton) findViewById(R.id.buttonDelete);
@@ -138,9 +139,10 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(getApplicationContext(), ManageBookActivity.class);
 
-                intent.putExtra("token", token);
+                intent.putExtra("user", token);
                 intent.putExtra("shopname", shopName);
                 intent.putExtra("bookname",  bookName);
+                intent.putExtra("request",  "browse");
 
                 startActivity(intent);
 
@@ -199,7 +201,7 @@ public class ManageLibraryActivity extends AppCompatActivity {
                                                     jsonObj.getString("publisher"),
                                                     jsonObj.getString("isbn"),
                                                     jsonObj.getString("detail"),
-                                                    null,
+                                                    jsonObj.getString("imageurl"),
                                                     (jsonObj.getBoolean("state"))),
                                             false));
                         }

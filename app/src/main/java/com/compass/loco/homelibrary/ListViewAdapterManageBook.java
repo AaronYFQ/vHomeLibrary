@@ -102,16 +102,22 @@ public class ListViewAdapterManageBook extends BaseAdapter {
         textViewBookDetail.setText("简介：" + selectedBookInfo.getBookInfo().getDetail());
 
         if(selectedBookInfo.getBookInfo().getState()) {
-            textViewBookState.setText("未借");
+
+            textViewBookState.setText("在库");
+
         }
         else
         {
             textViewBookState.setText("借出");
+
             checkBoxBook.setEnabled(false);
         }
 
-        if(selectedBookInfo.getBookInfo().getBitmap() != null) {
-            imageViewBookPicture.setImageBitmap(selectedBookInfo.getBookInfo().getBitmap());
+        String imageUrl = selectedBookInfo.getBookInfo().getImageUrl();
+        if(imageUrl.length() > 0) {
+
+            new ImageLoadTask(imageUrl, imageViewBookPicture).execute();
+
         }
 
         return convertView;

@@ -1,7 +1,5 @@
 package com.compass.loco.homelibrary;
 
-import android.graphics.Bitmap;
-
 /**
  * Created by EXIAOQU on 7/27/2016.
  */
@@ -27,8 +25,8 @@ public class  BookInfo {
         return detail;
     }
 
-    public Bitmap getBitmap() {
-        return bitmap;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
     public Boolean getState() { return state; }
@@ -38,16 +36,16 @@ public class  BookInfo {
     private String publisher;
     private String isbn;
     private String detail;
-    private Bitmap bitmap;
+    private String imageUrl;
     private Boolean state;
 
-    public BookInfo(String name, String author, String publisher, String isbn, String detail, Bitmap bitmap, Boolean state) {
+    public BookInfo(String name, String author, String publisher, String isbn, String detail, String imageUrl, Boolean state) {
         this.name = name;
         this.author = author;
         this.publisher = publisher;
         this.isbn = isbn;
         this.detail = detail;
-        this.bitmap = bitmap;
+        this.imageUrl = imageUrl;
         this.state = state;
     }
 

@@ -86,15 +86,22 @@ public class ListViewAdapterBrowseBook extends BaseAdapter {
         textViewBookDetail.setText("简介：" + bookInfo.getDetail());
 
         if(bookInfo.getState()) {
-            textViewBookState.setText("未借");
+
+            textViewBookState.setText("在库");
+
         }
         else
         {
+
             textViewBookState.setText("借出");
+
         }
 
-        if(bookInfo.getBitmap() != null) {
-            imageViewBookPicture.setImageBitmap(bookInfo.getBitmap());
+        String imageUrl = bookInfo.getImageUrl();
+        if(imageUrl.length() > 0) {
+
+            new ImageLoadTask(imageUrl, imageViewBookPicture).execute();
+
         }
 
         return convertView;

@@ -98,6 +98,17 @@ public class BrowseLibraryActivity extends AppCompatActivity {
                         arrayListBookInfo.get(position).getName() + "(line " + Integer.toString(position) + ") clicked!",
                         Toast.LENGTH_SHORT).show();
 
+                String bookName = arrayListBookInfo.get(position).getName();
+
+                Intent intent = new Intent(getApplicationContext(), ManageBookActivity.class);
+
+                intent.putExtra("user", token);
+                intent.putExtra("shopname", shopName);
+                intent.putExtra("bookname",  bookName);
+                intent.putExtra("request",  "browse");
+
+                startActivity(intent);
+
             }
         });
 
@@ -149,7 +160,7 @@ public class BrowseLibraryActivity extends AppCompatActivity {
                                             jsonObj.getString("publisher"),
                                             jsonObj.getString("isbn"),
                                             jsonObj.getString("detail"),
-                                            null,
+                                            jsonObj.getString("imageurl"),
                                             (jsonObj.getBoolean("state"))));
                         }
                     }
