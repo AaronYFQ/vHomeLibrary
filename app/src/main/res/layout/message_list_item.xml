@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <TextView
-        android:id="@+id/message_book"
+        android:id="@+id/message_info"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:layout_weight="2"
+        android:paddingLeft="5dp"
+        android:textAlignment="viewStart"
         android:text="book"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-    <TextView
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+    <!--TextView
         android:id="@+id/message_shop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,11 +32,15 @@
         android:id="@+id/message_action"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="action" />
+        android:text="action" /-->
     <TextView
         android:id="@+id/message_time"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:paddingRight="5dp"
+        android:textAlignment="viewEnd"
         android:text="time" />
 
 </LinearLayout>

@@ -19,9 +19,10 @@ public class MainActivity extends AppCompatActivity {
     public final static String INTENT_KEY_CITY_NAME = MainActivity.class.getName() + ".CITY_NAME";
     public final static String INTENT_KEY_USER_NAME = MainActivity.class.getName() + ".USER_NAME";
     public final static String INTENT_KEY_LOGIN_RESULT = MainActivity.class.getName() + ".LOGIN_RESULT";
+    public final static String INTENT_KEY_NOTIFICATION = MainActivity.class.getName() + ".NOTIFY_RESULT";
 
     private final HomeFragment mHomeFragment = new HomeFragment();
-    private final MessageFragment mMessageFragment = new MessageFragment();
+    private final ShowMessagesFragment mMessageFragment = new ShowMessagesFragment();
     private final MeFragment mMeFragment = new MeFragment();
 
     final  GlobalParams mGlobal = new GlobalParams();
@@ -60,7 +61,18 @@ public class MainActivity extends AppCompatActivity {
                 mMeFragment.setArguments(getIntent().getExtras());
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container, mMeFragment).commit();
-            } else {
+            }
+            else if(getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().containsKey(INTENT_KEY_NOTIFICATION)){
+                disableAllMainMenuBtn();
+                ImageButton messageBtn = (ImageButton) findViewById(R.id.menu_2);
+                Drawable messageBtnGreen = getResources().getDrawable(R.drawable.mainmenu_message);
+                messageBtn.setBackgroundDrawable(messageBtnGreen);
+
+                mMessageFragment.setArguments(getIntent().getExtras());
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fragment_container, mMessageFragment).commit();
+            }
+            else {
                 mHomeFragment.setArguments(getIntent().getExtras());
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.fragment_container, mHomeFragment).commit();

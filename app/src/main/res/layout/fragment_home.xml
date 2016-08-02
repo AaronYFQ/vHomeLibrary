@@ -9,7 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="#DDDDDD"
         android:fillViewport="false">
 
         <LinearLayout
@@ -24,7 +23,6 @@
                 android:paddingRight="16dp"
                 android:gravity="bottom"
                 android:background="@drawable/header_bg">
-
 
                 <LinearLayout
                     android:orientation="vertical"
@@ -56,7 +54,6 @@
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/corner_border"
                     android:layout_below="@id/app_title_layout"
                     android:padding="4dp"
                     android:layout_margin="10dp">
@@ -72,11 +69,6 @@
                         android:textSize="14sp"
                         android:id="@+id/city_btn" />
 
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="1dp"
-                        android:layout_height="30dp"
-                        android:background="#DDDDDD"></LinearLayout>
 
                     <Button
                         android:layout_width="match_parent"
@@ -88,7 +80,7 @@
                         android:text="输入图书馆或图书开始找书咯~"
                         android:textColor="@android:color/darker_gray"
                         android:textSize="14sp"
-                        android:id="@+id/imageButton" />
+                        android:id="@+id/search_btn" />
                 </LinearLayout>
 
             </RelativeLayout>
@@ -97,7 +89,6 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/shadow_border"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp">
 
@@ -187,11 +178,11 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:orientation="vertical"
+            <TextView
+                android:background="#DDDDDD"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="4dp"></LinearLayout>
+                android:layout_height="5dp"/>
+
 
             <!--include layout="@layout/slide_panel" />
 
@@ -229,18 +220,15 @@
                         android:id="@+id/msg_2" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:orientation="vertical"
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="5dp"
                     android:background="#DDDDDD"
-                    android:padding="1dp"></LinearLayout>
-
+                    android:padding="1dp"/>
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/shadow_border"
                     android:padding="5dp">
                     <LinearLayout
                         android:orientation="vertical"
@@ -280,11 +268,15 @@
 
                 </LinearLayout>
 
+                <TextView
+                    android:background="#DDDDDD"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"/>
+
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/shadow_border"
                     android:padding="5dp">
                     <LinearLayout
                         android:orientation="vertical"
@@ -323,12 +315,16 @@
                         android:id="@+id/msg_img_2" />
 
                 </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:background="#DDDDDD"
+                    android:padding="1dp"/>
 
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/shadow_border"
                     android:padding="5dp">
                     <LinearLayout
                         android:orientation="vertical"
@@ -367,11 +363,15 @@
                         android:id="@+id/msg_img_3" />
 
                 </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:background="#DDDDDD"
+                    android:padding="1dp"/>
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/shadow_border"
                     android:padding="5dp">
                     <LinearLayout
                         android:orientation="vertical"
@@ -410,6 +410,11 @@
                         android:id="@+id/msg_img_4" />
 
                 </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:background="#DDDDDD"
+                    android:padding="1dp"/>
             </LinearLayout>
         </LinearLayout>
 

@@ -5,16 +5,12 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.Context;
-import android.os.Bundle;
-import android.os.Message;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
-import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.SyncHttpClient;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -137,15 +133,16 @@ public class MessageIntentService extends IntentService {
     {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentTitle("My notification")
-                        .setContentText("Receive" + numOfMessage +  "new messages!");
+                        .setSmallIcon(R.drawable.app_icon)
+                        .setContentTitle("v书房")
+                        .setContentText("收到" + numOfMessage +  "条新消息!");
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         // Adds the back stack for the Intent (but not the Intent itself)
-        stackBuilder.addParentStack(ShowMessagesActivity.class);
+        stackBuilder.addParentStack(MainActivity.class);
         // Adds the Intent that starts the Activity to the top of the stack
-        Intent intent = new Intent(this, ShowMessagesActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(MainActivity.INTENT_KEY_NOTIFICATION, numOfMessage);
         stackBuilder.addNextIntent(intent);
         PendingIntent resultPendingIntent =
                 stackBuilder.getPendingIntent(

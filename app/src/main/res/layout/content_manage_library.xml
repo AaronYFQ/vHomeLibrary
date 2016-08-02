@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.compass.loco.homelibrary.ManageLibraryActivity"
+    tools:showIn="@layout/activity_manage_library">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusableInTouchMode="true">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/buttonSave"
+                android:src="@android:drawable/ic_menu_save"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:background="@android:color/white"
+                android:focusable="true" />
+
+            <TextView
+                android:text="名称："
+                android:id="@+id/textViewLibraryLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/buttonSave"
+                android:layout_centerVertical="true"
+                android:textSize="14dp" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="未知"
+                android:id="@+id/editTextLibraryName"
+                android:layout_toRightOf="@+id/textViewLibraryLabel"
+                android:layout_centerVertical="true"
+                android:textSize="14dp"
+                android:singleLine="true" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/buttonAdd"
+                android:src="@android:drawable/ic_input_add"
+                android:layout_toLeftOf="@+id/buttonDelete"
+                android:background="@android:color/white"
+                android:layout_centerVertical="true"
+                android:focusable="true" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/buttonDelete"
+                android:src="@android:drawable/ic_delete"
+                android:layout_alignParentRight="true"
+                android:background="@android:color/white"
+                android:layout_centerVertical="true"
+                android:focusable="true" />
+
+        </RelativeLayout>
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/listViewBooks" />
+
+    </LinearLayout>
+
+</RelativeLayout>

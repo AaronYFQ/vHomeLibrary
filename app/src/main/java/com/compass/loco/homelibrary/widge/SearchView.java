@@ -25,12 +25,16 @@ import android.widget.Toast;
 import com.compass.loco.homelibrary.R;
 
 
-
 /**
  * Created by eweilzh on 2016-07-28
  */
 
 public class SearchView extends LinearLayout implements View.OnClickListener {
+
+    /**
+     * 默认以书名为关键字搜索，value is ture
+     */
+    private static boolean searchStyleFlag = true;
 
     /**
      * 输入框
@@ -113,6 +117,11 @@ public class SearchView extends LinearLayout implements View.OnClickListener {
                                        int pos, long id) {
 
                 String[] searchStyle = getResources().getStringArray(R.array.search_style);
+                if(searchStyle[pos].equals("小区")) {
+                    searchStyleFlag = false;
+                } else {
+                    searchStyleFlag = true;
+                }
                 Toast.makeText(mContext.getApplicationContext(), "你选择的是:"+ searchStyle[pos], Toast.LENGTH_SHORT).show();
             }
             @Override
@@ -179,7 +188,7 @@ public class SearchView extends LinearLayout implements View.OnClickListener {
      */
     private void notifyStartSearching(String text){
         if (mListener != null) {
-            mListener.onSearch(etInput.getText().toString());
+            mListener.onSearch(etInput.getText().toString(), searchStyleFlag);
         }
         //隐藏软键盘
         InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -269,7 +278,7 @@ public class SearchView extends LinearLayout implements View.OnClickListener {
          *
          * @param text 传入输入框的文本
          */
-        void onSearch(String text);
+        void onSearch(String text,boolean searchStyleFlag);
 
 //        /**
 //         * 提示列表项点击时回调方法 (提示/自动补全)

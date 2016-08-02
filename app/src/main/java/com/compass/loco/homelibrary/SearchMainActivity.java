@@ -3,10 +3,12 @@ package com.compass.loco.homelibrary;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -23,87 +25,91 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-//import android.support.v7.widget.SearchView;
-
-public class SearchViewActivity extends AppCompatActivity implements com.compass.loco.homelibrary.widge.SearchView.SearchViewListener {
-
-    /**
-     * 默认提示框显示项的个数
-     */
-    private static int DEFAULT_HINT_SIZE = 4;
 
 
 
-    /**
-     * 搜索结果列表view
-     */
-    private ListView lvResults;
+public class SearchMainActivity extends AppCompatActivity implements com.compass.loco.homelibrary.widge.SearchView.SearchViewListener {
 
-    /**
-     * 搜索view
-     */
-    private SearchView searchView;
+        /**
+         * 默认提示框显示项的个数
+         */
+        private static int DEFAULT_HINT_SIZE = 4;
 
 
-    /**
-     * 热搜框列表adapter
-     */
-    private ArrayAdapter<String> hintAdapter;
 
-    /**
-     * 自动补全列表adapter
-     */
-    private ArrayAdapter<String> autoCompleteAdapter;
+        /**
+         * 搜索结果列表view
+         */
+        private ListView lvResults;
 
-    /**
-     * 搜索结果列表adapter
-     */
-    private SearchAdapter resultAdapter;
-
-    private List<Bean> dbData;
-
-    /**
-     * 热搜版数据
-     */
-    private List<String> hintData;
-
-    /**
-     * 搜索过程中自动补全数据
-     */
-    private List<String> autoCompleteData;
-
-    /**
-     * 搜索结果的数据
-     */
-    private List<Bean> resultData;
-
-    /**
-     * 设置提示框显示项的个数     *
-     *
-     * @param hintSize 提示框显示个数
-     */
-    private static int hintSize = DEFAULT_HINT_SIZE;
-
-    public static void setHintSize(int hintSize) {
-        hintSize = hintSize;
-    }
-
-    /**
-     * 设置 searchStyleFlag ，default is book ,value is ture, false express village
-     */    ;
-    /*public static void setSearchStyle(boolean sty) {
-        //this.searchStyleFlag = style;
-        searchStyleFlag = sty;
-    }*/
+        /**
+         * 搜索view
+         */
+        private SearchView searchView;
 
 
-    @Override
+        /**
+         * 热搜框列表adapter
+         */
+        private ArrayAdapter<String> hintAdapter;
+
+        /**
+         * 自动补全列表adapter
+         */
+        private ArrayAdapter<String> autoCompleteAdapter;
+
+        /**
+         * 搜索结果列表adapter
+         */
+        private SearchAdapter resultAdapter;
+
+        private List<Bean> dbData;
+
+        /**
+         * 热搜版数据
+         */
+        private List<String> hintData;
+
+        /**
+         * 搜索过程中自动补全数据
+         */
+        private List<String> autoCompleteData;
+
+        /**
+         * 搜索结果的数据
+         */
+        private List<Bean> resultData;
+
+        /**
+         * 设置提示框显示项的个数     *
+         *
+         * @param hintSize 提示框显示个数
+         */
+        private static int hintSize = DEFAULT_HINT_SIZE;
+
+        public static void setHintSize(int hintSize) {
+            hintSize = hintSize;
+        }
+
+        @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.activity_search_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         setContentView(R.layout.activity_search_main);
         initData();
         initViews();
+
+       /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });*/
     }
 
     /**

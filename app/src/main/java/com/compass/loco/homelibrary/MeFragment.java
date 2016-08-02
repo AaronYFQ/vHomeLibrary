@@ -28,12 +28,25 @@ public class MeFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        String username;
+        String token="";
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_me, container, false);
         mLoginBtn = (Button)view.findViewById(R.id.user_login_btn);
-        if (getArguments() != null && getArguments().containsKey(MainActivity.INTENT_KEY_LOGIN_RESULT)) {
-            mLoginBtn.setText(getArguments().getString(MainActivity.INTENT_KEY_USER_NAME));
+        SharedPreferences sharedata = getContext().getSharedPreferences(GlobalParams.PREF_NAME,Context.MODE_PRIVATE);
+        username = sharedata.getString("username", null);
+        token = sharedata.getString("token", null);
+        if(token!=null)
+        {
+            if(!token.equals(""))
+            {mLoginBtn.setText(username);}
+
         }
+        else
+        {
+            mLoginBtn.setText("登陆/注册");
+        }
+
         mLoginBtn.setOnClickListener(this);
 
         mLoginOut = (LinearLayout)view.findViewById(R.id.user_login_out);

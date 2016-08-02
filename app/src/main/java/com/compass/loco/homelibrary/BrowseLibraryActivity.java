@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,6 +25,8 @@ import java.util.ArrayList;
  */
 public class BrowseLibraryActivity extends AppCompatActivity {
 
+    private static final String TAG = "BrowseLibraryActivity";
+
     // Android objects
     private TextView textViewLibraryName;
 
@@ -39,10 +42,44 @@ public class BrowseLibraryActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_library);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        Log.d(TAG, "onCreate() called");
 
         init();
 
         getLibraryBooks();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart() called");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause() called");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume() called");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop() called");
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.d(TAG, "onDestroy() called");
+        super.onDestroy();
     }
 
     private void init() {
@@ -70,7 +107,7 @@ public class BrowseLibraryActivity extends AppCompatActivity {
         token = intent.getStringExtra("token");
         shopName = intent.getStringExtra("shopname");
 
-        Log.v("pass through intent", "token=" + token + " shopname=" + shopName);
+        Log.d(TAG, "pass through intent: " + "token = " + token + ", shopname = " + shopName);
 
     }
 
@@ -85,41 +122,50 @@ public class BrowseLibraryActivity extends AppCompatActivity {
 
                 String jsonText = msg.getData().getString("responseBody");
 
-                Log.v("responseBody", jsonText);
+                Log.d(TAG, "jsonText = " + jsonText);
+
+                arrayListBookInfo = new ArrayList<BookInfo>();
 
                 try {
 
                     JSONObject jsonObj = new JSONObject(jsonText);
 
-                    JSONArray jsonArray = jsonObj.getJSONArray("books");
+                    String result = jsonObj.getString("result");
 
-                    arrayListBookInfo = new ArrayList<BookInfo>();
+                    if(result.equals("success")) {
 
-                    Log.v("number of books: ", new Integer(jsonArray.length()).toString());
+                        JSONArray jsonArray = jsonObj.getJSONArray("books");
 
-                    for (int i = 0; i < jsonArray.length(); ++i) {
+                        Log.d(TAG, "total of books = " + new Integer(jsonArray.length()).toString());
 
-                        jsonObj = jsonArray.getJSONObject(i);
+                        for (int i = 0; i < jsonArray.length(); ++i) {
 
-                        arrayListBookInfo.add(
-                                new BookInfo(
-                                        jsonObj.getString("name"),
-                                        jsonObj.getString("author"),
-                                        jsonObj.getString("publisher"),
-                                        jsonObj.getString("isbn"),
-                                        jsonObj.getString("detail"),
-                                        null,
-                                        (jsonObj.getBoolean("state"))));
+                            jsonObj = jsonArray.getJSONObject(i);
+
+                            arrayListBookInfo.add(
+                                    new BookInfo(
+                                            jsonObj.getString("name"),
+                                            jsonObj.getString("author"),
+                                            jsonObj.getString("publisher"),
+                                            jsonObj.getString("isbn"),
+                                            jsonObj.getString("detail"),
+                                            null,
+                                            (jsonObj.getBoolean("state"))));
+                        }
                     }
-
-                    ListViewAdapterBrowseBook myListViewAdapterBrowseBook = new ListViewAdapterBrowseBook(activity, arrayListBookInfo);
-                    listViewBooks.setAdapter(myListViewAdapterBrowseBook);
+                    else
+                    {
+                        Toast.makeText(getApplicationContext(), "no book found!", Toast.LENGTH_SHORT).show();
+                    }
 
                 } catch (JSONException e) {
 
                     Toast.makeText(getApplicationContext(), "unknown response from remote service!", Toast.LENGTH_SHORT).show();
 
                     e.printStackTrace();
+                } finally {
+                    ListViewAdapterBrowseBook myListViewAdapterBrowseBook = new ListViewAdapterBrowseBook(activity, arrayListBookInfo);
+                    listViewBooks.setAdapter(myListViewAdapterBrowseBook);
                 }
             }
         };

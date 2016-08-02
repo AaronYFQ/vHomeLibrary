@@ -1,50 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:orientation="vertical"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:focusableInTouchMode="true" >
-
-<TextView
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:textAppearance="?android:attr/textAppearanceLarge"
-    android:text="书店"
-    android:id="@+id/textViewManageLibrary"
-    android:layout_gravity="center_horizontal"
-    android:background="@color/accent_material_light"
-    android:textAlignment="center" />
-
-<RelativeLayout
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:layout_marginLeft="24sp">
-
-    <TextView
-        android:text="名称："
-        android:id="@+id/textViewLibraryLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:textSize="14dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="未知"
-        android:id="@+id/textViewLibraryName"
-        android:layout_toRightOf="@+id/textViewLibraryLabel"
-        android:layout_centerVertical="true"
-        android:textSize="14dp"
-        android:singleLine="true" />
-
-</RelativeLayout>
-
-<ListView
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="fill_parent"
-    android:id="@+id/listViewBooks" />
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.compass.loco.homelibrary.BrowseLibraryActivity">
 
-</LinearLayout>
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorBackgroundGreen"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <include layout="@layout/content_browse_library" />
+
+</android.support.design.widget.CoordinatorLayout>
