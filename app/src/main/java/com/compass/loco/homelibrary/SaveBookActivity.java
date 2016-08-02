@@ -3,6 +3,8 @@ package com.compass.loco.homelibrary;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -73,5 +75,18 @@ public class SaveBookActivity extends AppCompatActivity {
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
         }
+    }
+
+    public void onSaveBookClick(View view) {
+        HttpUtil http = new HttpUtil();
+        http.submitAsyncHttpClientPostAddBook("compass", "shopname", mDoubanBook.getTitle(), mDoubanBook.getAuthor()[0], mDoubanBook.getPublisher(),
+                mDoubanBook.getIsbn13(), "henhao", new Handler() {
+                    @Override
+                    public void handleMessage(Message msg) {
+                        super.handleMessage(msg);
+                        Intent intent = new Intent(SaveBookActivity.this, ManageLibraryActivity.class);
+                        startActivity(intent);
+                    }
+                });
     }
 }

@@ -78,7 +78,6 @@ public class ScanBookActivity extends AppCompatActivity {
                     }
                 }
             }
-            showErrorMessage("get book info failed for [" + urls[0] + "]");
             return null;
         }
 
@@ -86,6 +85,7 @@ public class ScanBookActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(DoubanBook result) {
             if (result == null) {
+                showErrorMessage("get book info failed.");
                 return;
             }
 
