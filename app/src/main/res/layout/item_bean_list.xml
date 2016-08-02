@@ -66,6 +66,7 @@
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:textSize="12sp"
+            android:textColor="@color/orchid"
             android:maxEms="10">
         </TextView>
 
@@ -78,7 +79,7 @@
             android:layout_alignParentRight="true"
             android:textSize="12sp"
             android:maxEms="10"
-            android:textColor="@color/accent_material_dark">
+            android:textColor="@color/orchid">
         </TextView>
 
     </RelativeLayout>
@@ -95,6 +96,7 @@
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:textSize="12sp"
+            android:textColor="@color/orchid"
             android:maxEms="10">
         </TextView>
 
@@ -107,6 +109,7 @@
             android:layout_alignParentRight="true"
             android:textSize="12sp"
             android:singleLine="true"
+            android:textColor="@color/orchid"
             android:maxEms="10" >
         </TextView>
     </RelativeLayout>

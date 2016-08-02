@@ -17,6 +17,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private String mCityName = "北京";
     private Button mSelectCityBtn;
+    private Button mSelectSearchBtn;
     private ImageButton mAddBookBtn;
     private ImageButton mMylibraryBtn;
 
@@ -31,6 +32,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         mSelectCityBtn = (Button)view.findViewById(R.id.city_btn);
         mSelectCityBtn.setOnClickListener(this);
+
+        mSelectSearchBtn = (Button)view.findViewById(R.id.search_btn);
+        mSelectSearchBtn.setOnClickListener(this);
 
         if(getArguments() != null) {
             String cityName = getArguments().getString(MainActivity.INTENT_KEY_CITY_NAME);
@@ -53,6 +57,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         Intent intent = new Intent(this.getContext(), SelectCityActivity.class);
         startActivity(intent);
     }
+    public void onSelectSearchBtn(View view) {
+        Intent intent = new Intent(this.getContext(), SearchMainActivity.class);
+        startActivity(intent);
+    }
+
 
     public void onAddBookBtnClick(View view) {
         Intent intent = new Intent(this.getContext(), ScanBookActivity.class);
@@ -92,6 +101,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         switch(view.getId()) {
             case R.id.city_btn:
                 onSelectCityBtn(view);
+                break;
+            case R.id.search_btn:
+                onSelectSearchBtn(view);
                 break;
             case R.id.add_book_btn:
                 onAddBookBtnClick(view);

@@ -80,7 +80,7 @@
                         android:text="输入图书馆或图书开始找书咯~"
                         android:textColor="@android:color/darker_gray"
                         android:textSize="14sp"
-                        android:id="@+id/imageButton" />
+                        android:id="@+id/search_btn" />
                 </LinearLayout>
 
             </RelativeLayout>
