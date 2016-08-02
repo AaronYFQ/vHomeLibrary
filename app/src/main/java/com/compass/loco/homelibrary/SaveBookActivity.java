@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,6 +22,8 @@ public class SaveBookActivity extends AppCompatActivity {
     public final static String INTENT_KEY_DOUBAN_BOOK = "com.compass.loco.vhomelibrary.INTENT_KEY_DOUBAN_BOOK";
 
     private DoubanBook mDoubanBook;
+    private String mToken;
+    private String mShopName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,34 +35,42 @@ public class SaveBookActivity extends AppCompatActivity {
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Bundle extras = getIntent().getExtras();
-        if (extras != null && extras.containsKey(INTENT_KEY_DOUBAN_BOOK)) {
-            DoubanBook result = (DoubanBook) extras.getSerializable(INTENT_KEY_DOUBAN_BOOK);
+        if (extras != null) {
+            if ( extras.containsKey(INTENT_KEY_DOUBAN_BOOK)) {
+                DoubanBook result = (DoubanBook) extras.getSerializable(INTENT_KEY_DOUBAN_BOOK);
 
-            new ImageLoadTask(result.getImage(), (ImageView) findViewById(R.id.book_image_view)).execute();
+                new ImageLoadTask(result.getImage(), (ImageView) findViewById(R.id.book_image_view)).execute();
 
-            TextView titleView = (TextView) findViewById(R.id.book_title);
-            titleView.setText(result.getTitle());
+                TextView titleView = (TextView) findViewById(R.id.book_title);
+                titleView.setText(result.getTitle());
 
-            TextView authorView = (TextView) findViewById(R.id.book_author);
-            StringBuilder sb = new StringBuilder();
-            for (String a : result.getAuthor()) {
-                if (sb.length() > 0) {
-                    sb.append(",");
+                TextView authorView = (TextView) findViewById(R.id.book_author);
+                StringBuilder sb = new StringBuilder();
+                for (String a : result.getAuthor()) {
+                    if (sb.length() > 0) {
+                        sb.append(",");
+                    }
+                    sb.append(a);
                 }
-                sb.append(a);
+                authorView.setText(sb.toString());
+
+                TextView publisherView = (TextView) findViewById(R.id.book_publisher);
+                publisherView.setText(result.getPublisher());
+
+                TextView isbnView = (TextView) findViewById(R.id.book_isbn);
+                isbnView.setText(result.getIsbn13());
+
+                TextView summaryView = (TextView) findViewById(R.id.book_summary);
+                summaryView.setText(result.getSummary());
+
+                mDoubanBook = result;
             }
-            authorView.setText(sb.toString());
-
-            TextView publisherView = (TextView) findViewById(R.id.book_publisher);
-            publisherView.setText(result.getPublisher());
-
-            TextView isbnView = (TextView) findViewById(R.id.book_isbn);
-            isbnView.setText(result.getIsbn13());
-
-            TextView summaryView = (TextView) findViewById(R.id.book_summary);
-            summaryView.setText(result.getSummary());
-
-            mDoubanBook = result;
+            if (extras.containsKey(ManageLibraryActivity.INTENT_KEY_TOKEN)) {
+                mToken = extras.getString(ManageLibraryActivity.INTENT_KEY_TOKEN);
+            }
+            if (extras.containsKey(ManageLibraryActivity.INTENT_KEY_SHOPNAME)) {
+                mShopName = extras.getString(ManageLibraryActivity.INTENT_KEY_SHOPNAME);
+            }
         }
     }
 
@@ -78,9 +89,10 @@ public class SaveBookActivity extends AppCompatActivity {
     }
 
     public void onSaveBookClick(View view) {
+        EditText comments = (EditText) view.findViewById(R.id.book_comments);
         HttpUtil http = new HttpUtil();
-        http.submitAsyncHttpClientPostAddBook("compass", "shopname", mDoubanBook.getTitle(), mDoubanBook.getAuthor()[0], mDoubanBook.getPublisher(),
-                mDoubanBook.getIsbn13(), "henhao", new Handler() {
+        http.submitAsyncHttpClientPostAddBook(mToken, mShopName, mDoubanBook.getTitle(), mDoubanBook.getAuthor()[0], mDoubanBook.getPublisher(),
+                mDoubanBook.getIsbn13(), comments.getText().toString(), new Handler() {
                     @Override
                     public void handleMessage(Message msg) {
                         super.handleMessage(msg);

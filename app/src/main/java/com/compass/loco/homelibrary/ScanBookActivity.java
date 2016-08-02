@@ -26,10 +26,13 @@ import java.net.URLConnection;
 
 public class ScanBookActivity extends AppCompatActivity {
 
+    private Bundle mExtras;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan_book);
+        mExtras = getIntent().getExtras();
     }
 
     public void onScanBtnClick(View view) {
@@ -91,6 +94,7 @@ public class ScanBookActivity extends AppCompatActivity {
 
             Intent intent = new Intent(ScanBookActivity.this, SaveBookActivity.class);
             intent.putExtra(SaveBookActivity.INTENT_KEY_DOUBAN_BOOK, result);
+            intent.getExtras().putAll(mExtras);
             startActivity(intent);
         }
     }

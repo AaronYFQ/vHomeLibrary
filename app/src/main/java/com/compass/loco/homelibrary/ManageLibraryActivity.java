@@ -25,6 +25,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class ManageLibraryActivity extends AppCompatActivity {
+    public final static String INTENT_KEY_TOKEN = "token";
+    public final static String INTENT_KEY_SHOPNAME = "shopname";
 
     private static final String TAG = "ManageLibraryActivity";
 
@@ -234,8 +236,8 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, BrowseLibraryActivity.class);
 
-        intent.putExtra("token", token);
-        intent.putExtra("shopname", shopName);
+        intent.putExtra(INTENT_KEY_TOKEN, token);
+        intent.putExtra(INTENT_KEY_SHOPNAME, shopName);
 
         startActivity(intent);
     }
