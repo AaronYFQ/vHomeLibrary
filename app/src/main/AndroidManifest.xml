@@ -46,7 +46,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.compass.loco.homelibrary.ScanBookActivity" />
+                android:value=".ManageLibraryActivity" />
         </activity>
         <activity
             android:name=".SaveBookActivity"
@@ -55,7 +55,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.compass.loco.homelibrary.ScanBookActivity" />
+                android:value=".ScanBookActivity" />
         </activity>
         <activity
             android:name=".CreateLibActivity"
