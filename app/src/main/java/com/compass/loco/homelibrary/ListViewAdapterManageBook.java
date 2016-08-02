@@ -119,6 +119,14 @@ public class ListViewAdapterManageBook extends BaseAdapter {
             new ImageLoadTask(imageUrl, imageViewBookPicture).execute();
 
         }
+        else
+        {
+
+            imageViewBookPicture.setImageResource(
+                    activity.getResources().getIdentifier("@drawable/default_book_picture", null,
+                            activity.getPackageName()));
+
+        }
 
         return convertView;
     }

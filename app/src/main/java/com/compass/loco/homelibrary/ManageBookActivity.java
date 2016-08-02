@@ -3,6 +3,9 @@ package com.compass.loco.homelibrary;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -139,7 +142,7 @@ public class ManageBookActivity extends AppCompatActivity {
                         String publisher = jsonBookObj.getString("publisher");
                         String isbn = jsonBookObj.getString("isbn");
                         Boolean state = jsonBookObj.getBoolean("state");
-                        // String detail = jsonBookObj.getString("detail");
+                        String detail = jsonBookObj.getString("detail");
                         String imageUrl = jsonBookObj.getString("imageurl");
 
                         ((TextView)activity.findViewById(R.id.book_title)).setText(name);
@@ -147,12 +150,17 @@ public class ManageBookActivity extends AppCompatActivity {
                         ((TextView)activity.findViewById(R.id.book_publisher)).setText(publisher);
                         ((TextView)activity.findViewById(R.id.book_isbn)).setText(isbn);
                         ((TextView)activity.findViewById(R.id.book_state)).setText(state? "在库" : "借出");
-
-                        // ((TextView)activity.findViewById(R.id.book_detail)).setText(detail);
+                        ((TextView)activity.findViewById(R.id.book_summary)).setText(detail);
 
                         if(imageUrl.length() > 0) {
 
                             new ImageLoadTask(imageUrl, imageViewBook).execute();
+
+                        }
+                        else
+                        {
+
+                            imageViewBook.setImageResource(getResources().getIdentifier("@drawable/default_book_picture", null, getPackageName()));
 
                         }
                     }

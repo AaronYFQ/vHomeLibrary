@@ -236,7 +236,7 @@ public class ManageLibraryActivity extends AppCompatActivity {
     private void add() {
         Toast.makeText(getApplicationContext(), "Add...", Toast.LENGTH_SHORT).show();
 
-        Intent intent = new Intent(this, BrowseLibraryActivity.class);
+        Intent intent = new Intent(this, ScanBookActivity.class);
 
         intent.putExtra(INTENT_KEY_TOKEN, token);
         intent.putExtra(INTENT_KEY_SHOPNAME, shopName);
