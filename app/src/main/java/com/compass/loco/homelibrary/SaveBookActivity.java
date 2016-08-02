@@ -29,6 +29,8 @@ public class SaveBookActivity extends AppCompatActivity {
         if (extras != null && extras.containsKey(INTENT_KEY_DOUBAN_BOOK)) {
             DoubanBook result = (DoubanBook) extras.getSerializable(INTENT_KEY_DOUBAN_BOOK);
 
+            new ImageLoadTask(result.getImage(), (ImageView) findViewById(R.id.book_image_view)).execute();
+
             TextView titleView = (TextView) findViewById(R.id.book_title);
             titleView.setText(result.getTitle());
 
@@ -49,7 +51,8 @@ public class SaveBookActivity extends AppCompatActivity {
             linkView.setText(Html.fromHtml("<a href=\"" + result.getAlt() + "\">豆瓣链接</a>"));
             linkView.setMovementMethod(LinkMovementMethod.getInstance());
 
-            new ImageLoadTask(result.getImage(), (ImageView) findViewById(R.id.book_image_view)).execute();
+            TextView isbnView = (TextView) findViewById(R.id.book_isbn);
+            isbnView.setText(result.getIsbn13());
         }
     }
 
