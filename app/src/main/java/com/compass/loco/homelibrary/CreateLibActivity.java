@@ -178,7 +178,7 @@ public class CreateLibActivity extends AppCompatActivity {
 
                     String result = jsonObj.getString("result");
 
-                    if(result != "Success")
+                    if(!result.equals("success"))
                     {
                         Toast.makeText(getApplicationContext(), "create shop failed! result=" + result, Toast.LENGTH_SHORT).show();
                     }
