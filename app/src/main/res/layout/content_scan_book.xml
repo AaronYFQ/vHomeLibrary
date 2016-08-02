@@ -4,19 +4,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
     tools:context=".ScanBookActivity"
     tools:showIn="@layout/activity_scan_book">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="扫描条形码"
+        android:textColor="@android:color/white"
+        android:background="@color/colorBackgroundGreen"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/shadow_border"
         android:src="@drawable/scan_book_bg"
+        android:layout_weight="1"
         android:adjustViewBounds="true"/>
     <Button android:id="@+id/scan_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorBackgroundGreen"
+        android:background="@color/colorBackgroundBrown"
         android:onClick="onScanBtnClick"
         android:textSize="16sp"
         android:textStyle="bold"

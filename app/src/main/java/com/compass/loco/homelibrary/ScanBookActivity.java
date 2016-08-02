@@ -1,5 +1,6 @@
 package com.compass.loco.homelibrary;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -47,6 +48,12 @@ public class ScanBookActivity extends AppCompatActivity {
 
     }
 
+    private void showErrorMessage(final String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(message).setTitle("Error");
+        AlertDialog dialog = builder.create();
+    }
+
     private class DownloadWebpageTask extends AsyncTask<String, Void, DoubanBook> {
         @Override
         protected DoubanBook doInBackground(String... urls) {
@@ -71,11 +78,17 @@ public class ScanBookActivity extends AppCompatActivity {
                     }
                 }
             }
+            showErrorMessage("get book info failed for [" + urls[0] + "]");
             return null;
         }
+
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(DoubanBook result) {
+            if (result == null) {
+                return;
+            }
+
             Intent intent = new Intent(ScanBookActivity.this, SaveBookActivity.class);
             intent.putExtra(SaveBookActivity.INTENT_KEY_DOUBAN_BOOK, result);
             startActivity(intent);
