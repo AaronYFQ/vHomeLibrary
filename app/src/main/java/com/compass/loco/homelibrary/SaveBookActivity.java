@@ -1,5 +1,7 @@
 package com.compass.loco.homelibrary;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -16,6 +18,8 @@ import com.compass.loco.homelibrary.model.DoubanBook;
 public class SaveBookActivity extends AppCompatActivity {
     public final static String INTENT_KEY_DOUBAN_BOOK = "com.compass.loco.vhomelibrary.INTENT_KEY_DOUBAN_BOOK";
 
+    private DoubanBook mDoubanBook;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,7 +27,7 @@ public class SaveBookActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null && extras.containsKey(INTENT_KEY_DOUBAN_BOOK)) {
@@ -47,13 +51,27 @@ public class SaveBookActivity extends AppCompatActivity {
             TextView publisherView = (TextView) findViewById(R.id.book_publisher);
             publisherView.setText(result.getPublisher());
 
-            TextView linkView = (TextView) findViewById(R.id.douban_link);
-            linkView.setText(Html.fromHtml("<a href=\"" + result.getAlt() + "\">豆瓣链接</a>"));
-            linkView.setMovementMethod(LinkMovementMethod.getInstance());
-
             TextView isbnView = (TextView) findViewById(R.id.book_isbn);
             isbnView.setText(result.getIsbn13());
+
+            TextView summaryView = (TextView) findViewById(R.id.book_summary);
+            summaryView.setText(result.getSummary());
+
+            mDoubanBook = result;
         }
     }
 
+    public void onDoubanLinkClick(View view) {
+        if (mDoubanBook != null) {
+            openWebPage(mDoubanBook.getAlt());
+        }
+    }
+
+    public void openWebPage(String url) {
+        Uri webpage = Uri.parse(url);
+        Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
 }

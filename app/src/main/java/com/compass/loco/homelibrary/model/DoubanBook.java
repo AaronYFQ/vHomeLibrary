@@ -13,6 +13,7 @@ public class DoubanBook implements Serializable {
     private String isbn13;
     private String[] author;
     private String alt;
+    private String summary;
 
     public String getAlt() {
         return alt;
@@ -68,5 +69,43 @@ public class DoubanBook implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
+    public static class Images {
+        private String small;
+        private String large;
+        private String medium;
+
+        public String getSmall() {
+            return small;
+        }
+
+        public void setSmall(String small) {
+            this.small = small;
+        }
+
+        public String getLarge() {
+            return large;
+        }
+
+        public void setLarge(String large) {
+            this.large = large;
+        }
+
+        public String getMedium() {
+            return medium;
+        }
+
+        public void setMedium(String medium) {
+            this.medium = medium;
+        }
     }
 }

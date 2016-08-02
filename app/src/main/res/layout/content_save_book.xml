@@ -6,8 +6,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:focusableInTouchMode="true"
+    android:descendantFocusability="beforeDescendants"
     tools:context=".SaveBookActivity"
     tools:showIn="@layout/activity_save_book">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="图书信息"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:background="@color/colorBackgroundGreen"/>
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -80,6 +92,7 @@
                     android:orientation="horizontal"
                     android:paddingBottom="16dp"
                     android:paddingTop="16dp"
+                    android:background="@drawable/shadow_border_light"
                     android:layout_gravity="center">
                     <TextView
                         android:layout_width="wrap_content"
@@ -129,19 +142,19 @@
                     android:orientation="horizontal"
                     android:layout_gravity="center_horizontal">
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:textStyle="bold"
                         android:text="外部链接"/>
-                    <TextView
+
+                    <Button
                         android:id="@+id/douban_link"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
                         android:drawableRight="@drawable/douban"
-                        android:layout_weight="1"
-                        android:gravity="right"
-                        android:autoLink="web"
-                        android:linksClickable="true"/>
+                        android:background="@android:color/white"
+                        android:onClick="onDoubanLinkClick"/>
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
@@ -157,20 +170,45 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
+                    android:layout_gravity="center_horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:paddingBottom="8dp"
+                        android:text="介绍"/>
+                    <TextView
+                        android:id="@+id/book_summary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/colorBackgroundGray"></LinearLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:background="@drawable/shadow_border">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
                     android:layout_gravity="center_horizontal">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
                         android:text="评论"/>
-                    <TextView
+                    <EditText
                         android:id="@+id/book_comments"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="right"
-                        android:text="选填 >"/>
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:hint="说点什么吧..."/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
