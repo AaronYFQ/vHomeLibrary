@@ -133,9 +133,9 @@ public class MessageIntentService extends IntentService {
     {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentTitle("My notification")
-                        .setContentText("Receive" + numOfMessage +  "new messages!");
+                        .setSmallIcon(R.drawable.app_icon)
+                        .setContentTitle("v书房")
+                        .setContentText("收到" + numOfMessage +  "条新消息!");
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         // Adds the back stack for the Intent (but not the Intent itself)

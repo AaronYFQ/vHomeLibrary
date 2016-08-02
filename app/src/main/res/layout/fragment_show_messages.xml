@@ -45,6 +45,7 @@
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:dividerHeight="5dp"
             android:id="@+id/listViewMessages" />
     </android.support.v4.widget.SwipeRefreshLayout>
 

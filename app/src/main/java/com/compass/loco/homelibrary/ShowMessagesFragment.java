@@ -1,5 +1,6 @@
 package com.compass.loco.homelibrary;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Handler;
 import android.os.Message;
@@ -22,10 +23,17 @@ import org.json.JSONObject;
 
 public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
 
+    private DBAdapter db;
+    private MessageCursorAdapter cursorAdapter;
+    private ListView messageList;
+    private Button clearButton;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private View view;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_show_messages, container, false);
+        view = inflater.inflate(R.layout.fragment_show_messages, container, false);
 
         Log.v("...............onCreate", "enter................");
         db = new DBAdapter(view.getContext());
@@ -44,12 +52,23 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
                 Cursor cur = (Cursor) cursorAdapter.getItem(position);
                 cur.moveToPosition(position);
                 int id = cur.getInt(cur.getColumnIndexOrThrow("_id"));
+
+/*                Toast.makeText(getContext(),
+                        "Clicked item on position " + position + ", DB item ID " + id,
+                        Toast.LENGTH_SHORT).show();*/
+
+                Boolean bUpdate = false;
                 if(cur.getInt(cur.getColumnIndexOrThrow("new")) > 0) {
                     db.resetState(id);
                     Log.v("..............Message", "Clicked item " + position + " " + id);
-                    Toast.makeText(getContext(),
-                            "Clicked item on position " + position + ", DB item ID " + id,
-                            Toast.LENGTH_SHORT).show();
+                    bUpdate = true;
+                }
+
+                String action = cur.getString(cur.getColumnIndexOrThrow("action"));
+                //handleAction(action, cur);
+
+                if(bUpdate)
+                {
                     DisplayMessages();
                 }
             }
@@ -63,19 +82,26 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
             }
         });
 
-        getNewMessages();
         DisplayMessages();
+        getNewMessages();
+
         MessageIntentService.startActionPoll(getContext(), "Test");
         return view;
     }
 
-    private DBAdapter db;
-    private MessageCursorAdapter cursorAdapter;
-    private ListView messageList;
-    private Button clearButton;
-    private SwipeRefreshLayout swipeRefreshLayout;
+    private void handleAction(String action, Cursor cursor)
+    {
+        if(action.equals("borrow") || action.equals("accept"))
+        {
+            Intent intent = new Intent(view.getContext(), ManageBookActivity.class);
+            intent.putExtra("book", cursor.getString(cursor.getColumnIndexOrThrow("book")));
+            intent.putExtra("shop", cursor.getString(cursor.getColumnIndexOrThrow("shop")));
+            intent.putExtra("owner", cursor.getString(cursor.getColumnIndexOrThrow("owner")));
+            startActivity(intent);
+        }
+    }
 
-    public void getNewMessages()
+    private void getNewMessages()
     {
         final Handler handler = new Handler() {
 
@@ -89,9 +115,6 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
                     JSONArray jsonArray = jsonObj.getJSONArray("messages");
 
                     Log.v("number of Messages: ", new Integer(jsonArray.length()).toString());
-
-                    if(jsonArray.length() == 0)
-                        return;
 
                     for (int i = 0; i < jsonArray.length(); ++i) {
                         jsonObj = jsonArray.getJSONObject(i);
@@ -112,6 +135,9 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
                         }
                     }
 
+                    DisplayMessages();
+                    swipeRefreshLayout.setRefreshing(false);
+
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -123,7 +149,7 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
         httptd.submitAsyncHttpClientGetMessage("zhong", handler);
     }
 
-    public void DisplayMessages()
+    private void DisplayMessages()
     {
         //MessageInfo msgInfo = new MessageInfo("Book" + count, "Shop", "Owner", "Borrower", "Action", "Time");
         //db.insertMessage(msgInfo);
@@ -131,15 +157,13 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
         Cursor cursor = db.getAllMessages();
         cursor.moveToFirst();
         Log.v(".........message", "display item " + cursor.getCount());
-        cursorAdapter.swapCursor(cursor);
-        cursorAdapter.notifyDataSetChanged();
+        cursorAdapter.changeCursor(cursor);
     }
 
     @Override
     public void onRefresh() {
         swipeRefreshLayout.setRefreshing(true);
         getNewMessages();
-        DisplayMessages();
-        swipeRefreshLayout.setRefreshing(false);
+        //swipeRefreshLayout.setRefreshing(false);
     }
 }

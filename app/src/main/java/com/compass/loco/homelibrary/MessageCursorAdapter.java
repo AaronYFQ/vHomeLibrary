@@ -3,6 +3,7 @@ package com.compass.loco.homelibrary;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,11 +25,11 @@ public class MessageCursorAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        TextView tvBook = (TextView) view.findViewById(R.id.message_book);
-        TextView tvShop = (TextView) view.findViewById(R.id.message_shop);
+        TextView tvBook = (TextView) view.findViewById(R.id.message_info);
+/*        TextView tvShop = (TextView) view.findViewById(R.id.message_shop);
         TextView tvOwner = (TextView) view.findViewById(R.id.message_owner);
         TextView tvBorrower = (TextView) view.findViewById(R.id.message_borrower);
-        TextView tvAction = (TextView) view.findViewById(R.id.message_action);
+        TextView tvAction = (TextView) view.findViewById(R.id.message_action);*/
         TextView tvTime = (TextView) view.findViewById(R.id.message_time);
 
         // Extract properties from cursor
@@ -38,21 +39,39 @@ public class MessageCursorAdapter extends CursorAdapter {
         String borrower = cursor.getString(cursor.getColumnIndexOrThrow("borrower"));
         String action = cursor.getString(cursor.getColumnIndexOrThrow("action"));
         String time = cursor.getString(cursor.getColumnIndexOrThrow("time"));
-        int index = cursor.getColumnIndex("new");
-        int i = cursor.getInt(index);
-        Boolean newMsg = i > 0;
-        // Populate fields with extracted properties
-        tvBook.setText(book);
-        if(newMsg) {
-            tvBook.setTextColor(Color.BLUE);
+        Boolean newMsg = cursor.getInt(cursor.getColumnIndex("new")) > 0;
+
+        String message;
+        if(action.equals("borrow"))
+        {
+            message = borrower + "发出借《" + book + "》请求。";
         }
-        else {
+        else if(action.equals("accept"))
+        {
+            message = owner + "已同意你借《" + book + "》。";
+        }
+        else if(action.equals("refuse"))
+        {
+            message = owner + "拒绝你借《" + book + "》的请求。";
+        }
+        else
+        {
+            Log.v("Invalid action", action);
+            return;
+        }
+
+        // Populate fields with extracted properties
+        tvBook.setText(message);
+        if(newMsg) {
             tvBook.setTextColor(Color.BLACK);
         }
-        tvShop.setText(shop);
-        tvOwner.setText(owner);
-        tvBorrower.setText(borrower);
-        tvAction.setText(action);
+        else {
+            tvBook.setTextColor(Color.GRAY);
+        }
+        //tvShop.setText(shop);
+        //tvOwner.setText(owner);
+        //tvBorrower.setText(borrower);
+        //tvAction.setText(action);
         tvTime.setText(time);
     }
 }

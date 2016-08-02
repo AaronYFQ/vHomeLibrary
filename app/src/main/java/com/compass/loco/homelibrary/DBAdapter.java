@@ -126,7 +126,7 @@ public class DBAdapter {
     {
         Cursor cursor =db.query(DATABASE_TABLE, null, null, null, null, null, KEY_ID + " DESC");
 
-        Log.v("get item: ", "total:" + cursor.getCount());
+        Log.v(".........get item: ", "total:" + cursor.getCount());
         return cursor;
     }
 
