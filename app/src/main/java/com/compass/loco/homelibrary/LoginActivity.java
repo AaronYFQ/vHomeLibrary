@@ -120,7 +120,8 @@ public class LoginActivity extends Activity {
 
     private boolean isUsernameValid(String username) {
         //TODO: Replace this with your own logic
-        return username.length() > 4;
+        // return username.length() > 4;
+        return true;
     }
 
     private boolean isPasswordValid(String password) {
