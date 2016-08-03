@@ -39,7 +39,6 @@ public class ManageBookActivity extends AppCompatActivity {
 
     // Android objects
     private Button buttonBook;
-    private Button buttonDoubanLink;
     private ImageView imageViewBook;
     private TextView textViewBookState;
 
@@ -71,8 +70,6 @@ public class ManageBookActivity extends AppCompatActivity {
     private void init() {
 
         buttonBook = (Button) findViewById(R.id.book_button);
-
-        buttonDoubanLink = (Button) findViewById(R.id.douban_link);
 
         imageViewBook = (ImageView) findViewById(R.id.book_image_view);
 
@@ -106,7 +103,7 @@ public class ManageBookActivity extends AppCompatActivity {
         bookName = intent.getStringExtra("bookname");
         request = intent.getStringExtra("request");    // request: "browse" or "borrow"
 
-        Log.d(TAG, "pass through intent: " + "user = " + user + ", shopname = " + shopName + ", bookname = " + bookName + ", requsettype" + request);
+        Log.d(TAG, "pass through intent: " + "user = " + user + ", shopname = " + shopName + ", bookname = " + bookName + ", request=" + request);
 
 
         // get application private shared preference
@@ -262,7 +259,7 @@ public class ManageBookActivity extends AppCompatActivity {
         externalDoubanLink = null;
 
         HttpUtil httptd = new HttpUtil();
-        httptd.submitAsyncHttpClientGetViewBook(null, token, shopName, bookName, handler);
+        httptd.submitAsyncHttpClientGetViewBook(user, shopName, bookName, handler);
 
     }
 

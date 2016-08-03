@@ -165,15 +165,15 @@ public class HttpUtil {
         asyncHttpClientPostHandler(url, param, handler);
         return;
     }
-    public void submitAsyncHttpClientGetViewBook(String token, String shopUser, String shopName, String bookName,final Handler handler) {
+    public void submitAsyncHttpClientGetViewBook(String shopUser, String shopName, String bookName,final Handler handler) {
 
-        String url = GETBOOKINFO_URL + "?" + "token=" + token + "shopuser=" + shopUser+ "&shopname=" + shopName + "&bookname=" + bookName;
+        String url = GETBOOKINFO_URL + "?" + "shopuser=" + shopUser+ "&shopname=" + shopName + "&bookname=" + bookName;
         asyncHttpClientGetHandler(url, handler);
         return;
     }
 
-    public void submitAsyncHttpClientGetRequestBorrowBook(String borrower, String ownerToken, String ownerShop, String ownerBook, final Handler handler) {
-        String url = GET_REQ_BORROW_BOOK_URL + "?" + "&borrower" + borrower + "token=" + ownerToken + "&shopname=" + ownerShop + "&bookname=" + ownerBook;
+    public void submitAsyncHttpClientGetRequestBorrowBook(String borrower, String shopUser, String shopName, String bookName, final Handler handler) {
+        String url = GET_REQ_BORROW_BOOK_URL + "?" + "borrower=" + borrower + "&shopuser=" + shopUser + "&shopname=" + shopName + "&bookname=" + bookName;
         asyncHttpClientGetHandler(url, handler);
         return;
     }
