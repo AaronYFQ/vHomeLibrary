@@ -15,4 +15,6 @@
     <color name="turquoise">#40E0D0</color><!--青绿色 -->
     <color name="lavender">#E6E6FA</color><!--淡紫色 -->
     <color name="steelblue">#4682B4</color><!--钢兰色 -->
+    <color name="gray">#C0C0C0</color><!--灰色 -->
+    <color name="black">#292421</color><!--黑色 -->
 </resources>

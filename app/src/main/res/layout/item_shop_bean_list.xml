@@ -34,7 +34,8 @@
                 android:layout_width="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
-                android:textSize="24sp"
+                android:textSize="20sp"
+                android:maxEms="12"
                 android:textColor="@drawable/search_result_listview_style"
                 android:textColorHighlight="@color/orchid"
                 android:textStyle="bold">
@@ -65,7 +66,7 @@
             android:layout_width="wrap_content"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
-            android:textSize="12sp"
+            android:textSize="16sp"
             android:textColor="@color/orchid"
             android:maxEms="10">
         </TextView>

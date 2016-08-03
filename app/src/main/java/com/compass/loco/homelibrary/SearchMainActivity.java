@@ -106,25 +106,13 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
             //setContentView(R.layout.activity_search_main);
         initData();
         initViews();
+        initListViews();
 
     }
 
-    /**
-     * 初始化视图
-     */
-    private void initViews() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
+    private void initListViews()
+    {
         lvResults = (ListView) findViewById(R.id.main_lv_search_results);
-        searchView = (SearchView) findViewById(R.id.main_search_layout);
-        //设置监听
-
-        searchView.setSearchViewListener(this);
-        //设置adapter
-        searchView.setTipsHintAdapter(hintAdapter);
-        searchView.setAutoCompleteAdapter(autoCompleteAdapter);
-        // searchView.
         lvResults.setTextFilterEnabled(true);
         lvResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -165,6 +153,21 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
 
             }
         });
+    }
+    /**
+     * 初始化视图
+     */
+    private void initViews() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        searchView = (SearchView) findViewById(R.id.main_search_layout);
+        //设置监听
+        searchView.setSearchViewListener(this);
+        //设置adapter
+        searchView.setTipsHintAdapter(hintAdapter);
+        searchView.setAutoCompleteAdapter(autoCompleteAdapter);
+
     }
 
     /**
@@ -241,7 +244,7 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
                             dbData.add(
                                     new Bean(
                                             jsonObj.getString("name"),
-                                            (jsonObj.getBoolean("state")) ? "可借阅" : "已借出",
+                                            (jsonObj.getBoolean("state")) ? "在库" : "借出",
                                             jsonObj.getString("author"),
                                             jsonObj.getString("publisher"),
                                             jsonObj.getString("shopname"),
@@ -461,9 +464,13 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
      * @param text
      */
     @Override
-    public void onRefreshAutoComplete(String text) {
+    public void onRefreshAutoComplete(String text,boolean searchStyleFlag) {
         //更新数据
-        getAutoCompleteData(text);
+        if(!searchStyleFlag)
+        {
+            getAutoCompleteData(text);
+        }
+
     }
 
     /**

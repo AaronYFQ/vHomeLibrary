@@ -230,7 +230,7 @@ public class SearchView extends LinearLayout implements View.OnClickListener {
                 }
                 //更新autoComplete数据
                 if (mListener != null) {
-                    mListener.onRefreshAutoComplete(charSequence + "");
+                    mListener.onRefreshAutoComplete(charSequence + "", searchStyleFlag);
                 }
             } else {
                 ivDelete.setVisibility(GONE);
@@ -273,7 +273,7 @@ public class SearchView extends LinearLayout implements View.OnClickListener {
          *
          * @param text 传入补全后的文本
          */
-        void onRefreshAutoComplete(String text);
+        void onRefreshAutoComplete(String text,boolean searchStyleFlag);
 
         /**
          * 开始搜索

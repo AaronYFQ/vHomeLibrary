@@ -34,9 +34,9 @@
                 android:layout_width="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
-                android:textSize="24sp"
+                android:textSize="20sp"
                 android:textColor="@drawable/search_result_listview_style"
-                android:textColorHighlight="@color/orchid"
+                android:textColorHighlight="@color/gray"
                 android:singleLine="true"
                 android:maxEms="12"
                 android:textStyle="bold">
@@ -50,7 +50,7 @@
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:background="@drawable/book_state_edittext_shape"
-                android:textColor="@color/myred"
+                android:textColor="@color/black"
                 android:textSize="12sp">
             </TextView>
 
@@ -67,8 +67,8 @@
             android:layout_width="wrap_content"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
-            android:textSize="12sp"
-            android:textColor="@color/orchid"
+            android:textSize="16sp"
+            android:textColor="@color/gray"
             android:maxEms="10">
         </TextView>
 
@@ -79,9 +79,9 @@
             android:layout_width="wrap_content"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:textSize="12sp"
+            android:textSize="16sp"
             android:maxEms="10"
-            android:textColor="@color/orchid">
+            android:textColor="@color/gray">
         </TextView>
 
     </RelativeLayout>
@@ -97,9 +97,9 @@
             android:layout_width="wrap_content"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
-            android:textSize="12sp"
-            android:textColor="@color/orchid"
-            android:maxEms="10">
+            android:textSize="16sp"
+            android:textColor="@color/gray"
+            android:maxEms="8">
         </TextView>
 
         <TextView
@@ -109,9 +109,9 @@
             android:layout_width="wrap_content"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:textSize="12sp"
+            android:textSize="16sp"
             android:singleLine="true"
-            android:textColor="@color/orchid"
+            android:textColor="@color/gray"
             android:maxEms="10" >
         </TextView>
     </RelativeLayout>
