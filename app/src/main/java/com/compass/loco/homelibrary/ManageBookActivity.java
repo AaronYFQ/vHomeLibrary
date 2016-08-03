@@ -120,7 +120,7 @@ public class ManageBookActivity extends AppCompatActivity {
             if(request.equals("browse"))
             {
 
-                buttonBook.setText("借书已还");
+                buttonBook.setVisibility(View.INVISIBLE);
 
                 flag = RETURN;
 
@@ -188,15 +188,45 @@ public class ManageBookActivity extends AppCompatActivity {
                         ((TextView)activity.findViewById(R.id.book_summary)).setText(detail);
 
 
-                        if(state) {
+                        if(flag == REQUEST) {
 
-                            buttonBook.setEnabled(flag != RETURN);
+                            if(state) {
+
+                                buttonBook.setVisibility(View.VISIBLE);
+
+                            }
+                            else {
+
+                                buttonBook.setVisibility(View.INVISIBLE);
+
+                            }
+                        }
+                        else if(flag == AGREE){
+
+                            if(state) {
+
+                                buttonBook.setVisibility(View.VISIBLE);
+
+                            }
+                            else {
+
+                                buttonBook.setVisibility(View.INVISIBLE);
+
+                            }
 
                         }
                         else {
 
-                            buttonBook.setEnabled(flag == RETURN);
+                            if(state) {
 
+                                buttonBook.setVisibility(View.INVISIBLE);
+
+                            }
+                            else {
+
+                                buttonBook.setVisibility(View.VISIBLE);
+
+                            }
                         }
 
                         if(imageUrl.length() > 0) {
@@ -255,9 +285,7 @@ public class ManageBookActivity extends AppCompatActivity {
 
                     if(result.equals("success")) {
 
-                        textViewBookState.setText("借出");
-
-                        buttonBook.setEnabled(false);
+                        Toast.makeText(getApplicationContext(), "request has registered!", Toast.LENGTH_SHORT).show();
 
                     }
                     else {
@@ -303,8 +331,7 @@ public class ManageBookActivity extends AppCompatActivity {
 
                     if(result.equals("success")) {
 
-                        buttonBook.setText("借书已还");
-                        buttonBook.setEnabled(true);
+                        buttonBook.setText("归还本书");
 
                         flag = RETURN;
 
@@ -355,7 +382,7 @@ public class ManageBookActivity extends AppCompatActivity {
 
                         textViewBookState.setText("在库");
 
-                        buttonBook.setEnabled(false);
+                        buttonBook.setVisibility(View.INVISIBLE);
 
                     }
                     else {
