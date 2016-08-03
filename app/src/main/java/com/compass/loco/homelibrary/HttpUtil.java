@@ -148,7 +148,7 @@ public class HttpUtil {
         param.put("bookisdn", bookIsdn);
         param.put("bookcomments", bookComments);
         param.put("imageurl", imageURL);
-        param.put("imageurl", extLink);
+        param.put("extlink", extLink);
 
         asyncHttpClientPostHandler(url, param, handler);
         return;
