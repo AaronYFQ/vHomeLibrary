@@ -118,9 +118,13 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
             Intent intent = new Intent(view.getContext(), ManageBookActivity.class);
             intent.putExtra("bookname", cursor.getString(cursor.getColumnIndexOrThrow("book")));
             intent.putExtra("shopname", cursor.getString(cursor.getColumnIndexOrThrow("shop")));
-            intent.putExtra("user", cursor.getString(cursor.getColumnIndexOrThrow("owner")));
             if(action.equals("borrow")) {
-                intent.putExtra("request", cursor.getString(cursor.getColumnIndexOrThrow("borrower")));
+                intent.putExtra("user", cursor.getString(cursor.getColumnIndexOrThrow("borrower")));
+                intent.putExtra("request", "borrow");
+            }
+            else
+            {
+                intent.putExtra("user", cursor.getString(cursor.getColumnIndexOrThrow("owner")));
             }
             startActivity(intent);
         }
