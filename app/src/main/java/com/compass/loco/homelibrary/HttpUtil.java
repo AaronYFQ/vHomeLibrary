@@ -172,21 +172,21 @@ public class HttpUtil {
         return;
     }
 
-    public void submitAsyncHttpClientGetRequestBorrowBook(String token, String borrower, String shopName, String bookName, final Handler handler) {
-        String url = GET_REQ_BORROW_BOOK_URL + "?" + "token=" + token + "&borrower" + borrower + "&shopname=" + shopName + "&bookname=" + bookName;
+    public void submitAsyncHttpClientGetRequestBorrowBook(String borrower, String ownerToken, String ownerShop, String ownerBook, final Handler handler) {
+        String url = GET_REQ_BORROW_BOOK_URL + "?" + "&borrower" + borrower + "token=" + ownerToken + "&shopname=" + ownerShop + "&bookname=" + ownerBook;
         asyncHttpClientGetHandler(url, handler);
         return;
     }
 
-    public void submitAsyncHttpClientPostBorrowAction(String token, String borrower, String shopName,
-                                                    String bookName, String action, final Handler handler) {
+    public void submitAsyncHttpClientPostBorrowAction(String ownerToken, String ownerShop,
+                                                    String ownerBook, String borrower, String action, final Handler handler) {
 
         RequestParams param = new RequestParams();
         String url = POST_BORROW_ACTION_URL;
-        param.put("token", token);
+        param.put("token", ownerToken);
         param.put("borrower", borrower);
-        param.put("shopname", shopName);
-        param.put("bookname", bookName);
+        param.put("shopname", ownerShop);
+        param.put("bookname", ownerBook);
         param.put("action", action);
 
         asyncHttpClientPostHandler(url, param, handler);
@@ -194,15 +194,15 @@ public class HttpUtil {
 
     }
 
-    public void submitAsyncHttpClientPostReturnBook(String token, String borrower, String shopName,
-                                                      String bookName, final Handler handler) {
+    public void submitAsyncHttpClientPostReturnBook(String ownerToken, String ownerShop,
+                                                      String ownerBook,String borrower, final Handler handler) {
 
         RequestParams param = new RequestParams();
         String url = POST_RETURN_BOOK_URL;
-        param.put("token", token);
+        param.put("token", ownerToken);
         param.put("borrower", borrower);
-        param.put("shopname", shopName);
-        param.put("bookname", bookName);
+        param.put("shopname", ownerShop);
+        param.put("bookname", ownerBook);
 
         asyncHttpClientPostHandler(url, param, handler);
         return;
