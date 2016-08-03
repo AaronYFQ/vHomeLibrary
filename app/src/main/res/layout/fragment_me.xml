@@ -240,7 +240,7 @@
                 </RelativeLayout>
             </LinearLayout>
 
-            <TextView
+            <!--TextView
                 android:layout_width="match_parent"
                 android:layout_height="5dp"/>
             <LinearLayout
@@ -333,7 +333,7 @@
                         android:layout_alignParentEnd="true"
                         android:src="@drawable/arrow_right"/>
                 </RelativeLayout>
-            </LinearLayout>
+            </LinearLayout-->
 
 
             <TextView
