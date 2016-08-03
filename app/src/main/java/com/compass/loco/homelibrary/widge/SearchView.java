@@ -119,6 +119,8 @@ public class SearchView extends LinearLayout implements View.OnClickListener {
                 String[] searchStyle = getResources().getStringArray(R.array.search_style);
                 if(searchStyle[pos].equals("小区")) {
                     searchStyleFlag = false;
+                    //etInput.setText("请输入小区名字");
+                    etInput.setHint("请输入小区名字");
                 } else {
                     searchStyleFlag = true;
                 }

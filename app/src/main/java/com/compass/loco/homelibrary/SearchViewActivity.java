@@ -205,7 +205,8 @@ public class SearchViewActivity extends AppCompatActivity implements com.compass
                                             jsonObj.getString("author"),
                                             jsonObj.getString("publisher"),
                                             jsonObj.getString("shopname"),
-                                            jsonObj.getString("shopaddr")
+                                            jsonObj.getString("shopaddr"),
+                                            jsonObj.getString("username")
                                     ));
                         }
                        /* resultAdapter = new SearchAdapter(getApplicationContext(), dbData, R.layout.item_bean_list);
@@ -280,7 +281,8 @@ public class SearchViewActivity extends AppCompatActivity implements com.compass
                                             jsonObj.getString("author"),
                                             jsonObj.getString("publisher"),
                                             jsonObj.getString("shopname"),
-                                            jsonObj.getString("shopaddr")
+                                            jsonObj.getString("shopaddr"),
+                                            jsonObj.getString("username")
                                     ));
                         }
                       /*  resultAdapter = new SearchAdapter(getApplicationContext(), dbData, R.layout.item_bean_list);

@@ -1,5 +1,8 @@
 package com.compass.loco.homelibrary;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,7 +18,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.compass.loco.homelibrary.adapter.SearchAdapter;
+import com.compass.loco.homelibrary.adapter.SearchAearAdapter;
 import com.compass.loco.homelibrary.model.Bean;
+import com.compass.loco.homelibrary.model.ShopBean;
 import com.compass.loco.homelibrary.widge.SearchView;
 
 import org.json.JSONArray;
@@ -41,6 +46,7 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
          * 搜索结果列表view
          */
         private ListView lvResults;
+        private ListView lvAearResults;
 
         /**
          * 搜索view
@@ -62,8 +68,10 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
          * 搜索结果列表adapter
          */
         private SearchAdapter resultAdapter;
+        private SearchAearAdapter resultAdapter2;
 
         private List<Bean> dbData;
+        private List<ShopBean> dbAreaData;
 
         /**
          * 热搜版数据
@@ -95,27 +103,19 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        setContentView(R.layout.activity_search_main);
+            //setContentView(R.layout.activity_search_main);
         initData();
         initViews();
 
-       /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
     }
 
     /**
      * 初始化视图
      */
     private void initViews() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         lvResults = (ListView) findViewById(R.id.main_lv_search_results);
         searchView = (SearchView) findViewById(R.id.main_search_layout);
         //设置监听
@@ -130,6 +130,39 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Toast.makeText(getApplicationContext(), position + "", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(),ManageBookActivity.class);
+                intent.putExtra("user",dbData.get(position).getUserName());
+                intent.putExtra("shopname",dbData.get(position).getShopName());
+                intent.putExtra("bookname",dbData.get(position).getBookName());
+                intent.putExtra("request","browse");
+                startActivity(intent);
+            }
+        });
+
+        lvAearResults = (ListView) findViewById(R.id.lv_search_area_results);
+        lvAearResults.setTextFilterEnabled(true);
+        lvAearResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Toast.makeText(getApplicationContext(), position + "", Toast.LENGTH_SHORT).show();
+
+                SharedPreferences sharedata = getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
+                String username = sharedata.getString("username", null);
+
+                if(username != null && username.equals(dbData.get(position).getUserName()))
+                {
+                    Intent intent = new Intent(getApplicationContext(),ManageLibraryActivity.class);
+                    startActivity(intent);
+                }
+                else
+                {
+                    Intent intent = new Intent(getApplicationContext(),BrowseLibraryActivity.class);
+                    intent.putExtra("user",dbData.get(position).getUserName());
+                    intent.putExtra("shopname",dbData.get(position).getShopName());
+                    //intent.putExtra("request","browse");
+                    startActivity(intent);
+                }
+
             }
         });
     }
@@ -188,6 +221,7 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
                 {
                     resultAdapter = new SearchAdapter(getApplicationContext(), dbData, R.layout.item_bean_list);
                     lvResults.setAdapter(resultAdapter);
+
                     // resultAdapter.notifyDataSetChanged();
                     resultAdapter.notifyDataSetChanged();
 
@@ -211,7 +245,8 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
                                             jsonObj.getString("author"),
                                             jsonObj.getString("publisher"),
                                             jsonObj.getString("shopname"),
-                                            jsonObj.getString("shopaddr")
+                                            jsonObj.getString("shopaddr"),
+                                            jsonObj.getString("username")
                                     ));
                         }
                        /* resultAdapter = new SearchAdapter(getApplicationContext(), dbData, R.layout.item_bean_list);
@@ -219,7 +254,14 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
                         // resultAdapter.notifyDataSetChanged();
                         resultAdapter.notifyDataSetChanged();
 */
-                        Toast.makeText(getApplicationContext(), "完成搜素", Toast.LENGTH_SHORT).show();
+                        if(jsonArray.length() == 0)
+                        {
+                            Toast.makeText(getApplicationContext(), "完成搜素,暂时没有符合您需求的书", Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+                            Toast.makeText(getApplicationContext(), "完成搜素", Toast.LENGTH_SHORT).show();
+                        }
                     } catch (JSONException e) {
                         Toast.makeText(getApplicationContext(), "unknown response from remote service!", Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
@@ -227,6 +269,7 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
                     finally {
                         resultAdapter = new SearchAdapter(getApplicationContext(), dbData, R.layout.item_bean_list);
                         lvResults.setAdapter(resultAdapter);
+
                         // resultAdapter.notifyDataSetChanged();
                         resultAdapter.notifyDataSetChanged();
                     }
@@ -246,7 +289,7 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
             public void handleMessage(Message msg) {
                 String jsonText = msg.getData().getString("responseBody");
                 Log.v("responseBody", jsonText);
-                dbData.clear();
+                dbAreaData.clear();
                 String dbResult = "";
                 JSONObject jsonObj = null;
 
@@ -261,47 +304,53 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
 
                 if(dbResult.contains("null"))
                 {
-                    resultAdapter = new SearchAdapter(getApplicationContext(), dbData, R.layout.item_bean_list);
-                    lvResults.setAdapter(resultAdapter);
+                    resultAdapter2 = new SearchAearAdapter(getApplicationContext(), dbAreaData, R.layout.item_bean_list);
+                    lvAearResults.setAdapter(resultAdapter2);
                     // resultAdapter.notifyDataSetChanged();
-                    resultAdapter.notifyDataSetChanged();
+                    resultAdapter2.notifyDataSetChanged();
 
-                    Toast.makeText(getApplicationContext(), "完成搜素,暂时没有符合您需求的书", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "完成搜素,该小区暂时没有符合您需求的书店", Toast.LENGTH_SHORT).show();
 
                 }
                 else
                 {
                     try {
 
-                        JSONArray jsonArray = jsonObj.getJSONArray("books");
+                        JSONArray jsonArray = jsonObj.getJSONArray("shops");
 
-                        Log.v("number of books: ", new Integer(jsonArray.length()).toString());
+                        Log.v("number of shops: ", new Integer(jsonArray.length()).toString());
                         for (int i = 0; i < jsonArray.length(); ++i) {
                             jsonObj = jsonArray.getJSONObject(i);
                             Log.v("json object to string.", jsonObj.toString());
-                            dbData.add(
-                                    new Bean(
+                            dbAreaData.add(
+                                    new ShopBean(
                                             jsonObj.getString("name"),
-                                            (jsonObj.getBoolean("state")) ? "可借阅" : "已借出",
-                                            jsonObj.getString("author"),
-                                            jsonObj.getString("publisher"),
-                                            jsonObj.getString("shopname"),
-                                            jsonObj.getString("shopaddr")
+                                            jsonObj.getString("addr"),
+                                            jsonObj.getString("username")
+
                                     ));
                         }
                       /*  resultAdapter = new SearchAdapter(getApplicationContext(), dbData, R.layout.item_bean_list);
                         lvResults.setAdapter(resultAdapter);
                         // resultAdapter.notifyDataSetChanged();*/
-                        Toast.makeText(getApplicationContext(), "完成搜素", Toast.LENGTH_SHORT).show();
+                        if(jsonArray.length() == 0)
+                        {
+                            Toast.makeText(getApplicationContext(), "完成搜素,该小区暂时没有符合您需求的书店", Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+                            Toast.makeText(getApplicationContext(), "完成搜素", Toast.LENGTH_SHORT).show();
+                        }
+
                     } catch (JSONException e) {
                         Toast.makeText(getApplicationContext(), "unknown response from remote service!", Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
                     }
                     finally {
-                        resultAdapter = new SearchAdapter(getApplicationContext(), dbData, R.layout.item_bean_list);
-                        lvResults.setAdapter(resultAdapter);
+                        resultAdapter2 = new SearchAearAdapter(getApplicationContext(), dbAreaData, R.layout.item_shop_bean_list);
+                        lvAearResults.setAdapter(resultAdapter2);
                         // resultAdapter.notifyDataSetChanged();
-                        resultAdapter.notifyDataSetChanged();
+                        resultAdapter2.notifyDataSetChanged();
                     }
                 }
 
@@ -318,8 +367,8 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
     private void getHintData() {
         hintData = new ArrayList<>(hintSize);
 
-        hintData.add("apple2");
-        hintData.add("apple3");
+        hintData.add("apple");
+        hintData.add("bj");
         hintData.add("apple4");
         hintData.add("bookName");
 
@@ -349,6 +398,18 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
                     }
                 }
             }*/
+            String [] villageList = getResources().getStringArray(R.array.village_array);
+            for(int i = 0; i< villageList.length; i++)
+            {
+                autoCompleteData.add(villageList[i]);
+            }
+            /*autoCompleteData.add("望京新城");
+            autoCompleteData.add("首开知语");
+            autoCompleteData.add("利泽西园");
+            autoCompleteData.add("南湖东园");
+            autoCompleteData.add("澳洲康都");
+            autoCompleteData.add("望京花园");*/
+
 
         }
         if (autoCompleteAdapter == null) {
@@ -367,21 +428,25 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
             resultData = new ArrayList<>();
         } else {
             resultData.clear();
-            if (dbData == null) {
-                dbData = new ArrayList<>();
-            }
+
             if(searchStyleFlag){
+                if (dbData == null) {
+                    dbData = new ArrayList<>();
+                }
                 getDbDataByBookName(text);
             } else {
+                if (dbAreaData == null) {
+                    dbAreaData = new ArrayList<>();
+                }
                 getDbDataByVillageName(text);
             }
 
-            for (int i = 0; i < dbData.size(); i++) {
+            /*for (int i = 0; i < dbData.size(); i++) {
                 if (dbData.get(i).getBookName().contains(text.trim())) {
                     resultData.add(dbData.get(i));
                     autoCompleteData.add(dbData.get(i).getBookName());
                 }
-            }
+            }*/
         }
        /* if (resultAdapter == null) {
             resultAdapter = new SearchAdapter(this, resultData, R.layout.item_bean_list);
@@ -410,14 +475,21 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
     public void onSearch(String text, boolean searchStyle) {
         //更新result数据
 
-        /*if(dbData != null){
-            dbData.clear();
-        }
-        resultAdapter = new SearchAdapter(getApplicationContext(), dbData, R.layout.item_bean_list);
-        lvResults.setAdapter(resultAdapter);*/
         lvResults.setVisibility(View.INVISIBLE);
+        lvAearResults.setVisibility(View.INVISIBLE);
         getResultData(text,searchStyle);
-        lvResults.setVisibility(View.VISIBLE);
+
+        if(searchStyle)
+        {
+            lvAearResults.setVisibility(View.INVISIBLE);
+            lvResults.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            lvResults.setVisibility(View.INVISIBLE);
+            lvAearResults.setVisibility(View.VISIBLE);
+        }
+
 
        /* //第一次获取结果 还未配置适配器
         if (lvResults.getAdapter() == null) {

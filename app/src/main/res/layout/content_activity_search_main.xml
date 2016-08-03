@@ -28,4 +28,13 @@
 
     </ListView>
 
+    <ListView
+        android:visibility="invisible"
+        android:id="@+id/lv_search_area_results"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/main_search_layout">
+
+    </ListView>
+
 </RelativeLayout>

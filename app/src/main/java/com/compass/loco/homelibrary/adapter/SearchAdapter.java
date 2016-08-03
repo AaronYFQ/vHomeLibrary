@@ -22,6 +22,8 @@ public class SearchAdapter extends CommonAdapter<Bean>{
         super(context, data, layoutId);
     }
 
+
+
     @Override
     public void convert(ViewHolder holder, int position) {
 

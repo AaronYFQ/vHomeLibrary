@@ -14,13 +14,16 @@ public class Bean {
     private String shopName;
     private String bookAddr;
 
-    public Bean(String bookName, String bookState, String bookAuthor, String bookPublisher, String shopName, String bookAddr) {
+    private String username;
+
+    public Bean(String bookName, String bookState, String bookAuthor, String bookPublisher, String shopName, String bookAddr,String username) {
         this.bookName = bookName;
         this.bookState = bookState;
         this.bookAuthor = bookAuthor;
         this.bookPublisher = bookPublisher;
         this.shopName = shopName;
         this.bookAddr = bookAddr;
+        this.username = username;
     }
 
    /* public int getBookIconId() {
@@ -70,5 +73,12 @@ public class Bean {
     }
     public void setBookAddr(String bookAddr) {
         this.bookAddr = bookAddr;
+    }
+
+    public String getUserName() {
+        return username;
+    }
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
