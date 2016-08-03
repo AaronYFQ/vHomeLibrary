@@ -44,6 +44,7 @@ public class ManageBookActivity extends AppCompatActivity {
 
     private String token;
     private String user;
+    private String borrower;
     private String shopName;
     private String bookName;
     private String request;
@@ -99,6 +100,7 @@ public class ManageBookActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         user = intent.getStringExtra("user");
+        borrower = intent.getStringExtra("borrower");
         shopName = intent.getStringExtra("shopname");
         bookName = intent.getStringExtra("bookname");
         request = intent.getStringExtra("request");    // request: "browse" or "borrow"
@@ -112,12 +114,12 @@ public class ManageBookActivity extends AppCompatActivity {
         // 1. token
         token = sharePref.getString("token", "");
 
+        buttonBook.setVisibility(View.INVISIBLE);
+
         if(token.equals(user)) {
 
             if(!request.equals("borrow"))
             {
-
-                buttonBook.setVisibility(View.INVISIBLE);
 
                 flag = RETURN;
 
@@ -354,7 +356,7 @@ public class ManageBookActivity extends AppCompatActivity {
 
         HttpUtil httptd = new HttpUtil();
 
-        httptd.submitAsyncHttpClientPostBorrowAction(token, shopName, bookName, user, "accept" /* "refuse" */, handler);
+        httptd.submitAsyncHttpClientPostBorrowAction(user, shopName, bookName, borrower, "accept" /* "refuse" */, handler);
 
     }
 
