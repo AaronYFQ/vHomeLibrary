@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -38,6 +39,7 @@ public class ManageBookActivity extends AppCompatActivity {
 
     // Android objects
     private Button buttonBook;
+    private Button buttonDoubanLink;
     private ImageView imageViewBook;
     private TextView textViewBookState;
 
@@ -48,6 +50,8 @@ public class ManageBookActivity extends AppCompatActivity {
     private String request;
 
     private int flag;
+
+    private String externalDoubanLink;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,6 +71,8 @@ public class ManageBookActivity extends AppCompatActivity {
     private void init() {
 
         buttonBook = (Button) findViewById(R.id.book_button);
+
+        buttonDoubanLink = (Button) findViewById(R.id.douban_link);
 
         imageViewBook = (ImageView) findViewById(R.id.book_image_view);
 
@@ -91,6 +97,7 @@ public class ManageBookActivity extends AppCompatActivity {
 
             }
         });
+
 
         Intent intent = getIntent();
 
@@ -171,6 +178,8 @@ public class ManageBookActivity extends AppCompatActivity {
                         String detail = jsonBookObj.getString("detail");
                         String imageUrl = jsonBookObj.getString("imageurl");
 
+                        externalDoubanLink = jsonBookObj.getString("extlink");
+
                         ((TextView)activity.findViewById(R.id.book_title)).setText(name);
                         ((TextView)activity.findViewById(R.id.book_author)).setText(author);
                         ((TextView)activity.findViewById(R.id.book_publisher)).setText(publisher);
@@ -201,7 +210,6 @@ public class ManageBookActivity extends AppCompatActivity {
                             imageViewBook.setImageResource(getResources().getIdentifier("@drawable/default_book_picture", null, getPackageName()));
 
                         }
-
                     }
                     else
                     {
@@ -220,6 +228,8 @@ public class ManageBookActivity extends AppCompatActivity {
             }
         };
 
+
+        externalDoubanLink = null;
 
         HttpUtil httptd = new HttpUtil();
         httptd.submitAsyncHttpClientGetViewBook(token, shopName, bookName, handler);
@@ -368,5 +378,30 @@ public class ManageBookActivity extends AppCompatActivity {
         HttpUtil httptd = new HttpUtil();
         
         httptd.submitAsyncHttpClientPostReturnBook(token, shopName, bookName, "", handler);
+    }
+
+    public void onDoubanLinkClick(View view) {
+
+        if(externalDoubanLink != null && externalDoubanLink.length() > 0) {
+
+            Log.d(TAG, "open external web page: " + externalDoubanLink);
+
+            openWebPage(externalDoubanLink);
+
+        }
+
+    }
+
+    private void openWebPage(String url) {
+
+        Uri webpage = Uri.parse(url);
+
+        Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+
+        if (intent.resolveActivity(getPackageManager()) != null) {
+
+            startActivity(intent);
+
+        }
     }
 }

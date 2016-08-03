@@ -148,19 +148,19 @@
                     android:orientation="horizontal"
                     android:layout_gravity="center_horizontal">
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:textStyle="bold"
                         android:text="外部链接"/>
-                    <TextView
+
+                    <Button
                         android:id="@+id/douban_link"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
                         android:drawableRight="@drawable/douban"
-                        android:layout_weight="1"
-                        android:gravity="right"
-                        android:autoLink="web"
-                        android:linksClickable="true"/>
+                        android:background="@android:color/white"
+                        android:onClick="onDoubanLinkClick"/>
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
