@@ -121,6 +121,8 @@ public class ManageBookActivity extends AppCompatActivity {
             if(!request.equals("borrow"))
             {
 
+                buttonBook.setText("归还本书");
+
                 flag = RETURN;
 
             }
