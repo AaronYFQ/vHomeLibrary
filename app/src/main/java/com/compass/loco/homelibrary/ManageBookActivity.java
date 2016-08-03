@@ -141,8 +141,13 @@ public class ManageBookActivity extends AppCompatActivity {
 
             buttonBook.setText("发借书请求");
 
-
             flag = REQUEST;
+
+            if(token.equals("")) {
+
+                buttonBook.setVisibility(View.INVISIBLE);
+
+            }
 
         }
     }
@@ -189,45 +194,44 @@ public class ManageBookActivity extends AppCompatActivity {
                         ((TextView)activity.findViewById(R.id.book_summary)).setText(detail);
 
 
-                        if(flag == REQUEST) {
+                        if(!token.equals("")) {
 
-                            if(state) {
+                            if (flag == REQUEST) {
 
-                                buttonBook.setVisibility(View.VISIBLE);
+                                if (state) {
 
+                                    buttonBook.setVisibility(View.VISIBLE);
+
+                                } else {
+
+                                    buttonBook.setVisibility(View.INVISIBLE);
+
+                                }
+                            } else if (flag == AGREE) {
+
+                                if (state) {
+
+                                    buttonBook.setVisibility(View.VISIBLE);
+
+                                } else {
+
+                                    buttonBook.setVisibility(View.INVISIBLE);
+
+                                }
+
+                            } else {
+
+                                if (state) {
+
+                                    buttonBook.setVisibility(View.INVISIBLE);
+
+                                } else {
+
+                                    buttonBook.setVisibility(View.VISIBLE);
+
+                                }
                             }
-                            else {
 
-                                buttonBook.setVisibility(View.INVISIBLE);
-
-                            }
-                        }
-                        else if(flag == AGREE){
-
-                            if(state) {
-
-                                buttonBook.setVisibility(View.VISIBLE);
-
-                            }
-                            else {
-
-                                buttonBook.setVisibility(View.INVISIBLE);
-
-                            }
-
-                        }
-                        else {
-
-                            if(state) {
-
-                                buttonBook.setVisibility(View.INVISIBLE);
-
-                            }
-                            else {
-
-                                buttonBook.setVisibility(View.VISIBLE);
-
-                            }
                         }
 
                         if(imageUrl.length() > 0) {

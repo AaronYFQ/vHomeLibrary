@@ -24,6 +24,7 @@
         <activity
             android:name=".ManageLibraryActivity"
             android:label="管理书店"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".BrowseLibraryActivity"

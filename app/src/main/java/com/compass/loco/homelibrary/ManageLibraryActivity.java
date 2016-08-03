@@ -56,6 +56,8 @@ public class ManageLibraryActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         Log.d(TAG, "onCreate() called");
 
         init();
