@@ -165,9 +165,9 @@ public class HttpUtil {
         asyncHttpClientPostHandler(url, param, handler);
         return;
     }
-    public void submitAsyncHttpClientGetViewBook(String token, String shopName, String bookName,final Handler handler) {
+    public void submitAsyncHttpClientGetViewBook(String token, String shopUser, String shopName, String bookName,final Handler handler) {
 
-        String url = GETBOOKINFO_URL + "?" + "token=" + token + "&shopname=" + shopName + "&bookname=" + bookName;
+        String url = GETBOOKINFO_URL + "?" + "token=" + token + "shopuser=" + shopUser+ "&shopname=" + shopName + "&bookname=" + bookName;
         asyncHttpClientGetHandler(url, handler);
         return;
     }
@@ -195,12 +195,11 @@ public class HttpUtil {
     }
 
     public void submitAsyncHttpClientPostReturnBook(String ownerToken, String ownerShop,
-                                                      String ownerBook,String borrower, final Handler handler) {
+                                                      String ownerBook, final Handler handler) {
 
         RequestParams param = new RequestParams();
         String url = POST_RETURN_BOOK_URL;
         param.put("token", ownerToken);
-        param.put("borrower", borrower);
         param.put("shopname", ownerShop);
         param.put("bookname", ownerBook);
 
