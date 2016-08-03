@@ -5,27 +5,54 @@ package com.compass.loco.homelibrary;
  */
 public class BorrowedBookInfo {
 
-    private BookInfo bookInfo;
+    private String bookName;
     private String shopName;
+    private String shopAddress;
+    private String requested_Time;
+    private String accepted_Time;
+    private String finish_Time;
     private String state;
+    private String bitmap;
 
-    public void BorrowedBookInfo(BookInfo bookinfo, String shopname, String state) {
-        this.bookInfo = bookinfo;
-        this.shopName = shopname;
+    public BorrowedBookInfo(String name, String shop, String address, String requested_time, String accepted_time,String finish_time,String imageUrl, String state) {
+        this.bookName = name;
+        this.shopName = shop;
+        this.shopAddress = address;
+        this.requested_Time = requested_time;
+        this.accepted_Time = accepted_time;
+        this.finish_Time = finish_time;
         this.state = state;
-        return;
+        this.bitmap = imageUrl;
     }
 
-    public BookInfo getBookInfo() {
-        return bookInfo;
+    public String  getBookName() {
+        return bookName;
     }
 
-    public void setShopName(String shopname) {
-        this.shopName = shopname;
+    public String getShopName() {
+        return shopName;
     }
 
     public String getState() {
         return state;
+    }
+
+    public String  getShopAddress() {
+        return shopAddress;
+    }
+
+    public String getRequestTime() {
+        return requested_Time;
+    }
+    public String getAcceptTime() {
+        return accepted_Time;
+    }
+    public String getFinishTime() {
+        return finish_Time;
+    }
+
+    public String getBitmap() {
+        return bitmap;
     }
 
 }

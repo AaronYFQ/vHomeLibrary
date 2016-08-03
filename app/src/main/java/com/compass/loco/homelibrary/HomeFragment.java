@@ -3,14 +3,12 @@ package com.compass.loco.homelibrary;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
@@ -18,7 +16,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private String mCityName = "北京";
     private Button mSelectCityBtn;
     private Button mSelectSearchBtn;
-    private ImageButton mAddBookBtn;
+    private ImageButton mBorrowedBookBtn;
     private ImageButton mMylibraryBtn;
 
     public HomeFragment() {
@@ -44,8 +42,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }
         mSelectCityBtn.setText(mCityName);
 
-        mAddBookBtn = (ImageButton) view.findViewById(R.id.add_book_btn);
-        mAddBookBtn.setOnClickListener(this);
+        mBorrowedBookBtn = (ImageButton) view.findViewById(R.id.borrowed_book_btn);
+        mBorrowedBookBtn.setOnClickListener(this);
 
         mMylibraryBtn = (ImageButton) view.findViewById(R.id.my_library_btn);
         mMylibraryBtn.setOnClickListener(this);
@@ -63,8 +61,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    public void onAddBookBtnClick(View view) {
-        Intent intent = new Intent(this.getContext(), ScanBookActivity.class);
+    public void onBorrowedBookBtnClick(View view) {
+        Intent intent = new Intent(this.getContext(), Borrowed_Activity.class);
         startActivity(intent);
     }
 
@@ -105,8 +103,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             case R.id.search_btn:
                 onSelectSearchBtn(view);
                 break;
-            case R.id.add_book_btn:
-                onAddBookBtnClick(view);
+            case R.id.borrowed_book_btn:
+                onBorrowedBookBtnClick(view);
                 break;
             case R.id.my_library_btn:
                 onMyLibraryBtnClick(view);

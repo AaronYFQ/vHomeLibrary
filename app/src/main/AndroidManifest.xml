@@ -47,7 +47,8 @@
             android:name=".MessageIntentService"
             android:exported="false" />
 
-        <activity android:name=".ScanBookActivity"
+        <activity
+            android:name=".ScanBookActivity"
             android:label="扫描条形码"
             android:parentActivityName=".ManageLibraryActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -67,17 +68,19 @@
         <activity
             android:name=".ManageBookActivity"
             android:label="管理图书"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CreateLibActivity"
             android:label="@string/title_activity_create_lib"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Borrow_Activity" />
+        <activity android:name=".Borrowed_Activity" />
         <activity
             android:name=".SearchMainActivity"
             android:label="搜索"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".RequestedBorrow" />
+        <activity android:name=".BorrowedNotReturn" />
+        <activity android:name=".widge.BorrowedHistory"></activity>
     </application>
 
 </manifest>
