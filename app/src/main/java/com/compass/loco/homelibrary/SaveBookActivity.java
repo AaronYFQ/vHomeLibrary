@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -96,6 +97,8 @@ public class SaveBookActivity extends AppCompatActivity {
                     @Override
                     public void handleMessage(Message msg) {
                         super.handleMessage(msg);
+                        String jsonText = msg.getData().getString("responseBody");
+                        Log.d("save book", "jsonText = " + jsonText);
                         Intent intent = new Intent(SaveBookActivity.this, ManageLibraryActivity.class);
                         startActivity(intent);
                     }
