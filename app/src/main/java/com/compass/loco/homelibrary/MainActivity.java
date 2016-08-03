@@ -79,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        //start bg service
+        MessageIntentService.startActionPoll(this);
     }
 
     @Override

@@ -5,8 +5,10 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
+import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.SyncHttpClient;
@@ -41,10 +43,9 @@ public class MessageIntentService extends IntentService {
      * @see IntentService
      */
     // TODO: Customize helper method
-    public static void startActionPoll(Context context, String token) {
+    public static void startActionPoll(Context context) {
         Intent intent = new Intent(context, MessageIntentService.class);
         intent.setAction(ACTION_POLL);
-        intent.putExtra(USER_TOKEN, token);
         context.startService(intent);
     }
 
@@ -68,8 +69,7 @@ public class MessageIntentService extends IntentService {
         if (intent != null) {
             final String action = intent.getAction();
             if (ACTION_POLL.equals(action)) {
-                final String token = intent.getStringExtra(USER_TOKEN);
-                handleActionPoll("zhong");
+                handleActionPoll();
             }
             /*else if (ACTION_BAZ.equals(action)) {
                 final String param1 = intent.getStringExtra(EXTRA_PARAM1);
@@ -83,14 +83,17 @@ public class MessageIntentService extends IntentService {
      * Handle action Foo in the provided background thread with the provided
      * parameters.
      */
-    private void handleActionPoll(String token) {
+    private void handleActionPoll() {
         // TODO: Handle action Poll
         while(true)
         {
             try {
                 Thread.sleep(POLL_TIME);
-
-                checkNewMessageOnServer(token);
+                SharedPreferences sharedPref = getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
+                String token = sharedPref.getString("token", null);
+                if(token != null) {
+                    checkNewMessageOnServer(token);
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -103,6 +106,7 @@ public class MessageIntentService extends IntentService {
     {
         SyncHttpClient client = new SyncHttpClient();
         String url = HttpUtil.CHECK_MESSAGE_URL + "?" + "token=" + token;
+        //Log.v(".....get Message", "token: " + token);
 
         client.get(url, new AsyncHttpResponseHandler() {
 
@@ -133,9 +137,11 @@ public class MessageIntentService extends IntentService {
     {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
+                        .setTicker("v书房新消息")
                         .setSmallIcon(R.drawable.app_icon)
                         .setContentTitle("v书房")
-                        .setContentText("收到" + numOfMessage +  "条新消息!");
+                        .setContentText("收到" + numOfMessage +  "条新消息!")
+                        .setDefaults(NotificationCompat.DEFAULT_ALL);
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         // Adds the back stack for the Intent (but not the Intent itself)

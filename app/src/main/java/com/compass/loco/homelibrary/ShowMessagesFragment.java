@@ -1,6 +1,8 @@
 package com.compass.loco.homelibrary;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Handler;
 import android.os.Message;
@@ -15,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -29,6 +32,8 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
     private Button clearButton;
     private SwipeRefreshLayout swipeRefreshLayout;
     private View view;
+    private TextView countTxView;
+    private int numOfNewMsg = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,11 +44,15 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
         db = new DBAdapter(view.getContext());
         db.open();
 
+        countTxView = (TextView)view.findViewById(R.id.num_view);
+        countTxView.setVisibility(View.INVISIBLE);
+
         swipeRefreshLayout = (SwipeRefreshLayout)view.findViewById(R.id.swipeViewMessages);
         swipeRefreshLayout.setOnRefreshListener(this);
 
         messageList=(ListView)view.findViewById(R.id.listViewMessages);
         clearButton = (Button)view.findViewById(R.id.clear_btn);
+
         cursorAdapter = new MessageCursorAdapter(view.getContext(), null, 0);
         messageList.setAdapter(cursorAdapter);
         messageList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
@@ -65,7 +74,7 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
                 }
 
                 String action = cur.getString(cur.getColumnIndexOrThrow("action"));
-                //handleAction(action, cur);
+                handleAction(action, cur);
 
                 if(bUpdate)
                 {
@@ -77,15 +86,28 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
         clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                db.cleanMessage();
+                SharedPreferences sharedPref = view.getContext().getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
+                String username = sharedPref.getString("username", null);
+                Boolean result = db.cleanMessage(username);
+                Log.v("Clean message result: ", result.toString());
                 DisplayMessages();
             }
         });
 
-        DisplayMessages();
-        getNewMessages();
+        SharedPreferences sharedPref = view.getContext().getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
+        String token = sharedPref.getString("token", null);
+        if(token != null) {
+            DisplayMessages();
+            getNewMessages(token);
+        }
+        else
+        {
+            Toast.makeText(getContext(),
+                    "Please login first",
+                    Toast.LENGTH_SHORT).show();
+        }
 
-        MessageIntentService.startActionPoll(getContext(), "Test");
+        //MessageIntentService.startActionPoll(getContext());
         return view;
     }
 
@@ -94,14 +116,17 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
         if(action.equals("borrow") || action.equals("accept"))
         {
             Intent intent = new Intent(view.getContext(), ManageBookActivity.class);
-            intent.putExtra("book", cursor.getString(cursor.getColumnIndexOrThrow("book")));
-            intent.putExtra("shop", cursor.getString(cursor.getColumnIndexOrThrow("shop")));
-            intent.putExtra("owner", cursor.getString(cursor.getColumnIndexOrThrow("owner")));
+            intent.putExtra("bookname", cursor.getString(cursor.getColumnIndexOrThrow("book")));
+            intent.putExtra("shopname", cursor.getString(cursor.getColumnIndexOrThrow("shop")));
+            intent.putExtra("user", cursor.getString(cursor.getColumnIndexOrThrow("owner")));
+            if(action.equals("borrow")) {
+                intent.putExtra("request", cursor.getString(cursor.getColumnIndexOrThrow("borrower")));
+            }
             startActivity(intent);
         }
     }
 
-    private void getNewMessages()
+    private void getNewMessages(String token)
     {
         final Handler handler = new Handler() {
 
@@ -129,7 +154,9 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
                                 jsonObj.getString("action"),
                                 jsonObj.getString("time"));
 
-                        if(db.insertMessage(msgInfo) < 0)
+                        SharedPreferences sharedPref = view.getContext().getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
+                        String username = sharedPref.getString("username", null);
+                        if(db.insertMessage(msgInfo, username) < 0)
                         {
                             Log.v("Insert error", "Insert error");
                         }
@@ -146,7 +173,7 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
         };
 
         HttpUtil httptd = new HttpUtil();
-        httptd.submitAsyncHttpClientGetMessage("zhong", handler);
+        httptd.submitAsyncHttpClientGetMessage(token, handler);
     }
 
     private void DisplayMessages()
@@ -154,16 +181,66 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
         //MessageInfo msgInfo = new MessageInfo("Book" + count, "Shop", "Owner", "Borrower", "Action", "Time");
         //db.insertMessage(msgInfo);
 
-        Cursor cursor = db.getAllMessages();
-        cursor.moveToFirst();
-        Log.v(".........message", "display item " + cursor.getCount());
-        cursorAdapter.changeCursor(cursor);
+        SharedPreferences sharedPref = view.getContext().getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
+        String username = sharedPref.getString("username", null);
+
+        if(username != null) {
+            Cursor cursor = db.getAllMessages(username);
+            cursor.moveToFirst();
+            Log.v(".........message", "display item " + cursor.getCount());
+            if(cursor.getCount() > 0) {
+                numOfNewMsg = getNewMessageNumber(cursor);
+                cursor.moveToFirst();
+                if(numOfNewMsg > 0)
+                {
+                    countTxView.setVisibility(View.VISIBLE);
+                    countTxView.setText(Integer.toString(numOfNewMsg));
+                }
+                else
+                {
+                    countTxView.setVisibility(View.INVISIBLE);
+                }
+            }
+            else
+            {
+                numOfNewMsg = 0;
+                countTxView.setVisibility(View.INVISIBLE);
+
+            }
+
+            cursorAdapter.changeCursor(cursor);
+        }
+    }
+
+    private int getNewMessageNumber(Cursor cursor)
+    {
+        int num = 0;
+        int count = cursor.getCount();
+        for(int i = 0; i<cursor.getCount(); i++)
+        {
+            if(cursor.getInt(cursor.getColumnIndexOrThrow("new")) > 0)
+            {
+                ++num;
+            }
+            cursor.moveToNext();
+        }
+
+        return num;
     }
 
     @Override
     public void onRefresh() {
         swipeRefreshLayout.setRefreshing(true);
-        getNewMessages();
-        //swipeRefreshLayout.setRefreshing(false);
+        SharedPreferences sharedPref = view.getContext().getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
+        String token = sharedPref.getString("token", null);
+        if(token != null) {
+            getNewMessages(token);
+        }
+        else {
+            swipeRefreshLayout.setRefreshing(false);
+            Toast.makeText(getContext(),
+                    "Please login first",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 }

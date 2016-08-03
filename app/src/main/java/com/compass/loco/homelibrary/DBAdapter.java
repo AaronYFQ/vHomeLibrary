@@ -14,6 +14,7 @@ import android.util.Log;
 public class DBAdapter {
     static final String KEY_ID = "_id";
     static final String KEY_NEW = "new";
+    static final String KEY_USER = "user";
     static final String KEY_BOOK_NAME = "book";
     static final String KEY_SHOP_NAME = "shop";
     static final String KEY_ACTION = "action";
@@ -29,6 +30,7 @@ public class DBAdapter {
     static final String DATABASE_CREATE =
             "create table Messages (_id integer primary key autoincrement," +
                     "new integer," +
+                    "user text," +
                     "book text," +
                     "shop text, " +
                     "owner text," +
@@ -87,8 +89,11 @@ public class DBAdapter {
     }
 
     //---insert a message into the database---
-    public long insertMessage(MessageInfo message)
+    public long insertMessage(MessageInfo message, String username)
     {
+        if(username == null)
+            return -1;
+
         ContentValues initialValues = new ContentValues();
         initialValues.put(KEY_NEW,1);
         initialValues.put(KEY_BOOK_NAME, message.getBook());
@@ -97,6 +102,7 @@ public class DBAdapter {
         initialValues.put(KEY_BORROWER, message.getBorrower());
         initialValues.put(KEY_ACTION, message.getAction());
         initialValues.put(KEY_TIME, message.getTime());
+        initialValues.put(KEY_USER,username);
         return db.insert(DATABASE_TABLE, null, initialValues);
     }
 
@@ -116,15 +122,15 @@ public class DBAdapter {
         return db.delete(DATABASE_TABLE, KEY_CONTENT +"='" + str+"'", null) > 0;
     }*/
 
-    public boolean cleanMessage()
+    public boolean cleanMessage(String username)
     {
-        return db.delete(DATABASE_TABLE, null, null) > 0;
+        return db.delete(DATABASE_TABLE, "user=?", new String[]{username}) > 0;
     }
 
     //---retrieves all the messages---
-    public Cursor getAllMessages()
+    public Cursor getAllMessages(String username)
     {
-        Cursor cursor =db.query(DATABASE_TABLE, null, null, null, null, null, KEY_ID + " DESC");
+        Cursor cursor =db.query(DATABASE_TABLE, null, "user=?", new String[]{username}, null, null, KEY_ID + " DESC");
 
         Log.v(".........get item: ", "total:" + cursor.getCount());
         return cursor;
