@@ -33,6 +33,7 @@ public class HttpUtil {
     final String GET_HISTORY_BORROW_URL = REMOTE_URL+"/book/getHistoryBorrowBook/";
     final String GET_REQ_BORROW_BOOK_URL = REMOTE_URL+"/book/getBorrowBook/";
     final String POST_BORROW_ACTION_URL = REMOTE_URL+"/book/postBorrowAction/";
+    final String POST_RETURN_BOOK_URL = REMOTE_URL+"/book/returnBook/";
 
     static final String CHECK_MESSAGE_URL  = REMOTE_URL + "/book/checkMessage/";
     static final String GET_MESSAGE_URL = REMOTE_URL + "/book/getMessage/";
@@ -191,6 +192,20 @@ public class HttpUtil {
         asyncHttpClientPostHandler(url, param, handler);
         return;
 
+    }
+
+    public void submitAsyncHttpClientPostReturnBook(String token, String borrower, String shopName,
+                                                      String bookName, final Handler handler) {
+
+        RequestParams param = new RequestParams();
+        String url = POST_RETURN_BOOK_URL;
+        param.put("token", token);
+        param.put("borrower", borrower);
+        param.put("shopname", shopName);
+        param.put("bookname", bookName);
+
+        asyncHttpClientPostHandler(url, param, handler);
+        return;
     }
 
     public void submitAsyncHttpClientGetCurrentBorrowBook(String token, final Handler handler)
