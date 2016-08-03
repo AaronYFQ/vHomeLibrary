@@ -32,9 +32,14 @@ public class ManageBookActivity extends AppCompatActivity {
 
     private static final String TAG = "ManageBookActivity";
 
+    private static final int REQUEST = 0;
+    private static final int AGREE = 1;
+    private static final int RETURN = 2;
+
     // Android objects
     private Button buttonBook;
     private ImageView imageViewBook;
+    private TextView textViewBookState;
 
     private String token;
     private String user;
@@ -42,7 +47,7 @@ public class ManageBookActivity extends AppCompatActivity {
     private String bookName;
     private String request;
 
-    private Boolean requestOrAgree = false;
+    private int flag;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,11 +70,24 @@ public class ManageBookActivity extends AppCompatActivity {
 
         imageViewBook = (ImageView) findViewById(R.id.book_image_view);
 
+        textViewBookState = (TextView) findViewById(R.id.book_state);
+
         buttonBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                requestOrAgree();
+                if(flag == REQUEST) {
+
+                    registerRequest();
+                }
+                else if(flag == AGREE){
+
+                    ratifyRequest();
+                }
+                else
+                {
+                    registerReturn();
+                }
 
             }
         });
@@ -95,12 +113,18 @@ public class ManageBookActivity extends AppCompatActivity {
             if(request.equals("browse"))
             {
 
-                buttonBook.setVisibility(View.INVISIBLE);
+                buttonBook.setText("借书已还");
+
+                flag = RETURN;
 
             }
             else
             {
-                requestOrAgree = false;  /* agree */
+
+                buttonBook.setText("同意借出");
+
+                flag = AGREE;
+
             }
 
         }
@@ -109,7 +133,9 @@ public class ManageBookActivity extends AppCompatActivity {
 
             buttonBook.setText("发借书请求");
 
-            requestOrAgree = true; /* request */
+
+            flag = REQUEST;
+
         }
     }
 
@@ -152,6 +178,18 @@ public class ManageBookActivity extends AppCompatActivity {
                         ((TextView)activity.findViewById(R.id.book_state)).setText(state? "在库" : "借出");
                         ((TextView)activity.findViewById(R.id.book_summary)).setText(detail);
 
+
+                        if(state) {
+
+                            buttonBook.setEnabled(flag != RETURN);
+
+                        }
+                        else {
+
+                            buttonBook.setEnabled(flag == RETURN);
+
+                        }
+
                         if(imageUrl.length() > 0) {
 
                             new ImageLoadTask(imageUrl, imageViewBook).execute();
@@ -163,10 +201,13 @@ public class ManageBookActivity extends AppCompatActivity {
                             imageViewBook.setImageResource(getResources().getIdentifier("@drawable/default_book_picture", null, getPackageName()));
 
                         }
+
                     }
                     else
                     {
+
                         Toast.makeText(getApplicationContext(), "book not found!", Toast.LENGTH_SHORT).show();
+
                     }
 
                 } catch (JSONException e) {
@@ -174,8 +215,6 @@ public class ManageBookActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "unknown response from remote service!", Toast.LENGTH_SHORT).show();
 
                     e.printStackTrace();
-
-                } finally {
 
                 }
             }
@@ -187,7 +226,147 @@ public class ManageBookActivity extends AppCompatActivity {
 
     }
 
-    private void requestOrAgree() {
+    private void registerRequest() {
 
+        final Handler handler = new Handler() {
+
+            @Override
+            public void handleMessage(Message msg) {
+
+                String jsonText = msg.getData().getString("responseBody");
+
+                Log.d(TAG, "jsonText = " + jsonText);
+
+                try {
+
+                    JSONObject jsonObj = new JSONObject(jsonText);
+
+                    String result = jsonObj.getString("result");
+
+                    if(result.equals("success")) {
+
+                        textViewBookState.setText("借出");
+
+                        buttonBook.setEnabled(false);
+
+                    }
+                    else {
+
+                        Toast.makeText(getApplicationContext(), "accept borrow request failed! result=" + result, Toast.LENGTH_SHORT).show();
+
+                    }
+
+                } catch (JSONException e) {
+
+                    Toast.makeText(getApplicationContext(), "unknown response remote service!", Toast.LENGTH_SHORT).show();
+
+                    e.printStackTrace();
+
+                }
+
+            }
+        };
+
+        HttpUtil httptd = new HttpUtil();
+
+        httptd.submitAsyncHttpClientGetRequestBorrowBook(token, user, shopName, bookName, handler);
+
+    }
+
+
+    private void ratifyRequest() {
+
+        final Handler handler = new Handler() {
+
+            @Override
+            public void handleMessage(Message msg) {
+
+                String jsonText = msg.getData().getString("responseBody");
+
+                Log.d(TAG, "jsonText = " + jsonText);
+
+                try {
+
+                    JSONObject jsonObj = new JSONObject(jsonText);
+
+                    String result = jsonObj.getString("result");
+
+                    if(result.equals("success")) {
+
+                        buttonBook.setText("借书已还");
+                        buttonBook.setEnabled(true);
+
+                        flag = RETURN;
+
+                        textViewBookState.setText("借出");
+
+                    }
+                    else {
+
+                        Toast.makeText(getApplicationContext(), "accept borrow request failed! result=" + result, Toast.LENGTH_SHORT).show();
+
+                    }
+
+                } catch (JSONException e) {
+
+                    Toast.makeText(getApplicationContext(), "unknown response remote service!", Toast.LENGTH_SHORT).show();
+
+                    e.printStackTrace();
+
+                }
+
+            }
+        };
+
+        HttpUtil httptd = new HttpUtil();
+
+        httptd.submitAsyncHttpClientPostBorrowAction(token, shopName, bookName, user, "accept" /* "refuse" */, handler);
+
+    }
+
+    private void registerReturn () {
+
+        final Handler handler = new Handler() {
+
+            @Override
+            public void handleMessage(Message msg) {
+
+                String jsonText = msg.getData().getString("responseBody");
+
+                Log.d(TAG, "jsonText = " + jsonText);
+
+                try {
+
+                    JSONObject jsonObj = new JSONObject(jsonText);
+
+                    String result = jsonObj.getString("result");
+
+                    if(result.equals("success")) {
+
+                        textViewBookState.setText("在库");
+
+                        buttonBook.setEnabled(false);
+
+                    }
+                    else {
+
+                        Toast.makeText(getApplicationContext(), "accept borrow request failed! result=" + result, Toast.LENGTH_SHORT).show();
+
+                    }
+
+                } catch (JSONException e) {
+
+                    Toast.makeText(getApplicationContext(), "unknown response remote service!", Toast.LENGTH_SHORT).show();
+
+                    e.printStackTrace();
+
+                }
+
+            }
+        };
+
+        HttpUtil httptd = new HttpUtil();
+        
+        httptd.submitAsyncHttpClientPostReturnBook(token, shopName, bookName, "", handler);
     }
 }

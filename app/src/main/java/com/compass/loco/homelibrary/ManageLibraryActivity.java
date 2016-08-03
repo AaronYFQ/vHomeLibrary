@@ -135,6 +135,7 @@ public class ManageLibraryActivity extends AppCompatActivity {
                         arrayListSelectedBookInfo.get(position).getBookInfo().getName() + "(line " + Integer.toString(position) + ") clicked!",
                         Toast.LENGTH_SHORT).show();
 
+
                 String bookName = arrayListSelectedBookInfo.get(position).getBookInfo().getName();
 
                 Intent intent = new Intent(getApplicationContext(), ManageBookActivity.class);
@@ -153,10 +154,10 @@ public class ManageLibraryActivity extends AppCompatActivity {
         SharedPreferences sharePref = getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
 
         // 1. token
-        token = sharePref.getString("token", "zhong");
+        token = sharePref.getString("token", "");
 
         // 2. shop name
-        shopName = sharePref.getString("shopname", "wangfujing");
+        shopName = sharePref.getString("shopname", "");
 
         Log.d(TAG, "from private shared preference: token = " + token + ", shopname = " + shopName);
     }

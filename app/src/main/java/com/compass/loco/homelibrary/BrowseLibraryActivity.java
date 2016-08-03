@@ -35,7 +35,7 @@ public class BrowseLibraryActivity extends AppCompatActivity {
     // bookinfo arraylist
     private ArrayList<BookInfo> arrayListBookInfo;
 
-    private String token;
+    private String user;
     private String shopName;
 
     @Override
@@ -102,10 +102,10 @@ public class BrowseLibraryActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(getApplicationContext(), ManageBookActivity.class);
 
-                intent.putExtra("user", token);
+                intent.putExtra("user", user);
                 intent.putExtra("shopname", shopName);
                 intent.putExtra("bookname",  bookName);
-                intent.putExtra("request",  "browse");
+                intent.putExtra("request",  "borrow");
 
                 startActivity(intent);
 
@@ -115,10 +115,10 @@ public class BrowseLibraryActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        token = intent.getStringExtra("token");
+        user = intent.getStringExtra("user");
         shopName = intent.getStringExtra("shopname");
 
-        Log.d(TAG, "pass through intent: " + "token = " + token + ", shopname = " + shopName);
+        Log.d(TAG, "pass through intent: " + "user = " + user + ", shopname = " + shopName);
 
     }
 
@@ -185,7 +185,7 @@ public class BrowseLibraryActivity extends AppCompatActivity {
 
         HttpUtil httptd = new HttpUtil();
 
-        httptd.submitAsyncHttpClientGetManageShop(token, shopName, handler);
+        httptd.submitAsyncHttpClientGetManageShop(user, shopName, handler);
 
     }
 
