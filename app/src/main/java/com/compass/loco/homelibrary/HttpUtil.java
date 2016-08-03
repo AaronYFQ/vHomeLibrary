@@ -135,7 +135,7 @@ public class HttpUtil {
         return;
     }
     public void submitAsyncHttpClientPostAddBook(String token, String shopName, String bookName,String bookAuthor,
-                                                 String bookPublisher, String bookIsdn, String bookComments, final Handler handler){
+                                                 String bookPublisher, String bookIsdn, String bookComments, String imageURL, String extLink, final Handler handler){
 
         RequestParams param = new RequestParams();
         String url = ADDBOOK_URL;
@@ -146,6 +146,8 @@ public class HttpUtil {
         param.put("bookpublisher", bookPublisher);
         param.put("bookisdn", bookIsdn);
         param.put("bookcomments", bookComments);
+        param.put("imageurl", imageURL);
+        param.put("imageurl", extLink);
 
         asyncHttpClientPostHandler(url, param, handler);
         return;
