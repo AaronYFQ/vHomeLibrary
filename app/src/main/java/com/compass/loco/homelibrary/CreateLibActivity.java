@@ -142,11 +142,6 @@ public class CreateLibActivity extends AppCompatActivity {
         advertisement = adEditText.getText().toString();
         library = libraryEditText.getText().toString();
 
-        //Log.v("library name", library);
-        //Log.v("city", cityString);
-        //Log.v("district", districtString);
-        //Log.v("village", villageString);
-        //Log.v("advertisement", advertisement);
         if(library.equals(""))
         {
             libraryEditText.requestFocus();
@@ -157,9 +152,6 @@ public class CreateLibActivity extends AppCompatActivity {
             villageTextView.requestFocus();
             return;
         }
-        //call httpClient API to store the data to server
-        //@libraryName, @cityString, @districtString, @community，@advertisement
-        //TODO
 
         final Handler handler = new Handler() {
 
@@ -184,8 +176,13 @@ public class CreateLibActivity extends AppCompatActivity {
                     }
                     else
                     {
+                        SharedPreferences sharedPref = getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
+                        SharedPreferences.Editor sharedata = sharedPref.edit();
+                        sharedata.putString("shopname", library);
+                        sharedata.commit();
+
                         Intent manageLibraryIntent = new Intent(curActivity, ManageLibraryActivity.class);
-                        startActivity(manageLibraryIntent);;
+                        startActivity(manageLibraryIntent);
                     }
 
                 } catch (JSONException e) {
