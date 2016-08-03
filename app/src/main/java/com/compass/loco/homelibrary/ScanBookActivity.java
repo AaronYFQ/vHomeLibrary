@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.compass.loco.homelibrary.model.DoubanBook;
 import com.google.gson.Gson;
@@ -59,7 +60,7 @@ public class ScanBookActivity extends AppCompatActivity {
 
     private class DownloadWebpageTask extends AsyncTask<String, Void, DoubanBook> {
         @Override
-        protected DoubanBook doInBackground(String... urls) {
+        protected DoubanBook doInBackground(final String... urls) {
 
             // params comes from the execute() call: params[0] is the url.
             InputStream in = null;
@@ -81,6 +82,12 @@ public class ScanBookActivity extends AppCompatActivity {
                     }
                 }
             }
+            ScanBookActivity.this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(ScanBookActivity.this, "Get book info failed from [" + urls[0] + "]", Toast.LENGTH_SHORT).show();
+                }
+            });
             return null;
         }
 
