@@ -92,7 +92,7 @@ public class SaveBookActivity extends AppCompatActivity {
         EditText comments = (EditText) view.findViewById(R.id.book_comments);
         HttpUtil http = new HttpUtil();
         http.submitAsyncHttpClientPostAddBook(mToken, mShopName, mDoubanBook.getTitle(), mDoubanBook.getAuthor()[0], mDoubanBook.getPublisher(),
-                mDoubanBook.getIsbn13(), comments.getText().toString(), mDoubanBook.getImage(), mDoubanBook.getAlt(),  new Handler() {
+                mDoubanBook.getIsbn13(), "", mDoubanBook.getImage(), mDoubanBook.getAlt(),  new Handler() {
                     @Override
                     public void handleMessage(Message msg) {
                         super.handleMessage(msg);

@@ -94,7 +94,8 @@ public class ScanBookActivity extends AppCompatActivity {
 
             Intent intent = new Intent(ScanBookActivity.this, SaveBookActivity.class);
             intent.putExtra(SaveBookActivity.INTENT_KEY_DOUBAN_BOOK, result);
-            intent.getExtras().putAll(mExtras);
+            intent.putExtra(ManageLibraryActivity.INTENT_KEY_TOKEN, mExtras.getString(ManageLibraryActivity.INTENT_KEY_TOKEN));
+            intent.putExtra(ManageLibraryActivity.INTENT_KEY_SHOPNAME, mExtras.getString(ManageLibraryActivity.INTENT_KEY_SHOPNAME));
             startActivity(intent);
         }
     }
