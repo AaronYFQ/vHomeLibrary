@@ -114,7 +114,7 @@ public class ManageBookActivity extends AppCompatActivity {
 
         if(token.equals(user)) {
 
-            if(request.equals("browse"))
+            if(!request.equals("borrow"))
             {
 
                 buttonBook.setVisibility(View.INVISIBLE);
