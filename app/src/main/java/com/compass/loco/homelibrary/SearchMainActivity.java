@@ -137,7 +137,7 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
                 SharedPreferences sharedata = getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
                 String username = sharedata.getString("username", null);
 
-                if(username != null && username.equals(dbData.get(position).getUserName()))
+                if(username != null && username.equals(dbAreaData.get(position).getUserName()))
                 {
                     Intent intent = new Intent(getApplicationContext(),ManageLibraryActivity.class);
                     startActivity(intent);
@@ -145,8 +145,8 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
                 else
                 {
                     Intent intent = new Intent(getApplicationContext(),BrowseLibraryActivity.class);
-                    intent.putExtra("user",dbData.get(position).getUserName());
-                    intent.putExtra("shopname",dbData.get(position).getShopName());
+                    intent.putExtra("user",dbAreaData.get(position).getUserName());
+                    intent.putExtra("shopname",dbAreaData.get(position).getShopName());
                     //intent.putExtra("request","browse");
                     startActivity(intent);
                 }
