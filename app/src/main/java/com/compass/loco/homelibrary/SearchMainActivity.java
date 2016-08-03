@@ -372,8 +372,8 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
 
         hintData.add("apple");
         hintData.add("bj");
-        hintData.add("apple4");
-        hintData.add("bookName");
+        hintData.add("pitch");
+        hintData.add("IC");
 
         hintAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, hintData);
     }
@@ -484,6 +484,19 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
 
         lvResults.setVisibility(View.INVISIBLE);
         lvAearResults.setVisibility(View.INVISIBLE);
+        if(searchStyle)
+        {
+           /* hintData.add("apple");
+            hintData.add("bj");
+            hintData.add("pitch");
+            hintData.add("IC");*/
+        }
+        else
+        {
+            hintData.clear();
+        }
+
+
         getResultData(text,searchStyle);
 
         if(searchStyle)

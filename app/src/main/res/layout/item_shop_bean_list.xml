@@ -37,7 +37,7 @@
                 android:textSize="20sp"
                 android:maxEms="12"
                 android:textColor="@drawable/search_result_listview_style"
-                android:textColorHighlight="@color/orchid"
+                android:textColorHighlight="@color/gray"
                 android:textStyle="bold">
             </TextView>
 
@@ -49,7 +49,7 @@
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:background="@drawable/book_state_edittext_shape"
-                android:textColor="@color/myred"
+                android:textColor="@color/black"
                 android:textSize="12sp">
             </TextView>
         </RelativeLayout>
@@ -67,7 +67,7 @@
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:textSize="16sp"
-            android:textColor="@color/orchid"
+            android:textColor="@color/gray"
             android:maxEms="10">
         </TextView>
 
