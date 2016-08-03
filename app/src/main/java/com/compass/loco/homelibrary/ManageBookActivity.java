@@ -262,7 +262,7 @@ public class ManageBookActivity extends AppCompatActivity {
         externalDoubanLink = null;
 
         HttpUtil httptd = new HttpUtil();
-        httptd.submitAsyncHttpClientGetViewBook(token, shopName, bookName, handler);
+        httptd.submitAsyncHttpClientGetViewBook(null, token, shopName, bookName, handler);
 
     }
 
@@ -404,7 +404,7 @@ public class ManageBookActivity extends AppCompatActivity {
 
         HttpUtil httptd = new HttpUtil();
         
-        httptd.submitAsyncHttpClientPostReturnBook(token, shopName, bookName, "", handler);
+        httptd.submitAsyncHttpClientPostReturnBook(token, shopName, bookName,  handler);
     }
 
     public void onDoubanLinkClick(View view) {

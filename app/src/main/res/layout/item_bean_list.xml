@@ -37,6 +37,8 @@
                 android:textSize="24sp"
                 android:textColor="@drawable/search_result_listview_style"
                 android:textColorHighlight="@color/orchid"
+                android:singleLine="true"
+                android:maxEms="12"
                 android:textStyle="bold">
             </TextView>
 
