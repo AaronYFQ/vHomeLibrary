@@ -254,7 +254,7 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
         messageBtn.setBackgroundDrawable(messageBtnGreen);
 
         SharedPreferences sharedPref = view.getContext().getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
-        String token = sharedPref.getString("token", null);
+        String token = sharedPref.getString("token", "");
         if(!token.isEmpty()) {
             DisplayMessages();
             getNewMessages(token);

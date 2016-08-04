@@ -90,7 +90,7 @@ public class MessageIntentService extends IntentService {
             try {
                 Thread.sleep(POLL_TIME);
                 SharedPreferences sharedPref = getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
-                String token = sharedPref.getString("token", null);
+                String token = sharedPref.getString("token", "");
                 if(!token.isEmpty()) {
                     Log.v("...check message token", token);
                     checkNewMessageOnServer(token);
