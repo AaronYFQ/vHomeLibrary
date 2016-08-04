@@ -38,7 +38,7 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
         /**
          * 默认提示框显示项的个数
          */
-        private static int DEFAULT_HINT_SIZE = 4;
+        private static int DEFAULT_HINT_SIZE = 14;
 
 
 
