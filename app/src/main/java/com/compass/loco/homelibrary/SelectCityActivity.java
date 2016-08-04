@@ -22,7 +22,6 @@ public class SelectCityActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         cityListView = (ListView) findViewById(R.id.all_city_list);

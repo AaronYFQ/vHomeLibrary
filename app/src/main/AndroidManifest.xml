@@ -33,7 +33,7 @@
         <activity android:name=".LoginActivity" />
         <activity
             android:name=".SelectCityActivity"
-            android:label="选择城市"
+            android:label=""
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <!--
@@ -50,7 +50,7 @@
 
         <activity
             android:name=".ScanBookActivity"
-            android:label="扫描条形码"
+            android:label=""
             android:parentActivityName=".ManageLibraryActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -59,7 +59,7 @@
         </activity>
         <activity
             android:name=".SaveBookActivity"
-            android:label="保存图书"
+            android:label=""
             android:parentActivityName=".ScanBookActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data

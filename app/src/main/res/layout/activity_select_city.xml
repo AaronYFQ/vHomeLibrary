@@ -18,10 +18,14 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorBackgroundGreen"
             app:popupTheme="@style/AppTheme.PopupOverlay" >
-            <TextView
+            <android.support.v7.widget.AppCompatTextView
+                android:text="选择城市"
+                android:textSize="16sp"
+                android:textColor="@android:color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/toolbar_title" />
+                android:layout_gravity="center"
+                android:id="@+id/toolbar_title"/>
             </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
