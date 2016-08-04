@@ -47,9 +47,9 @@ public class BorrowedHistory extends ListActivity {
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
 
                 // show a toast with the TextView test when clicked
-                Toast.makeText(getApplicationContext(),
+                /*Toast.makeText(getApplicationContext(),
                         arrayListSelectedBookInfo.get(position).getBookName() + "(line " + Integer.toString(position) + ") clicked!",
-                        Toast.LENGTH_SHORT).show();
+                        Toast.LENGTH_SHORT).show();*/
 
                 String bookName = arrayListSelectedBookInfo.get(position).getBookName();
                 String shopName = arrayListSelectedBookInfo.get(position).getShopName();
