@@ -1,7 +1,9 @@
 package com.compass.loco.homelibrary;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -31,6 +33,8 @@ import org.json.JSONObject;
 
 
 public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
+
+    public static String NEW_MESSAGE_ACTION = "com.compass.loco.homelibrary.NEW_MESSAGE_ACTION";
 
     private DBAdapter db;
     private MessageCursorAdapter cursorAdapter;
@@ -118,6 +122,10 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
         }*/
 
         //MessageIntentService.startActionPoll(getContext());
+
+        DisplayMessages();
+        registerBroadcastReceiver();
+
         return view;
     }
 
@@ -144,48 +152,52 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
 
             @Override
             public void handleMessage(Message msg) {
-                String json = msg.getData().getString("responseBody");
-                Log.v("handleMessage", json);
-                try {
-                    // handler item from Json
-                    JSONObject jsonObj = new JSONObject(json);
-                    JSONArray jsonArray = jsonObj.getJSONArray("messages");
-
-                    Log.v("number of Messages: ", new Integer(jsonArray.length()).toString());
-
-                    for (int i = 0; i < jsonArray.length(); ++i) {
-                        jsonObj = jsonArray.getJSONObject(i);
-
-                        //Log.v("Message: ", jsonObj.toString());
-
-                        MessageInfo msgInfo = new MessageInfo(
-                                jsonObj.getString("book"),
-                                jsonObj.getString("shop"),
-                                jsonObj.getString("owner"),
-                                jsonObj.getString("borrower"),
-                                jsonObj.getString("action"),
-                                jsonObj.getString("time"));
-
-                        SharedPreferences sharedPref = view.getContext().getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
-                        String username = sharedPref.getString("username", null);
-                        if(db.insertMessage(msgInfo, username) < 0)
-                        {
-                            Log.v("Insert error", "Insert error");
-                        }
-                    }
-
-                    DisplayMessages();
-                    swipeRefreshLayout.setRefreshing(false);
-
-                } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+                String msgBody = msg.getData().getString("responseBody");
+                Log.v("handleMessage", msgBody);
+                handleNewMessage(msgBody);
             }
         };
 
         HttpUtil httptd = new HttpUtil();
         httptd.submitAsyncHttpClientGetMessage(token, handler);
+    }
+
+    private void handleNewMessage(String body) {
+        try {
+            // handler item from Json
+            JSONObject jsonObj = new JSONObject(body);
+            JSONArray jsonArray = jsonObj.getJSONArray("messages");
+
+            Log.v("number of Messages: ", new Integer(jsonArray.length()).toString());
+
+            for (int i = 0; i < jsonArray.length(); ++i) {
+                jsonObj = jsonArray.getJSONObject(i);
+
+                //Log.v("Message: ", jsonObj.toString());
+
+                MessageInfo msgInfo = new MessageInfo(
+                        jsonObj.getString("book"),
+                        jsonObj.getString("shop"),
+                        jsonObj.getString("owner"),
+                        jsonObj.getString("borrower"),
+                        jsonObj.getString("action"),
+                        jsonObj.getString("time"));
+
+                SharedPreferences sharedPref = view.getContext().getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
+                String username = sharedPref.getString("username", null);
+                if(db.insertMessage(msgInfo, username) < 0)
+                {
+                    Log.v("Insert error", "Insert error");
+                }
+            }
+
+            DisplayMessages();
+            swipeRefreshLayout.setRefreshing(false);
+
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     private void DisplayMessages()
@@ -204,8 +216,6 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
                 numOfNewMsg = getNewMessageNumber(cursor);
                 cursor.moveToFirst();
 
-                setBadge(numOfNewMsg);
-
                 if(numOfNewMsg > 0)
                 {
                     countTxView.setVisibility(View.VISIBLE);
@@ -223,6 +233,7 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
 
             }
 
+            setBadge(numOfNewMsg);
             cursorAdapter.changeCursor(cursor);
         }
     }
@@ -251,6 +262,27 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
         }
 
         return num;
+    }
+
+    private void registerBroadcastReceiver(){
+        NewMessageReceiver receiver = new NewMessageReceiver();
+        IntentFilter filter = new IntentFilter(NEW_MESSAGE_ACTION);
+        getActivity().registerReceiver(receiver, filter);
+    }
+
+    private class NewMessageReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+
+            if(NEW_MESSAGE_ACTION.equals(action)){
+                Bundle bundle = intent.getExtras();
+                int numOfMsg = bundle.getInt("message_number");
+                String body = bundle.getString("message_body");
+                handleNewMessage(body);
+            }
+        }
     }
 
     @Override

@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         badge.setBadgeCount(0);
         //badge.setVisibility(View.INVISIBLE);
 
-        registerBroadcastReceiver();
+        //registerBroadcastReceiver();
 
         //start bg service
         MessageIntentService.startActionPoll(this);
@@ -202,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
             badge.setBadgeCount(num);
     }
 
-    private void registerBroadcastReceiver(){
+/*    private void registerBroadcastReceiver(){
         NewMessageReceiver receiver = new NewMessageReceiver();
         IntentFilter filter = new IntentFilter(NEW_MESSAGE_ACTION);
         registerReceiver(receiver, filter);
@@ -221,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
                 setBadgeNumber(numOfMsg);
             }
         }
-    }
+    }*/
 
     public void disableAllMainMenuBtn() {
         ImageButton homeBtn = (ImageButton) findViewById(R.id.menu_1);

@@ -31,7 +31,7 @@ public class MessageIntentService extends IntentService {
     // TODO: Rename parameters
     private static final String USER_TOKEN = "com.compass.loco.homelibrary.extra.TOKEN";
 
-    private static final int POLL_TIME = 5000;
+    private static final int POLL_TIME = 10000;
 
     public MessageIntentService() {
         super("MessageIntentService");
@@ -107,7 +107,7 @@ public class MessageIntentService extends IntentService {
     private void checkNewMessageOnServer(String token)
     {
         SyncHttpClient client = new SyncHttpClient();
-        String url = HttpUtil.CHECK_MESSAGE_URL + "?" + "token=" + token;
+        String url = HttpUtil.GET_MESSAGE_URL + "?" + "token=" + token;
         //Log.v(".....get Message", "token: " + token);
 
         client.get(url, new AsyncHttpResponseHandler() {
@@ -121,7 +121,8 @@ public class MessageIntentService extends IntentService {
                     int numOfNewMsg = item.getInt("count");
                     if(numOfNewMsg > 0)
                     {
-                        sendBroadcast(numOfNewMsg);
+                        //sendBroadcastToMainActivity(numOfNewMsg);
+                        sendBroadcastToMessageFrag(jsonString);
                         sendNotification(numOfNewMsg);
                     }
                 } catch (Exception e) {
@@ -165,9 +166,19 @@ public class MessageIntentService extends IntentService {
         mNotificationManager.notify(1, mBuilder.build());
     }
 
-    private void sendBroadcast(int msgNum){
+    private void sendBroadcastToMainActivity(int msgNum){
         Bundle bundle = new Bundle();
         bundle.putInt("message_number", msgNum);
+        Intent intent = new Intent();
+        intent.putExtras(bundle);
+        intent.setAction(ShowMessagesFragment.NEW_MESSAGE_ACTION);
+
+        sendBroadcast(intent);
+    }
+
+    private void sendBroadcastToMessageFrag(String msgBody){
+        Bundle bundle = new Bundle();
+        bundle.putString("message_body", msgBody);
         Intent intent = new Intent();
         intent.putExtras(bundle);
         intent.setAction(MainActivity.NEW_MESSAGE_ACTION);
