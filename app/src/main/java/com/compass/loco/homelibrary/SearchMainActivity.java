@@ -429,7 +429,10 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
                         && count < hintSize; i++) {
                     String tempS = LocalData.get(i);
                     if (tempS.contains(text.trim().toLowerCase()) || tempS.contains(text.trim().toUpperCase())) {
-                        autoCompleteData.add(tempS);
+                        if(!checkExist(autoCompleteData,tempS))
+                        {
+                            autoCompleteData.add(tempS);
+                        }
                         count++;
                     }
                 }
