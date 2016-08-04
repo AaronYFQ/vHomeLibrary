@@ -38,7 +38,7 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
         /**
          * 默认提示框显示项的个数
          */
-        private static int DEFAULT_HINT_SIZE = 4;
+        private static int DEFAULT_HINT_SIZE = 14;
 
 
 
@@ -332,7 +332,7 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
                                             jsonObj.getString("name"),
                                             jsonObj.getString("addr"),
                                             jsonObj.getString("username"),
-                                            jsonObj.getString("bookcnt") +  " 本书"
+                                            jsonObj.getString("bookcnt")
 
                                     ));
                         }
