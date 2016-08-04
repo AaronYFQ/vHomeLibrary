@@ -230,6 +230,7 @@ public class CreateLibActivity extends AppCompatActivity {
                         SharedPreferences sharedPref = getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
                         SharedPreferences.Editor sharedata = sharedPref.edit();
                         sharedata.putString("shopname", library);
+                        sharedata.putString(GlobalParams.SHARED_KEY_ADVERTISEMENT, advertisement);
                         sharedata.commit();
 
                         Intent manageLibraryIntent = new Intent(curActivity, ManageLibraryActivity.class);

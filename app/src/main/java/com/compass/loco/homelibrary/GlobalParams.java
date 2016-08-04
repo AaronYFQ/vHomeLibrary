@@ -11,4 +11,5 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class GlobalParams {
    public final static String PREF_NAME = "com.compass.loco.homelibrary";
+   public final static String SHARED_KEY_ADVERTISEMENT = "advertisement";
 }

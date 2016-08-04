@@ -28,7 +28,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".BrowseLibraryActivity"
-            android:label="浏览书店"
+            android:label=""
             android:parentActivityName=".SearchMainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".LoginActivity"
