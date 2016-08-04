@@ -87,8 +87,9 @@ public class MainActivity extends AppCompatActivity {
 
         badge = new BadgeView(this);
         badge.setTargetView(findViewById(R.id.menu_2));
+        badge.setHideOnNull(true);
         badge.setBadgeCount(0);
-        badge.setVisibility(View.INVISIBLE);
+        //badge.setVisibility(View.INVISIBLE);
 
         registerBroadcastReceiver();
 
@@ -198,13 +199,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void setBadgeNumber(int num)
     {
-        if(num == 0) {
-            badge.setVisibility(View.INVISIBLE);
-        }
-        else {
-            badge.setVisibility(View.VISIBLE);
             badge.setBadgeCount(num);
-        }
     }
 
     private void registerBroadcastReceiver(){

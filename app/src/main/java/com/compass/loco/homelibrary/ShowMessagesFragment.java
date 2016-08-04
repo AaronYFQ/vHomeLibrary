@@ -203,15 +203,13 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
             if(cursor.getCount() > 0) {
                 numOfNewMsg = getNewMessageNumber(cursor);
                 cursor.moveToFirst();
+
+                setBadge(numOfNewMsg);
+
                 if(numOfNewMsg > 0)
                 {
                     countTxView.setVisibility(View.VISIBLE);
                     countTxView.setText(Integer.toString(numOfNewMsg));
-
-                    BadgeView badge = new BadgeView(getActivity());
-                    badge.setTargetView(getActivity().findViewById(R.id.menu_2));
-                    //badge.setTargetView(getActivity().findViewById(R.id.menu_title_2));
-                    badge.setBadgeCount(numOfNewMsg);
                 }
                 else
                 {
@@ -227,6 +225,16 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
 
             cursorAdapter.changeCursor(cursor);
         }
+    }
+
+    private void setBadge(int num)
+    {
+        //BadgeView badge = new BadgeView(getActivity());
+        //badge.setTargetView(getActivity().findViewById(R.id.menu_2));
+        //badge.setTargetView(getActivity().findViewById(R.id.menu_title_2));
+        //badge.setBadgeCount(numOfNewMsg);
+        MainActivity mainActivity = (MainActivity) getActivity();
+        mainActivity.setBadgeNumber(num);
     }
 
     private int getNewMessageNumber(Cursor cursor)
