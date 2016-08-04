@@ -2,17 +2,22 @@ package com.compass.loco.homelibrary.widge;
 
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.compass.loco.homelibrary.BorrowedBookInfo;
 import com.compass.loco.homelibrary.BorrowedHistoryAdapter;
 import com.compass.loco.homelibrary.GlobalParams;
 import com.compass.loco.homelibrary.HttpUtil;
+import com.compass.loco.homelibrary.ManageBookActivity;
 import com.compass.loco.homelibrary.R;
 
 import org.json.JSONArray;
@@ -24,14 +29,45 @@ import java.util.ArrayList;
 public class BorrowedHistory extends ListActivity {
 
     private ArrayList<BorrowedBookInfo> arrayListSelectedBookInfo;
+    private ListView mListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_borrowed_history);
+        init();
         getBorrowedHistorybookes();
     }
 
+    public void init(){
+
+        mListView = getListView();
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
+
+                // show a toast with the TextView test when clicked
+                Toast.makeText(getApplicationContext(),
+                        arrayListSelectedBookInfo.get(position).getBookName() + "(line " + Integer.toString(position) + ") clicked!",
+                        Toast.LENGTH_SHORT).show();
+
+                String bookName = arrayListSelectedBookInfo.get(position).getBookName();
+                String shopName = arrayListSelectedBookInfo.get(position).getShopName();
+                String user = arrayListSelectedBookInfo.get(position).getShopOwner();
+
+                Intent intent = new Intent(getApplicationContext(), ManageBookActivity.class);
+
+                intent.putExtra("user", user);
+                intent.putExtra("shopname", shopName);
+                intent.putExtra("bookname",  bookName);
+                intent.putExtra("request",  "browse");
+
+                startActivity(intent);
+
+            }
+        });
+
+    }
     public void getBorrowedHistorybookes(){
         final BorrowedHistory activity = this;
         final Handler handler = new Handler() {

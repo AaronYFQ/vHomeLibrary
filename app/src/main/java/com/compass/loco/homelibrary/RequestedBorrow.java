@@ -38,8 +38,8 @@ public class RequestedBorrow extends ListActivity {
         getBorrowedbookes();
     }
     public void init(){
-        mListView = (ListView)findViewById(R.id.list_requested_borrow);
 
+        mListView = getListView();
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
