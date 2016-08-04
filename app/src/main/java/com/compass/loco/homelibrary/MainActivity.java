@@ -1,7 +1,9 @@
 package com.compass.loco.homelibrary;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -21,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
     public final static String INTENT_KEY_LOGIN_RESULT = MainActivity.class.getName() + ".LOGIN_RESULT";
     public final static String INTENT_KEY_NOTIFICATION = MainActivity.class.getName() + ".NOTIFY_RESULT";
 
+    public static String NEW_MESSAGE_ACTION = "com.compass.loco.homelibrary.NEW_MESSAGE_ACTION";
+
     private final HomeFragment mHomeFragment = new HomeFragment();
     private final ShowMessagesFragment mMessageFragment = new ShowMessagesFragment();
     private final MeFragment mMeFragment = new MeFragment();
@@ -29,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
     /*public MainActivity() {
         mGlobal.initSharedPreferences(getSharedPreferences("com.compass.loco.homelibrary.data", Context.MODE_PRIVATE));
     }*/
+
+    private BadgeView badge;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +84,13 @@ public class MainActivity extends AppCompatActivity {
                         .add(R.id.fragment_container, mHomeFragment).commit();
             }
         }
+
+        badge = new BadgeView(this);
+        badge.setTargetView(findViewById(R.id.menu_2));
+        badge.setBadgeCount(0);
+        badge.setVisibility(View.INVISIBLE);
+
+        registerBroadcastReceiver();
 
         //start bg service
         MessageIntentService.startActionPoll(this);
@@ -181,6 +194,38 @@ public class MainActivity extends AppCompatActivity {
 
         // Commit the transaction
         transaction.commit();
+    }
+
+    public void setBadgeNumber(int num)
+    {
+        if(num == 0) {
+            badge.setVisibility(View.INVISIBLE);
+        }
+        else {
+            badge.setVisibility(View.VISIBLE);
+            badge.setBadgeCount(num);
+        }
+    }
+
+    private void registerBroadcastReceiver(){
+        NewMessageReceiver receiver = new NewMessageReceiver();
+        IntentFilter filter = new IntentFilter(NEW_MESSAGE_ACTION);
+        registerReceiver(receiver, filter);
+    }
+
+    private class NewMessageReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+
+            if(MainActivity.NEW_MESSAGE_ACTION.equals(action)){
+                Bundle bundle = intent.getExtras();
+                int numOfMsg = bundle.getInt("message_number");
+                numOfMsg += badge.getBadgeCount();
+                setBadgeNumber(numOfMsg);
+            }
+        }
     }
 
     public void disableAllMainMenuBtn() {

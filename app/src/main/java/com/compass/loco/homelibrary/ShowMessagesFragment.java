@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
@@ -12,6 +13,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +27,8 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+
 
 public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
 
@@ -203,6 +207,11 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
                 {
                     countTxView.setVisibility(View.VISIBLE);
                     countTxView.setText(Integer.toString(numOfNewMsg));
+
+                    BadgeView badge = new BadgeView(getActivity());
+                    badge.setTargetView(getActivity().findViewById(R.id.menu_2));
+                    //badge.setTargetView(getActivity().findViewById(R.id.menu_title_2));
+                    badge.setBadgeCount(numOfNewMsg);
                 }
                 else
                 {
@@ -262,7 +271,7 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
         else
         {
             Toast.makeText(getContext(),
-                    "Please login first",
+                    "请先登录.",
                     Toast.LENGTH_SHORT).show();
         }
     }
@@ -278,7 +287,7 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
         else {
             swipeRefreshLayout.setRefreshing(false);
             Toast.makeText(getContext(),
-                    "Please login first",
+                    "请先登录.",
                     Toast.LENGTH_SHORT).show();
         }
     }

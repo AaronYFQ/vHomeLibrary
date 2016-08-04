@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
@@ -120,6 +121,7 @@ public class MessageIntentService extends IntentService {
                     int numOfNewMsg = item.getInt("count");
                     if(numOfNewMsg > 0)
                     {
+                        sendBroadcast(numOfNewMsg);
                         sendNotification(numOfNewMsg);
                     }
                 } catch (Exception e) {
@@ -154,13 +156,23 @@ public class MessageIntentService extends IntentService {
         PendingIntent resultPendingIntent =
                 stackBuilder.getPendingIntent(
                         0,
-                        PendingIntent.FLAG_UPDATE_CURRENT | NotificationCompat.FLAG_ONLY_ALERT_ONCE
+                        PendingIntent.FLAG_UPDATE_CURRENT
                 );
         mBuilder.setContentIntent(resultPendingIntent);
         NotificationManager mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         // mId allows you to update the notification later on.
         mNotificationManager.notify(1, mBuilder.build());
+    }
+
+    private void sendBroadcast(int msgNum){
+        Bundle bundle = new Bundle();
+        bundle.putInt("message_number", msgNum);
+        Intent intent = new Intent();
+        intent.putExtras(bundle);
+        intent.setAction(MainActivity.NEW_MESSAGE_ACTION);
+
+        sendBroadcast(intent);
     }
 
     /**
