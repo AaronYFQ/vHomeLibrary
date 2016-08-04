@@ -43,6 +43,8 @@ public class ManageBookActivity extends AppCompatActivity {
     private TextView textViewBookState;
 
     private String token;
+    private String username;
+
     private String user;
     private String borrower;
     private String shopName;
@@ -114,9 +116,11 @@ public class ManageBookActivity extends AppCompatActivity {
         // 1. token
         token = sharePref.getString("token", "");
 
+        username = sharePref.getString("username", "");
+
         buttonBook.setVisibility(View.INVISIBLE);
 
-        if(token.equals(user)) {
+        if(username.equals(user)) {
 
             if(!request.equals("borrow"))
             {

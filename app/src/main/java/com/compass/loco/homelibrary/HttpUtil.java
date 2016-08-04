@@ -20,6 +20,7 @@ public class HttpUtil {
     final String LOGIN_URL = REMOTE_URL+"/book/login/";
     final String CREATESHOP_URL = REMOTE_URL+"/book/createShop/";
     final String MANAGESHOP_URL = REMOTE_URL+"/book/manageShop/";
+    final String BROWSESHOP_URL = REMOTE_URL+"/book/browseShop/";
     final String MODIFYSHOPNAME_URL = REMOTE_URL+"/book/modifyShop/";
     final String GETBOOKINFO_URL = REMOTE_URL+"/book/getBook/";
     final String SEARCHBOOK_URL = REMOTE_URL+"/book/searchBook/";
@@ -119,6 +120,14 @@ public class HttpUtil {
     public void submitAsyncHttpClientGetManageShop(String token, String shopName, final Handler handler) {
 
         String url = MANAGESHOP_URL + "?" + "token=" + token + "&shopname=" + shopName;
+
+        asyncHttpClientGetHandler(url, handler);
+        return;
+    }
+
+    public void submitAsyncHttpClientGetBrowseShop(String user, String shopName, final Handler handler) {
+
+        String url = BROWSESHOP_URL + "?" + "user=" + user + "&shopname=" + shopName;
 
         asyncHttpClientGetHandler(url, handler);
         return;

@@ -185,7 +185,7 @@ public class BrowseLibraryActivity extends AppCompatActivity {
 
         HttpUtil httptd = new HttpUtil();
 
-        httptd.submitAsyncHttpClientGetManageShop(user, shopName, handler);
+        httptd.submitAsyncHttpClientGetBrowseShop(user, shopName, handler);
 
     }
 
