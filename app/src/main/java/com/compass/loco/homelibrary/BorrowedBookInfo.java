@@ -7,6 +7,7 @@ public class BorrowedBookInfo {
 
     private String bookName;
     private String shopName;
+    private String shopOwner;
     private String shopAddress;
     private String requested_Time;
     private String accepted_Time;
@@ -14,9 +15,10 @@ public class BorrowedBookInfo {
     private String state;
     private String bitmap;
 
-    public BorrowedBookInfo(String name, String shop, String address, String requested_time, String accepted_time,String finish_time,String imageUrl, String state) {
+    public BorrowedBookInfo(String name, String shop, String owner, String address, String requested_time, String accepted_time,String finish_time,String imageUrl, String state) {
         this.bookName = name;
         this.shopName = shop;
+        this.shopOwner = owner;
         this.shopAddress = address;
         this.requested_Time = requested_time;
         this.accepted_Time = accepted_time;
@@ -32,6 +34,8 @@ public class BorrowedBookInfo {
     public String getShopName() {
         return shopName;
     }
+
+    public String getShopOwner() { return shopOwner;}
 
     public String getState() {
         return state;

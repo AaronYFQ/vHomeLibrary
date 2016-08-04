@@ -2,16 +2,16 @@ package com.compass.loco.homelibrary;
 
 import android.app.ListActivity;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -27,13 +27,44 @@ import java.util.ArrayList;
 
 public class RequestedBorrow extends ListActivity {
 
+    private ListView  mListView;
     private ArrayList<BorrowedBookInfo> arrayListSelectedBookInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_requested_borrow);
+        init();
         getBorrowedbookes();
+    }
+    public void init(){
+        mListView = (ListView)findViewById(R.id.list_requested_borrow);
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
+
+                // show a toast with the TextView test when clicked
+                Toast.makeText(getApplicationContext(),
+                        arrayListSelectedBookInfo.get(position).getBookName() + "(line " + Integer.toString(position) + ") clicked!",
+                        Toast.LENGTH_SHORT).show();
+
+                String bookName = arrayListSelectedBookInfo.get(position).getBookName();
+                String shopName = arrayListSelectedBookInfo.get(position).getShopName();
+                String user = arrayListSelectedBookInfo.get(position).getShopOwner();
+
+                Intent intent = new Intent(getApplicationContext(), ManageBookActivity.class);
+
+                intent.putExtra("user", user);
+                intent.putExtra("shopname", shopName);
+                intent.putExtra("bookname",  bookName);
+                intent.putExtra("request",  "browse");
+
+                startActivity(intent);
+
+            }
+        });
+
     }
 
     public void getBorrowedbookes(){
@@ -59,6 +90,7 @@ public class RequestedBorrow extends ListActivity {
                                 bookInfo = new BorrowedBookInfo(
                                         jsonObj.getString("book"),
                                         jsonObj.getString("shop"),
+                                        jsonObj.getString("owner"),
                                         "",
                                         jsonObj.getString("starttime"),
                                         jsonObj.getString("accepttime"),

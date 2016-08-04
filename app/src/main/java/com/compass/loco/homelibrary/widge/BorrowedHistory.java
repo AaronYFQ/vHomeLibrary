@@ -55,6 +55,7 @@ public class BorrowedHistory extends ListActivity {
                                  bookInfo = new BorrowedBookInfo(
                                         jsonObj.getString("book"),
                                         jsonObj.getString("shop"),
+                                        jsonObj.getString("owner"),
                                         "",
                                         jsonObj.getString("starttime"),
                                         jsonObj.getString("accepttime"),
