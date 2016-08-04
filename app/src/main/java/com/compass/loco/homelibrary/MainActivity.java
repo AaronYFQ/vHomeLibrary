@@ -63,10 +63,10 @@ public class MainActivity extends AppCompatActivity {
                         .replace(R.id.fragment_container, mMeFragment).commit();
             }
             else if(getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().containsKey(INTENT_KEY_NOTIFICATION)){
-                disableAllMainMenuBtn();
+/*                disableAllMainMenuBtn();
                 ImageButton messageBtn = (ImageButton) findViewById(R.id.menu_2);
                 Drawable messageBtnGreen = getResources().getDrawable(R.drawable.mainmenu_message);
-                messageBtn.setBackgroundDrawable(messageBtnGreen);
+                messageBtn.setBackgroundDrawable(messageBtnGreen);*/
 
                 mMessageFragment.setArguments(getIntent().getExtras());
                 getSupportFragmentManager().beginTransaction()
@@ -125,10 +125,10 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        disableAllMainMenuBtn();
+/*        disableAllMainMenuBtn();
         ImageButton homeBtn = (ImageButton) findViewById(R.id.menu_1);
         Drawable homeBtnGreen = getResources().getDrawable(R.drawable.mainmenu_home);
-        homeBtn.setBackgroundDrawable(homeBtnGreen);
+        homeBtn.setBackgroundDrawable(homeBtnGreen);*/
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
@@ -146,10 +146,10 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        disableAllMainMenuBtn();
+/*        disableAllMainMenuBtn();
         ImageButton messageBtn = (ImageButton) findViewById(R.id.menu_2);
         Drawable messageBtnGreen = getResources().getDrawable(R.drawable.mainmenu_message);
-        messageBtn.setBackgroundDrawable(messageBtnGreen);
+        messageBtn.setBackgroundDrawable(messageBtnGreen);*/
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
@@ -167,10 +167,10 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        disableAllMainMenuBtn();
+/*        disableAllMainMenuBtn();
         ImageButton meBtn = (ImageButton) findViewById(R.id.menu_4);
         Drawable meBtnGray = getResources().getDrawable(R.drawable.mainmenu_me);
-        meBtn.setBackgroundDrawable(meBtnGray);
+        meBtn.setBackgroundDrawable(meBtnGray);*/
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 

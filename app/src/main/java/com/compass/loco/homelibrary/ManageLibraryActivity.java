@@ -43,9 +43,12 @@ public class ManageLibraryActivity extends AppCompatActivity {
     // selected or non-selected bookinfo arraylist
     private ArrayList<SelectedBookInfo> arrayListSelectedBookInfo;
 
+    private String callerActivity;
+
     private int removeBookCount;
 
     private String token;
+    private String user;
     private String shopName;
     private String newShopName;
 
@@ -61,8 +64,6 @@ public class ManageLibraryActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate() called");
 
         init();
-
-        getLibraryBooks();
 
     }
 
@@ -80,8 +81,16 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
     @Override
     public void onResume() {
+
         super.onResume();
+
         Log.d(TAG, "onResume() called");
+
+        if(callerActivity == null || !callerActivity.equals("CreateLibActivity"))
+        {
+            getLibraryBooks();
+        }
+
     }
 
     @Override
@@ -142,7 +151,7 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(getApplicationContext(), ManageBookActivity.class);
 
-                intent.putExtra("user", token);
+                intent.putExtra("user", user);
                 intent.putExtra("shopname", shopName);
                 intent.putExtra("bookname",  bookName);
                 intent.putExtra("request",  "browse");
@@ -151,6 +160,7 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
             }
         });
+
 
         // get application private shared preference
         SharedPreferences sharePref = getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
@@ -162,6 +172,10 @@ public class ManageLibraryActivity extends AppCompatActivity {
         shopName = sharePref.getString("shopname", "");
 
         Log.d(TAG, "from private shared preference: token = " + token + ", shopname = " + shopName);
+
+
+        callerActivity = getIntent().getStringExtra("callerActivity");
+
     }
 
 
@@ -184,9 +198,13 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
                     JSONObject jsonObj = new JSONObject(jsonText);
 
+
+
                     String result = jsonObj.getString("result");
 
                     if(result.equals("success")) {
+
+                        user = jsonObj.getString("user");
 
                         JSONArray jsonArray = jsonObj.getJSONArray("books");
 

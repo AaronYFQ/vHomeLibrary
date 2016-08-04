@@ -20,6 +20,7 @@ public class HttpUtil {
     final String LOGIN_URL = REMOTE_URL+"/book/login/";
     final String CREATESHOP_URL = REMOTE_URL+"/book/createShop/";
     final String MANAGESHOP_URL = REMOTE_URL+"/book/manageShop/";
+    final String BROWSESHOP_URL = REMOTE_URL+"/book/browseShop/";
     final String MODIFYSHOPNAME_URL = REMOTE_URL+"/book/modifyShop/";
     final String GETBOOKINFO_URL = REMOTE_URL+"/book/getBook/";
     final String SEARCHBOOK_URL = REMOTE_URL+"/book/searchBook/";
@@ -124,6 +125,14 @@ public class HttpUtil {
         return;
     }
 
+    public void submitAsyncHttpClientGetBrowseShop(String user, String shopName, final Handler handler) {
+
+        String url = BROWSESHOP_URL + "?" + "user=" + user + "&shopname=" + shopName;
+
+        asyncHttpClientGetHandler(url, handler);
+        return;
+    }
+
     public void submitAsyncHttpClientPostModifyShopName(String token, String shopOldName, String shopNewName, final Handler handler){
 
         RequestParams param = new RequestParams();
@@ -172,8 +181,8 @@ public class HttpUtil {
         return;
     }
 
-    public void submitAsyncHttpClientGetRequestBorrowBook(String borrower, String shopUser, String shopName, String bookName, final Handler handler) {
-        String url = GET_REQ_BORROW_BOOK_URL + "?" + "borrower=" + borrower + "&shopuser=" + shopUser + "&shopname=" + shopName + "&bookname=" + bookName;
+    public void submitAsyncHttpClientGetRequestBorrowBook(String token, String shopUser, String shopName, String bookName, final Handler handler) {
+        String url = GET_REQ_BORROW_BOOK_URL + "?" + "token=" + token + "&shopuser=" + shopUser + "&shopname=" + shopName + "&bookname=" + bookName;
         asyncHttpClientGetHandler(url, handler);
         return;
     }

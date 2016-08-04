@@ -43,6 +43,8 @@ public class ManageBookActivity extends AppCompatActivity {
     private TextView textViewBookState;
 
     private String token;
+    private String username;
+
     private String user;
     private String borrower;
     private String shopName;
@@ -114,9 +116,11 @@ public class ManageBookActivity extends AppCompatActivity {
         // 1. token
         token = sharePref.getString("token", "");
 
+        username = sharePref.getString("username", "");
+
         buttonBook.setVisibility(View.INVISIBLE);
 
-        if(token.equals(user)) {
+        if(username.equals(user)) {
 
             if(!request.equals("borrow"))
             {
@@ -292,6 +296,8 @@ public class ManageBookActivity extends AppCompatActivity {
 
                         Toast.makeText(getApplicationContext(), "request has registered!", Toast.LENGTH_SHORT).show();
 
+                        finish();
+
                     }
                     else {
 
@@ -336,11 +342,15 @@ public class ManageBookActivity extends AppCompatActivity {
 
                     if(result.equals("success")) {
 
-                        buttonBook.setText("归还本书");
+                        Toast.makeText(getApplicationContext(), "request has been ratified!", Toast.LENGTH_SHORT).show();
 
-                        flag = RETURN;
+                        finish();
 
-                        textViewBookState.setText("借出");
+//                        buttonBook.setText("归还本书");
+//
+//                        flag = RETURN;
+//
+//                        textViewBookState.setText("借出");
 
                     }
                     else {
@@ -362,7 +372,7 @@ public class ManageBookActivity extends AppCompatActivity {
 
         HttpUtil httptd = new HttpUtil();
 
-        httptd.submitAsyncHttpClientPostBorrowAction(user, shopName, bookName, borrower, "accept" /* "refuse" */, handler);
+        httptd.submitAsyncHttpClientPostBorrowAction(token, shopName, bookName, borrower, "accept" /* "refuse" */, handler);
 
     }
 
@@ -385,9 +395,13 @@ public class ManageBookActivity extends AppCompatActivity {
 
                     if(result.equals("success")) {
 
-                        textViewBookState.setText("在库");
+                        Toast.makeText(getApplicationContext(), "book has returned!", Toast.LENGTH_SHORT).show();
 
-                        buttonBook.setVisibility(View.INVISIBLE);
+                        finish();
+
+//                        textViewBookState.setText("在库");
+//
+//                        buttonBook.setVisibility(View.INVISIBLE);
 
                     }
                     else {
