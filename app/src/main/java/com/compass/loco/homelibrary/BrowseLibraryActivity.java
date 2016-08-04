@@ -94,10 +94,14 @@ public class BrowseLibraryActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
 
-                // show a toast with the TextView test when clicked
-                Toast.makeText(getApplicationContext(),
-                        arrayListBookInfo.get(position).getName() + "(line " + Integer.toString(position) + ") clicked!",
-                        Toast.LENGTH_SHORT).show();
+                if(BuildConfig.DEBUG) {
+
+                    // show a toast with the TextView test when clicked
+                    Toast.makeText(getApplicationContext(),
+                            arrayListBookInfo.get(position).getName() + "(line " + Integer.toString(position) + ") clicked!",
+                            Toast.LENGTH_SHORT).show();
+
+                }
 
                 String bookName = arrayListBookInfo.get(position).getName();
 

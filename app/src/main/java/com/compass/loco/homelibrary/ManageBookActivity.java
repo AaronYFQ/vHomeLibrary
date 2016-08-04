@@ -294,7 +294,11 @@ public class ManageBookActivity extends AppCompatActivity {
 
                     if(result.equals("success")) {
 
-                        Toast.makeText(getApplicationContext(), "request has registered!", Toast.LENGTH_SHORT).show();
+                        if(BuildConfig.DEBUG) {
+
+                            Toast.makeText(getApplicationContext(), "request has registered!", Toast.LENGTH_SHORT).show();
+
+                        }
 
                         finish();
 
@@ -342,7 +346,11 @@ public class ManageBookActivity extends AppCompatActivity {
 
                     if(result.equals("success")) {
 
-                        Toast.makeText(getApplicationContext(), "request has been ratified!", Toast.LENGTH_SHORT).show();
+                        if(BuildConfig.DEBUG) {
+
+                            Toast.makeText(getApplicationContext(), "request has been ratified!", Toast.LENGTH_SHORT).show();
+
+                        }
 
                         finish();
 
@@ -395,7 +403,11 @@ public class ManageBookActivity extends AppCompatActivity {
 
                     if(result.equals("success")) {
 
-                        Toast.makeText(getApplicationContext(), "book has returned!", Toast.LENGTH_SHORT).show();
+                        if(BuildConfig.DEBUG) {
+
+                            Toast.makeText(getApplicationContext(), "book has returned!", Toast.LENGTH_SHORT).show();
+
+                        }
 
                         finish();
 

@@ -86,7 +86,13 @@ public class ListViewAdapterManageBook extends BaseAdapter {
 
                 selectedBookInfo.setSelected(cb.isChecked());
 
-                Toast.makeText(activity.getApplicationContext(), selectedBookInfo.getBookInfo().getName() + " is " + cb.isChecked(), Toast.LENGTH_SHORT ).show();
+                if(BuildConfig.DEBUG) {
+
+                    Toast.makeText(activity.getApplicationContext(),
+                            selectedBookInfo.getBookInfo().getName() + " is " + cb.isChecked(),
+                            Toast.LENGTH_SHORT).show();
+
+                }
             }
 
         });

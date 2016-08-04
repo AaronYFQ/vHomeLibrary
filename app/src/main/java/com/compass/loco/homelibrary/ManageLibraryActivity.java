@@ -141,11 +141,14 @@ public class ManageLibraryActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
 
-                // show a toast with the TextView test when clicked
-                Toast.makeText(getApplicationContext(),
-                        arrayListSelectedBookInfo.get(position).getBookInfo().getName() + "(line " + Integer.toString(position) + ") clicked!",
-                        Toast.LENGTH_SHORT).show();
+                if(BuildConfig.DEBUG) {
 
+                    // show a toast with the TextView test when clicked
+                    Toast.makeText(getApplicationContext(),
+                            arrayListSelectedBookInfo.get(position).getBookInfo().getName() + "(line " + Integer.toString(position) + ") clicked!",
+                            Toast.LENGTH_SHORT).show();
+
+                }
 
                 String bookName = arrayListSelectedBookInfo.get(position).getBookInfo().getName();
 
@@ -179,7 +182,7 @@ public class ManageLibraryActivity extends AppCompatActivity {
             editTextLibraryName.setText(shopName);
 
         }
-        
+
         callerActivity = getIntent().getStringExtra("callerActivity");
 
     }
@@ -261,7 +264,12 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
 
     private void add() {
-        Toast.makeText(getApplicationContext(), "Add...", Toast.LENGTH_SHORT).show();
+
+        if(BuildConfig.DEBUG) {
+
+            Toast.makeText(getApplicationContext(), "Add...", Toast.LENGTH_SHORT).show();
+
+        }
 
         Intent intent = new Intent(this, ScanBookActivity.class);
 
@@ -273,7 +281,11 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
     private void delete() {
 
-        Toast.makeText(getApplicationContext(), "Delete...", Toast.LENGTH_SHORT).show();
+        if(BuildConfig.DEBUG) {
+
+            Toast.makeText(getApplicationContext(), "Delete...", Toast.LENGTH_SHORT).show();
+
+        }
 
         final Handler handler = new Handler() {
 
@@ -292,7 +304,11 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
                     if(!result.equals("success")) {
 
-                        Toast.makeText(getApplicationContext(), "delete book failed! result=" + result, Toast.LENGTH_SHORT).show();
+                        if(BuildConfig.DEBUG) {
+
+                            Toast.makeText(getApplicationContext(), "delete book failed! result=" + result, Toast.LENGTH_SHORT).show();
+
+                        }
 
                     }
 
@@ -333,7 +349,11 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
     private void save() {
 
-        Toast.makeText(getApplicationContext(), "Save...", Toast.LENGTH_SHORT).show();
+        if(BuildConfig.DEBUG) {
+
+            Toast.makeText(getApplicationContext(), "Save...", Toast.LENGTH_SHORT).show();
+
+        }
 
         newShopName = editTextLibraryName.getText().toString();
         if(newShopName.length() > 0) {
@@ -399,6 +419,7 @@ public class ManageLibraryActivity extends AppCompatActivity {
         else {
 
             Toast.makeText(getApplicationContext(), "Please input the name...", Toast.LENGTH_SHORT).show();
+
         }
 
     }
