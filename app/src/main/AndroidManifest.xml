@@ -29,6 +29,7 @@
         <activity
             android:name=".BrowseLibraryActivity"
             android:label="浏览书店"
+            android:parentActivityName=".SearchMainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".LoginActivity" />
         <activity
@@ -78,7 +79,8 @@
         <activity android:name=".Borrowed_Activity" />
         <activity
             android:name=".SearchMainActivity"
-            android:label="搜索"
+            android:label=""
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".RequestedBorrow" />
         <activity android:name=".BorrowedNotReturn" />

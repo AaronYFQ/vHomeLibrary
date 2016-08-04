@@ -106,10 +106,13 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_main);
             //setContentView(R.layout.activity_search_main);
-        initData();
-        initViews();
-        initListViews();
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+            initData();
+            initViews();
+            initListViews();
     }
 
     private void initListViews()
@@ -160,10 +163,8 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
      * 初始化视图
      */
     private void initViews() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        searchView = (SearchView) findViewById(R.id.main_search_layout);
+         searchView = (SearchView) findViewById(R.id.main_search_layout);
         //设置监听
         searchView.setSearchViewListener(this);
         //设置adapter

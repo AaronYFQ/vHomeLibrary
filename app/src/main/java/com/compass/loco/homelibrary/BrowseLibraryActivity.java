@@ -44,6 +44,7 @@ public class BrowseLibraryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_browse_library);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Log.d(TAG, "onCreate() called");
 

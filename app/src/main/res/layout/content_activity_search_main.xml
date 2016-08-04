@@ -12,6 +12,7 @@
     tools:context=".SearchMainActivity"
     tools:showIn="@layout/activity_search_main">
 
+
     <com.compass.loco.homelibrary.widge.SearchView
         android:id="@+id/main_search_layout"
         android:layout_width="match_parent"

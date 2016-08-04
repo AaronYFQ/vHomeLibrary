@@ -36,9 +36,7 @@
                 android:layout_alignParentLeft="true"
                 android:textSize="20sp"
                 android:maxEms="12"
-                android:textColor="@drawable/search_result_listview_style"
-                android:textColorHighlight="@color/gray"
-                android:textStyle="bold">
+                android:textColor="@color/button_material_dark">
             </TextView>
 
             <TextView
