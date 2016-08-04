@@ -124,7 +124,7 @@ public class SearchView extends LinearLayout implements View.OnClickListener {
                 } else {
                     searchStyleFlag = true;
                 }
-                Toast.makeText(mContext.getApplicationContext(), "你选择的是:"+ searchStyle[pos], Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mContext.getApplicationContext(), "你选择的是:"+ searchStyle[pos], Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {

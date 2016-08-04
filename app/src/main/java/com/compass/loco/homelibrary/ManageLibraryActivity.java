@@ -173,7 +173,13 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
         Log.d(TAG, "from private shared preference: token = " + token + ", shopname = " + shopName);
 
+        // set shop name
+        if(shopName.length() > 0) {
 
+            editTextLibraryName.setText(shopName);
+
+        }
+        
         callerActivity = getIntent().getStringExtra("callerActivity");
 
     }
