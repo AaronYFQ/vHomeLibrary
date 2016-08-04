@@ -19,6 +19,7 @@
             android:layout_height="60dp"
 
             android:layout_toRightOf="@id/item_search_iv_book_icon"
+             android:textColor="@drawable/search_result_listview_style"
            />-->
 
         <RelativeLayout
@@ -35,7 +36,7 @@
                 android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
                 android:textSize="20sp"
-                android:textColor="@drawable/search_result_listview_style"
+
                 android:textColorHighlight="@color/gray"
                 android:singleLine="true"
                 android:maxEms="12"

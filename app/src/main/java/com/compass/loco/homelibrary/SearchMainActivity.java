@@ -332,7 +332,7 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
                                             jsonObj.getString("name"),
                                             jsonObj.getString("addr"),
                                             jsonObj.getString("username"),
-                                            jsonObj.getString("bookcnt") +  " 本书"
+                                            jsonObj.getString("bookcnt")
 
                                     ));
                         }

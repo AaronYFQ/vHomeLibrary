@@ -48,8 +48,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/book_state_edittext_shape"
-                android:textColor="@color/black"
+
+                android:textColor="@color/gray"
                 android:textSize="12sp">
             </TextView>
         </RelativeLayout>
