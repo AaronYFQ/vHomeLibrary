@@ -1,14 +1,6 @@
 apply plugin: 'com.android.application'
 
 android {
-    signingConfigs {
-        config {
-            keyAlias 'LocoCompassKey'
-            keyPassword '123456'
-            storeFile file('C:/Users/ejanlng/.android/LocoCompass.jks')
-            storePassword '123456'
-        }
-    }
     compileSdkVersion 23
     buildToolsVersion '23.0.2'
     useLibrary 'org.apache.http.legacy'
@@ -25,7 +17,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            signingConfig signingConfigs.config
             minifyEnabled false
         }
     }
