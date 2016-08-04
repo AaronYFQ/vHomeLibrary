@@ -23,7 +23,7 @@
         <activity android:name=".CreateLibraryActivity" />
         <activity
             android:name=".ManageLibraryActivity"
-            android:label="管理书店"
+            android:label=""
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -31,7 +31,10 @@
             android:label="浏览书店"
             android:parentActivityName=".SearchMainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".LoginActivity"
+            android:label=""
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".SelectCityActivity"
             android:label=""

@@ -8,6 +8,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -18,7 +20,7 @@ import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends AppCompatActivity {
 
     TabHost tabHost;
     // UI references.
@@ -31,11 +33,16 @@ public class LoginActivity extends Activity {
     enum ActionType {LOGIN, REGISTER};
     Button mButtonView;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         tabHost = (TabHost) findViewById(R.id.tabHost);
         tabHost.setup();
         //LayoutInflater.from(this).inflate(R.layout.activity_main,

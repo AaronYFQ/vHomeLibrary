@@ -14,12 +14,46 @@
         android:layout_height="match_parent"
         android:focusableInTouchMode="true">
 
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:gravity="center"
+            android:background="@drawable/library_bg_1">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:id="@+id/app_title_layout">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="于太太的书房"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:textSize="24sp"
+                android:fontFamily="sans-serif-black"
+                android:id="@+id/editTextLibraryName" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="全利泽最全的书房"
+                android:textAlignment="center"
+                android:textColor="#CCCCCC"
+                android:textSize="13sp"
+                android:id="@+id/shopbyline" />
+        </LinearLayout>
+        </RelativeLayout>
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
-            <ImageButton
+            <!--ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/buttonSave"
@@ -46,7 +80,7 @@
                 android:layout_toRightOf="@+id/textViewLibraryLabel"
                 android:layout_centerVertical="true"
                 android:textSize="14dp"
-                android:singleLine="true" />
+                android:singleLine="true" /-->
 
             <ImageButton
                 android:layout_width="wrap_content"

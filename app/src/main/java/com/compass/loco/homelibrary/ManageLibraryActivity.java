@@ -22,6 +22,7 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -32,7 +33,7 @@ public class ManageLibraryActivity extends AppCompatActivity {
     private static final String TAG = "ManageLibraryActivity";
 
     // Android objects
-    private EditText editTextLibraryName;
+    private TextView editTextLibraryName;
 
     private ImageButton buttonAdd;
     private ImageButton buttonDelete;
@@ -107,11 +108,11 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
     private void init() {
 
-        editTextLibraryName = (EditText) findViewById(R.id.editTextLibraryName);
+        editTextLibraryName = (TextView) findViewById(R.id.editTextLibraryName);
 
         buttonAdd = (ImageButton) findViewById(R.id.buttonAdd);
         buttonDelete = (ImageButton) findViewById(R.id.buttonDelete);
-        buttonSave = (ImageButton) findViewById(R.id.buttonSave);
+        //buttonSave = (ImageButton) findViewById(R.id.buttonSave);
 
         listViewBooks = (ListView) findViewById(R.id.listViewBooks);
         listViewBooks.setTextFilterEnabled(true);
@@ -130,12 +131,12 @@ public class ManageLibraryActivity extends AppCompatActivity {
             }
         });
 
-        buttonSave.setOnClickListener(new View.OnClickListener() {
+        /*buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 save();
             }
-        });
+        });*/
 
         listViewBooks.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
