@@ -144,7 +144,7 @@
 
             <Button
                 style="?android:attr/buttonStyleSmall"
-                android:layout_width="122dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="创建书店"
                 android:id="@+id/store_library"
@@ -152,18 +152,6 @@
                 android:onClick="createLibrary"
                 android:background="@color/colorBackgroundGreen"
                 android:textColor="#ffffff" />
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="122dp"
-                android:layout_height="wrap_content"
-                android:text="取消返回"
-                android:id="@+id/button"
-                android:layout_gravity="right|center_vertical"
-                android:onClick="cancelReturn"
-                android:background="@color/colorBackgroundGreen"
-                android:textColor="#ffffff" />
-
         </FrameLayout>
 
     </LinearLayout>

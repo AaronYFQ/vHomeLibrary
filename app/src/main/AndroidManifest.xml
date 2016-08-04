@@ -73,6 +73,7 @@
         <activity
             android:name=".CreateLibActivity"
             android:label="@string/title_activity_create_lib"
+            android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Borrowed_Activity" />
         <activity

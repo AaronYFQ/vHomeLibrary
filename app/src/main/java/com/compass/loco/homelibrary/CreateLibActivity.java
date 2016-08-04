@@ -56,6 +56,8 @@ public class CreateLibActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         Intent intent = getIntent();
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
 
@@ -252,12 +254,6 @@ public class CreateLibActivity extends AppCompatActivity {
         httptd.submitAsyncHttpClientPostCreateShop(token, library,
                 shopaddr, advertisement, handler);
 
-    }
-
-    public void cancelReturn(View view)
-    {
-        Intent mainIntent = new Intent(this,MainActivity.class);
-        startActivity(mainIntent);
     }
 
 }
