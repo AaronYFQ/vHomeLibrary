@@ -13,9 +13,9 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 
-
 public class HttpUtil {
-    static final String REMOTE_URL = "http://54.204.114.208:8000";
+    // static final String REMOTE_URL = "http://54.204.114.208:8000";
+    static final String REMOTE_URL = "http://ec2-54-204-114-208.compute-1.amazonaws.com:8000";
     final String REGIST_URL = REMOTE_URL+"/book/regist/";
     final String LOGIN_URL = REMOTE_URL+"/book/login/";
     final String CREATESHOP_URL = REMOTE_URL+"/book/createShop/";

@@ -86,7 +86,7 @@ public class ListViewAdapterManageBook extends BaseAdapter {
 
                 selectedBookInfo.setSelected(cb.isChecked());
 
-                if(BuildConfig.DEBUG) {
+                if(!BuildConfig.DEBUG) {
 
                     Toast.makeText(activity.getApplicationContext(),
                             selectedBookInfo.getBookInfo().getName() + " is " + cb.isChecked(),

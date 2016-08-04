@@ -142,7 +142,7 @@ public class ManageLibraryActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
 
-                if(BuildConfig.DEBUG) {
+                if(!BuildConfig.DEBUG) {
 
                     // show a toast with the TextView test when clicked
                     Toast.makeText(getApplicationContext(),
@@ -266,7 +266,7 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
     private void add() {
 
-        if(BuildConfig.DEBUG) {
+        if(!BuildConfig.DEBUG) {
 
             Toast.makeText(getApplicationContext(), "Add...", Toast.LENGTH_SHORT).show();
 
@@ -282,7 +282,7 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
     private void delete() {
 
-        if(BuildConfig.DEBUG) {
+        if(!BuildConfig.DEBUG) {
 
             Toast.makeText(getApplicationContext(), "Delete...", Toast.LENGTH_SHORT).show();
 
@@ -305,7 +305,7 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
                     if(!result.equals("success")) {
 
-                        if(BuildConfig.DEBUG) {
+                        if(!BuildConfig.DEBUG) {
 
                             Toast.makeText(getApplicationContext(), "delete book failed! result=" + result, Toast.LENGTH_SHORT).show();
 
@@ -350,7 +350,7 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
     private void save() {
 
-        if(BuildConfig.DEBUG) {
+        if(!BuildConfig.DEBUG) {
 
             Toast.makeText(getApplicationContext(), "Save...", Toast.LENGTH_SHORT).show();
 
