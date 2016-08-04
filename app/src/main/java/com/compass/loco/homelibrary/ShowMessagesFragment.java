@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -73,8 +75,12 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
                     bUpdate = true;
                 }
 
-                String action = cur.getString(cur.getColumnIndexOrThrow("action"));
-                handleAction(action, cur);
+                // Only handle action for new message.
+                //if(cur.getInt(cur.getColumnIndexOrThrow("new")) > 0)
+                {
+                    String action = cur.getString(cur.getColumnIndexOrThrow("action"));
+                    handleAction(action, cur);
+                }
 
                 if(bUpdate)
                 {
@@ -94,9 +100,9 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
             }
         });
 
-        SharedPreferences sharedPref = view.getContext().getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
+/*        SharedPreferences sharedPref = view.getContext().getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
         String token = sharedPref.getString("token", null);
-        if(token != null) {
+        if(!token.isEmpty()) {
             DisplayMessages();
             getNewMessages(token);
         }
@@ -105,7 +111,7 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
             Toast.makeText(getContext(),
                     "Please login first",
                     Toast.LENGTH_SHORT).show();
-        }
+        }*/
 
         //MessageIntentService.startActionPoll(getContext());
         return view;
@@ -231,11 +237,42 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+
+        ImageButton messageBtn = (ImageButton)getActivity().findViewById(R.id.menu_2);
+        Drawable messageBtnGray = getResources().getDrawable(R.drawable.mainmenu_message_gray);
+        messageBtn.setBackgroundDrawable(messageBtnGray);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        ImageButton messageBtn = (ImageButton)getActivity().findViewById(R.id.menu_2);
+        Drawable messageBtnGreen = getResources().getDrawable(R.drawable.mainmenu_message);
+        messageBtn.setBackgroundDrawable(messageBtnGreen);
+
+        SharedPreferences sharedPref = view.getContext().getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
+        String token = sharedPref.getString("token", null);
+        if(!token.isEmpty()) {
+            DisplayMessages();
+            getNewMessages(token);
+        }
+        else
+        {
+            Toast.makeText(getContext(),
+                    "Please login first",
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
     public void onRefresh() {
         swipeRefreshLayout.setRefreshing(true);
         SharedPreferences sharedPref = view.getContext().getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
         String token = sharedPref.getString("token", null);
-        if(token != null) {
+        if(!token.isEmpty()) {
             getNewMessages(token);
         }
         else {

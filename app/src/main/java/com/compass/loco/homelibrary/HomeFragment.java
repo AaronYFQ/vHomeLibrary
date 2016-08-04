@@ -3,6 +3,7 @@ package com.compass.loco.homelibrary;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -113,5 +114,23 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 // do nothing
                 break;
         }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        ImageButton homeBtn = (ImageButton) getActivity().findViewById(R.id.menu_1);
+        Drawable homeBtnGray = getResources().getDrawable(R.drawable.mainmenu_home_gray);
+        homeBtn.setBackgroundDrawable(homeBtnGray);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        ImageButton homeBtn = (ImageButton) getActivity().findViewById(R.id.menu_1);
+        Drawable homeBtnGreen = getResources().getDrawable(R.drawable.mainmenu_home);
+        homeBtn.setBackgroundDrawable(homeBtnGreen);
     }
 }

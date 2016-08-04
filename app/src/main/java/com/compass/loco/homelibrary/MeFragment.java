@@ -4,12 +4,14 @@ package com.compass.loco.homelibrary;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 
@@ -87,5 +89,23 @@ public class MeFragment extends Fragment implements View.OnClickListener {
             sharedata.putString("shopname", "");
             sharedata.commit();
             return;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        ImageButton meBtn = (ImageButton) getActivity().findViewById(R.id.menu_4);
+        Drawable meBtnGray = getResources().getDrawable(R.drawable.mainmenu_me_gray);
+        meBtn.setBackgroundDrawable(meBtnGray);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        ImageButton meBtn = (ImageButton) getActivity().findViewById(R.id.menu_4);
+        Drawable meBtnGreen = getResources().getDrawable(R.drawable.mainmenu_me);
+        meBtn.setBackgroundDrawable(meBtnGreen);
     }
 }

@@ -91,7 +91,8 @@ public class MessageIntentService extends IntentService {
                 Thread.sleep(POLL_TIME);
                 SharedPreferences sharedPref = getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
                 String token = sharedPref.getString("token", null);
-                if(token != null) {
+                if(!token.isEmpty()) {
+                    Log.v("...check message token", token);
                     checkNewMessageOnServer(token);
                 }
 
@@ -153,7 +154,7 @@ public class MessageIntentService extends IntentService {
         PendingIntent resultPendingIntent =
                 stackBuilder.getPendingIntent(
                         0,
-                        PendingIntent.FLAG_UPDATE_CURRENT
+                        PendingIntent.FLAG_UPDATE_CURRENT | NotificationCompat.FLAG_ONLY_ALERT_ONCE
                 );
         mBuilder.setContentIntent(resultPendingIntent);
         NotificationManager mNotificationManager =
