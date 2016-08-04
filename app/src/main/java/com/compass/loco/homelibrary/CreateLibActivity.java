@@ -18,12 +18,16 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class CreateLibActivity extends AppCompatActivity {
     private Spinner citySpinner;
@@ -43,6 +47,7 @@ public class CreateLibActivity extends AppCompatActivity {
     private String library = "";
 
     final CreateLibActivity curActivity = this;
+    ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +55,6 @@ public class CreateLibActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_lib);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         Intent intent = getIntent();
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
@@ -113,29 +117,74 @@ public class CreateLibActivity extends AppCompatActivity {
             }
         });
 
-        villageTextView = (AutoCompleteTextView) findViewById(R.id.village_text_view);
 
+        villageTextView = (AutoCompleteTextView) findViewById(R.id.village_text_view);
         villageAdapter = ArrayAdapter.createFromResource(this,
                 R.array.village_array, android.R.layout.simple_dropdown_item_1line);
 
         villageTextView.setAdapter(villageAdapter);
-
+        villageTextView.setThreshold(1);
         villageTextView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id)
             {
-                ListView listview = (ListView) parent;
-                ArrayAdapter<String> adapter  =  (ArrayAdapter<String>) parent.getAdapter();
+               // ListView listview = (ListView) parent;
+               // ArrayAdapter<String> adapter  =  (ArrayAdapter<String>) parent.getAdapter();
                 TextView textview = (TextView) view;
                 villageString = textview.getText().toString();
 
             }
         });
+        /*
+        addItems();
+        SimpleAdapter notes = new SimpleAdapter(
+                this,
+                list,
+                android.R.layout.two_line_list_item,
+                new String[] { "villageSearchText", "villageName"},
+                new int[] { R.id.searchText, R.id.village_text_view } );
+        villageTextView.setAdapter(notes);
+        villageTextView.setThreshold(1);
+
+        villageTextView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+                                    long arg3) {
+                TextView tv = (TextView)arg1.findViewById(R.id.village_text_view);
+                villageTextView.setText(tv.getText().toString()+" ");
+                villageTextView.setSelection((villageTextView.getText().toString()).length());
+            }
+        });
+        */
 
         adEditText = (EditText) findViewById(R.id.ad_edit_text);
         libraryEditText = (EditText) findViewById(R.id.library_name);
 
     }
+
+    private void addItems() {
+        HashMap<String,String> item;
+
+        item = new HashMap<String,String>();
+        item.put( "villageSearchText", "LIZEXIYUAN lizexiyuan 利泽西园");
+        item.put( "villageName", "利泽西园");
+        list.add( item );
+
+
+        item = new HashMap<String,String>();
+        item.put( "villageSearchText", "WANGJINGHUAYUANDONGQU wangjinghuayuandongqu 望京花园东区");
+        item.put( "villageName", "望京花园东区");
+        list.add( item );
+
+
+        item = new HashMap<String,String>();
+        item.put( "villageSearchText", "WANGJINGHUAYUANXIQU wangjinghuayuanxiqu 望京花园西区");
+        item.put( "villageName", "望京花园西区");
+        list.add( item );
+
+    }
+
     public void createLibrary(View view)
     {
         //get library name @String

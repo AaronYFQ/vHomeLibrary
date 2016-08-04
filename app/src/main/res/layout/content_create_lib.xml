@@ -107,6 +107,10 @@
                         android:id="@+id/village_text_view"
                         android:layout_gravity="center_horizontal"
                         android:textIsSelectable="false" />
+                    <!--TextView android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/searchText"
+                        android:visibility="gone"/-->
 
                 </LinearLayout>
 

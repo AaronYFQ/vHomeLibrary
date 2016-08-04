@@ -35,12 +35,18 @@
     </string-array>
 
     <string-array name="village_array">
+        <item>望京花园东区</item>
+        <item>望京花园西区</item>
+        <item>望京西园一区</item>
+        <item>望京西园二区</item>
+        <item>望京西园三区</item>
         <item>望京新城</item>
+        <item>望京名苑</item>
+        <item>望京西园一区</item>
         <item>首开知语</item>
         <item>利泽西园</item>
         <item>南湖东园</item>
         <item>澳洲康都</item>
-        <item>望京花园</item>
     </string-array>
 
     <string-array name="search_style">
