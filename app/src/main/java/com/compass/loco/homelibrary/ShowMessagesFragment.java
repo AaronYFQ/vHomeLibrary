@@ -43,6 +43,7 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
     private SwipeRefreshLayout swipeRefreshLayout;
     private View view;
     private TextView countTxView;
+    private NewMessageReceiver receiver;
     private int numOfNewMsg = 0;
 
     @Override
@@ -121,7 +122,7 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
                     Toast.LENGTH_SHORT).show();
         }*/
 
-        //MessageIntentService.startActionPoll(getContext());
+        MessageIntentService.startActionPoll(getContext());
 
         DisplayMessages();
         registerBroadcastReceiver();
@@ -264,8 +265,12 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
         return num;
     }
 
-    private void registerBroadcastReceiver(){
-        NewMessageReceiver receiver = new NewMessageReceiver();
+    public void registerBroadcastReceiver(){
+        if(receiver != null)
+        {
+            getActivity().unregisterReceiver(receiver);
+        }
+        receiver = new NewMessageReceiver();
         IntentFilter filter = new IntentFilter(NEW_MESSAGE_ACTION);
         getActivity().registerReceiver(receiver, filter);
     }

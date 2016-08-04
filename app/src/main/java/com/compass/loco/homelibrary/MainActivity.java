@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         //registerBroadcastReceiver();
 
         //start bg service
-        MessageIntentService.startActionPoll(this);
+        //MessageIntentService.startActionPoll(this);
     }
 
     @Override

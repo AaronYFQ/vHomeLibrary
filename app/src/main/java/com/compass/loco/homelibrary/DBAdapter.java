@@ -94,6 +94,13 @@ public class DBAdapter {
         if(username == null)
             return -1;
 
+        Cursor cursor =db.query(DATABASE_TABLE, null, "user=? AND time=?", new String[]{username,message.getTime()}, null, null, KEY_ID + " DESC");
+        if(cursor.getCount() > 0)
+        {
+            Log.v("Get duplicated item", username);
+            return 0;
+        }
+
         ContentValues initialValues = new ContentValues();
         initialValues.put(KEY_NEW,1);
         initialValues.put(KEY_BOOK_NAME, message.getBook());

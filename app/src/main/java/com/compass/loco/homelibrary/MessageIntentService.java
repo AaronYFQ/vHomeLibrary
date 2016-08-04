@@ -116,11 +116,13 @@ public class MessageIntentService extends IntentService {
             public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
                 String jsonString = new String(responseBody);
                 JSONObject item = null;
+                Log.v("Receive message ", "result");
                 try {
                     item = new JSONObject(jsonString);
                     int numOfNewMsg = item.getInt("count");
                     if(numOfNewMsg > 0)
                     {
+                        Log.v("Receive message ", Integer.toString(numOfNewMsg));
                         //sendBroadcastToMainActivity(numOfNewMsg);
                         sendBroadcastToMessageFrag(jsonString);
                         sendNotification(numOfNewMsg);
