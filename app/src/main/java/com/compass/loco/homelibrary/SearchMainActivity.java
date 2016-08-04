@@ -329,7 +329,8 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
                                     new ShopBean(
                                             jsonObj.getString("name"),
                                             jsonObj.getString("addr"),
-                                            jsonObj.getString("username")
+                                            jsonObj.getString("username"),
+                                            jsonObj.getString("bookcnt") +  " 本书"
 
                                     ));
                         }
@@ -426,11 +427,11 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
      * 获取搜索结果data和adapter
      */
     private void getResultData(String text, boolean searchStyleFlag) {
-        if (resultData == null) {
+       /* if (resultData == null) {
             // 初始化
             resultData = new ArrayList<>();
         } else {
-            resultData.clear();
+            resultData.clear();*/
 
             if(searchStyleFlag){
                 if (dbData == null) {
@@ -450,7 +451,7 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
                     autoCompleteData.add(dbData.get(i).getBookName());
                 }
             }*/
-        }
+       // }
        /* if (resultAdapter == null) {
             resultAdapter = new SearchAdapter(this, resultData, R.layout.item_bean_list);
         } else {

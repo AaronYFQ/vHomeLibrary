@@ -6,22 +6,22 @@ package com.compass.loco.homelibrary.model;
 public class ShopBean {
     private String shopName;
     private String village;
-    private int bookCounts = 1;
+    private String bookCounts ;
 
     private String username;
 
-    public ShopBean(String shopName, String village, String username) {
+    public ShopBean(String shopName, String village, String username,String bookCounts) {
         this.shopName = shopName;
         this.village = village;
         this.username = username;
-        //this.bookCounts = bookCounts;
+        this.bookCounts = bookCounts;
     }
 
-    public int getBookCounts() {
+    public String getBookCounts() {
         return bookCounts;
     }
 
-    public void setBookCounts(int bookCounts) {
+    public void setBookCounts(String bookCounts) {
         this.bookCounts = bookCounts;
     }
 

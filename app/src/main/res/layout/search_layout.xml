@@ -19,8 +19,7 @@
             android:textSize="18sp"
             android:layout_gravity="right|bottom"
             android:layout_margin="10dp"
-            android:spinnerMode="dropdown"
-            android:background="@color/color_white" />
+            android:spinnerMode="dropdown" />
 
         <FrameLayout
             android:layout_weight="1"
