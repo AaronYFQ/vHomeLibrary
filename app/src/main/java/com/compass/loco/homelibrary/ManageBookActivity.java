@@ -292,6 +292,8 @@ public class ManageBookActivity extends AppCompatActivity {
 
                         Toast.makeText(getApplicationContext(), "request has registered!", Toast.LENGTH_SHORT).show();
 
+                        finish();
+
                     }
                     else {
 
@@ -336,11 +338,15 @@ public class ManageBookActivity extends AppCompatActivity {
 
                     if(result.equals("success")) {
 
-                        buttonBook.setText("归还本书");
+                        Toast.makeText(getApplicationContext(), "request has been ratified!", Toast.LENGTH_SHORT).show();
 
-                        flag = RETURN;
+                        finish();
 
-                        textViewBookState.setText("借出");
+//                        buttonBook.setText("归还本书");
+//
+//                        flag = RETURN;
+//
+//                        textViewBookState.setText("借出");
 
                     }
                     else {
@@ -385,9 +391,13 @@ public class ManageBookActivity extends AppCompatActivity {
 
                     if(result.equals("success")) {
 
-                        textViewBookState.setText("在库");
+                        Toast.makeText(getApplicationContext(), "book has returned!", Toast.LENGTH_SHORT).show();
 
-                        buttonBook.setVisibility(View.INVISIBLE);
+                        finish();
+
+//                        textViewBookState.setText("在库");
+//
+//                        buttonBook.setVisibility(View.INVISIBLE);
 
                     }
                     else {

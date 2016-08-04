@@ -182,6 +182,7 @@ public class CreateLibActivity extends AppCompatActivity {
                         sharedata.commit();
 
                         Intent manageLibraryIntent = new Intent(curActivity, ManageLibraryActivity.class);
+                        manageLibraryIntent.putExtra("callerActivity", "CreateLibActivity");
                         startActivity(manageLibraryIntent);
                     }
 

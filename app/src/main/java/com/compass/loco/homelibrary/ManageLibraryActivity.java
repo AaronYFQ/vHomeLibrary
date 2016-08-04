@@ -43,6 +43,8 @@ public class ManageLibraryActivity extends AppCompatActivity {
     // selected or non-selected bookinfo arraylist
     private ArrayList<SelectedBookInfo> arrayListSelectedBookInfo;
 
+    private String callerActivity;
+
     private int removeBookCount;
 
     private String token;
@@ -62,8 +64,6 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
         init();
 
-        getLibraryBooks();
-
     }
 
     @Override
@@ -80,8 +80,16 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
     @Override
     public void onResume() {
+
         super.onResume();
+
         Log.d(TAG, "onResume() called");
+
+        if(callerActivity == null || !callerActivity.equals("CreateLibActivity"))
+        {
+            getLibraryBooks();
+        }
+
     }
 
     @Override
@@ -152,6 +160,7 @@ public class ManageLibraryActivity extends AppCompatActivity {
             }
         });
 
+
         // get application private shared preference
         SharedPreferences sharePref = getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
 
@@ -162,6 +171,10 @@ public class ManageLibraryActivity extends AppCompatActivity {
         shopName = sharePref.getString("shopname", "");
 
         Log.d(TAG, "from private shared preference: token = " + token + ", shopname = " + shopName);
+
+
+        callerActivity = getIntent().getStringExtra("callerActivity");
+
     }
 
 
