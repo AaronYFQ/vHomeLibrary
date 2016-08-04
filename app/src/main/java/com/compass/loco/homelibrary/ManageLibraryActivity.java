@@ -48,6 +48,7 @@ public class ManageLibraryActivity extends AppCompatActivity {
     private int removeBookCount;
 
     private String token;
+    private String user;
     private String shopName;
     private String newShopName;
 
@@ -150,7 +151,7 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(getApplicationContext(), ManageBookActivity.class);
 
-                intent.putExtra("user", token);
+                intent.putExtra("user", user);
                 intent.putExtra("shopname", shopName);
                 intent.putExtra("bookname",  bookName);
                 intent.putExtra("request",  "browse");
@@ -197,9 +198,13 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
                     JSONObject jsonObj = new JSONObject(jsonText);
 
+
+
                     String result = jsonObj.getString("result");
 
                     if(result.equals("success")) {
+
+                        user = jsonObj.getString("user");
 
                         JSONArray jsonArray = jsonObj.getJSONArray("books");
 

@@ -368,7 +368,7 @@ public class ManageBookActivity extends AppCompatActivity {
 
         HttpUtil httptd = new HttpUtil();
 
-        httptd.submitAsyncHttpClientPostBorrowAction(user, shopName, bookName, borrower, "accept" /* "refuse" */, handler);
+        httptd.submitAsyncHttpClientPostBorrowAction(token, shopName, bookName, borrower, "accept" /* "refuse" */, handler);
 
     }
 
