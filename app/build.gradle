@@ -52,7 +52,8 @@ dependencies {
     compile files('libs/org.apache.http.legacy.jar')
     compile 'com.loopj.android:android-async-http:1.4.9'
     compile 'cz.msebera.android:httpclient:4.3.6'
-    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
+    compile 'com.google.android.gms:play-services-appindexing:+'
+
     // Supports Android 4.0.3 and later (API level 15)
     compile 'com.embarkmobile:zxing-android-minimal:2.0.0@aar'
     // Supports Android 2.1 and later (API level 7), but not optimal for later Android versions.
