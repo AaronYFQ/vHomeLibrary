@@ -187,7 +187,8 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
         //从数据库获取数据
         //getDbData();
         //初始化热搜版数据
-        getHintData();
+        //
+        // getHintData();
         //初始化自动补全数据
         getLocalData();
         getAutoCompleteData(null);
@@ -266,7 +267,7 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
                         }
                         else
                         {
-                            Toast.makeText(getApplicationContext(), "完成搜素", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getApplicationContext(), "完成搜素", Toast.LENGTH_SHORT).show();
                         }
                     } catch (JSONException e) {
                         Toast.makeText(getApplicationContext(), "unknown response from remote service!", Toast.LENGTH_SHORT).show();
@@ -346,7 +347,7 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
                         }
                         else
                         {
-                            Toast.makeText(getApplicationContext(), "完成搜素", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getApplicationContext(), "完成搜素", Toast.LENGTH_SHORT).show();
                         }
 
                     } catch (JSONException e) {
@@ -437,7 +438,6 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
                     }
                 }
             }
-
         }
         if (autoCompleteAdapter == null) {
             autoCompleteAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, autoCompleteData);
@@ -455,9 +455,7 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
             if(list.get(i).equals(text))
                 return  true;
         }
-
         return false;
-
     }
 
     /**
@@ -469,7 +467,6 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
             resultData = new ArrayList<>();
         } else {
             resultData.clear();*/
-
             if(searchStyleFlag){
                 if (dbData == null) {
                     dbData = new ArrayList<>();
