@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -117,20 +118,39 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+
+        FragmentActivity activity = getActivity();
+        if(activity == null)
+            return;
+
+        if (hidden) {
+            ImageButton homeBtn = (ImageButton) activity.findViewById(R.id.menu_1);
+            Drawable homeBtnGray = getResources().getDrawable(R.drawable.mainmenu_home_gray);
+            homeBtn.setBackgroundDrawable(homeBtnGray);
+        } else {
+            ImageButton homeBtn = (ImageButton) activity.findViewById(R.id.menu_1);
+            Drawable homeBtnGreen = getResources().getDrawable(R.drawable.mainmenu_home);
+            homeBtn.setBackgroundDrawable(homeBtnGreen);
+        }
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
 
-        ImageButton homeBtn = (ImageButton) getActivity().findViewById(R.id.menu_1);
+/*        ImageButton homeBtn = (ImageButton) getActivity().findViewById(R.id.menu_1);
         Drawable homeBtnGray = getResources().getDrawable(R.drawable.mainmenu_home_gray);
-        homeBtn.setBackgroundDrawable(homeBtnGray);
+        homeBtn.setBackgroundDrawable(homeBtnGray);*/
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        ImageButton homeBtn = (ImageButton) getActivity().findViewById(R.id.menu_1);
+/*        ImageButton homeBtn = (ImageButton) getActivity().findViewById(R.id.menu_1);
         Drawable homeBtnGreen = getResources().getDrawable(R.drawable.mainmenu_home);
-        homeBtn.setBackgroundDrawable(homeBtnGreen);
+        homeBtn.setBackgroundDrawable(homeBtnGreen);*/
     }
 }

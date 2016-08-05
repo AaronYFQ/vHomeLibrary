@@ -11,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
     public static String NEW_MESSAGE_ACTION = "com.compass.loco.homelibrary.NEW_MESSAGE_ACTION";
 
     private DBAdapter db;
+
     private MessageCursorAdapter cursorAdapter;
     private ListView messageList;
     private Button clearButton;
@@ -128,6 +130,14 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
         registerBroadcastReceiver();
 
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        Log.v("Register . ", "Unregister.");
+        getActivity().unregisterReceiver(receiver);
     }
 
     private void handleAction(String action, Cursor cursor)
@@ -246,7 +256,9 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
         //badge.setTargetView(getActivity().findViewById(R.id.menu_title_2));
         //badge.setBadgeCount(numOfNewMsg);
         MainActivity mainActivity = (MainActivity) getActivity();
-        mainActivity.setBadgeNumber(num);
+        if(mainActivity != null) {
+            mainActivity.setBadgeNumber(num);
+        }
     }
 
     private int getNewMessageNumber(Cursor cursor)
@@ -266,10 +278,12 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
     }
 
     public void registerBroadcastReceiver(){
-        if(receiver != null)
+/*        if(receiver != null)
         {
-            getActivity().unregisterReceiver(receiver);
-        }
+            Log.v("Has registered. ", "Do not register again.");
+            return;
+        }*/
+        Log.v("Register . ", "Register again.");
         receiver = new NewMessageReceiver();
         IntentFilter filter = new IntentFilter(NEW_MESSAGE_ACTION);
         getActivity().registerReceiver(receiver, filter);
@@ -291,19 +305,55 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
     }
 
     @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+
+        FragmentActivity activity = getActivity();
+        if(hidden)
+        {
+            if(activity != null) {
+                ImageButton messageBtn = (ImageButton) getActivity().findViewById(R.id.menu_2);
+                Drawable messageBtnGray = getResources().getDrawable(R.drawable.mainmenu_message_gray);
+                messageBtn.setBackgroundDrawable(messageBtnGray);
+            }
+        }
+        else
+        {
+            if(activity != null) {
+                ImageButton messageBtn = (ImageButton) getActivity().findViewById(R.id.menu_2);
+                Drawable messageBtnGreen = getResources().getDrawable(R.drawable.mainmenu_message);
+                messageBtn.setBackgroundDrawable(messageBtnGreen);
+            }
+
+            SharedPreferences sharedPref = view.getContext().getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
+            String token = sharedPref.getString("token", "");
+            if(!token.isEmpty()) {
+                DisplayMessages();
+                getNewMessages(token);
+            }
+            else
+            {
+                Toast.makeText(getContext(),
+                        "请先登录.",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
 
-        ImageButton messageBtn = (ImageButton)getActivity().findViewById(R.id.menu_2);
+/*        ImageButton messageBtn = (ImageButton)getActivity().findViewById(R.id.menu_2);
         Drawable messageBtnGray = getResources().getDrawable(R.drawable.mainmenu_message_gray);
-        messageBtn.setBackgroundDrawable(messageBtnGray);
+        messageBtn.setBackgroundDrawable(messageBtnGray);*/
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        ImageButton messageBtn = (ImageButton)getActivity().findViewById(R.id.menu_2);
+/*        ImageButton messageBtn = (ImageButton)getActivity().findViewById(R.id.menu_2);
         Drawable messageBtnGreen = getResources().getDrawable(R.drawable.mainmenu_message);
         messageBtn.setBackgroundDrawable(messageBtnGreen);
 
@@ -318,7 +368,7 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
             Toast.makeText(getContext(),
                     "请先登录.",
                     Toast.LENGTH_SHORT).show();
-        }
+        }*/
     }
 
     @Override

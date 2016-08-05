@@ -58,7 +58,7 @@
             <ImageButton
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                android:background="@drawable/mainmenu_home_gray"
+                android:background="@drawable/mainmenu_home"
                 android:onClick="onClickHomeBtn"
                 android:id="@+id/menu_1" />
             <TextView

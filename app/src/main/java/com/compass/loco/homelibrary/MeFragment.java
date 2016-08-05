@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -92,20 +93,42 @@ public class MeFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+
+        FragmentActivity activity = getActivity();
+        if(activity == null)
+            return;
+
+        if(hidden)
+        {
+            ImageButton meBtn = (ImageButton) getActivity().findViewById(R.id.menu_4);
+            Drawable meBtnGray = getResources().getDrawable(R.drawable.mainmenu_me_gray);
+            meBtn.setBackgroundDrawable(meBtnGray);
+        }
+        else
+        {
+            ImageButton meBtn = (ImageButton) getActivity().findViewById(R.id.menu_4);
+            Drawable meBtnGreen = getResources().getDrawable(R.drawable.mainmenu_me);
+            meBtn.setBackgroundDrawable(meBtnGreen);
+        }
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
 
-        ImageButton meBtn = (ImageButton) getActivity().findViewById(R.id.menu_4);
+/*        ImageButton meBtn = (ImageButton) getActivity().findViewById(R.id.menu_4);
         Drawable meBtnGray = getResources().getDrawable(R.drawable.mainmenu_me_gray);
-        meBtn.setBackgroundDrawable(meBtnGray);
+        meBtn.setBackgroundDrawable(meBtnGray);*/
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        ImageButton meBtn = (ImageButton) getActivity().findViewById(R.id.menu_4);
+/*        ImageButton meBtn = (ImageButton) getActivity().findViewById(R.id.menu_4);
         Drawable meBtnGreen = getResources().getDrawable(R.drawable.mainmenu_me);
-        meBtn.setBackgroundDrawable(meBtnGreen);
+        meBtn.setBackgroundDrawable(meBtnGreen);*/
     }
 }

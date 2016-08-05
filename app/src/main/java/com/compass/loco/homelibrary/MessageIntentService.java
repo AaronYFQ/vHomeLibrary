@@ -31,7 +31,7 @@ public class MessageIntentService extends IntentService {
     // TODO: Rename parameters
     private static final String USER_TOKEN = "com.compass.loco.homelibrary.extra.TOKEN";
 
-    private static final int POLL_TIME = 10000;
+    private static final int POLL_TIME = 5000;
 
     public MessageIntentService() {
         super("MessageIntentService");

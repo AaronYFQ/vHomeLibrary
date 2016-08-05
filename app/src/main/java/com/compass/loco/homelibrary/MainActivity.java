@@ -59,14 +59,27 @@ public class MainActivity extends AppCompatActivity {
             // However, if we're being restored from a previous state,
             // then we don't need to do anything and should return or else
             // we could end up with overlapping fragments.
-            if (savedInstanceState != null) {
+/*            if (savedInstanceState != null) {
                 return;
-            }
+            }*/
 
             if (getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().containsKey(INTENT_KEY_LOGIN_RESULT)) {
                 mMeFragment.setArguments(getIntent().getExtras());
+                if(!mMeFragment.isAdded()) {
+                    getSupportFragmentManager().beginTransaction()
+                            .add(R.id.fragment_container, mHomeFragment)
+                            .add(R.id.fragment_container, mMessageFragment)
+                            .add(R.id.fragment_container, mMeFragment).commit();
+                }
+
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, mMeFragment).commit();
+                        .hide(mMessageFragment)
+                        .hide(mHomeFragment)
+                        .show(mMeFragment).commit();
+
+                ImageButton meBtn = (ImageButton) findViewById(R.id.menu_4);
+                Drawable meBtnGreen = getResources().getDrawable(R.drawable.mainmenu_me);
+                meBtn.setBackgroundDrawable(meBtnGreen);
             }
             else if(getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().containsKey(INTENT_KEY_NOTIFICATION)){
 /*                disableAllMainMenuBtn();
@@ -75,13 +88,40 @@ public class MainActivity extends AppCompatActivity {
                 messageBtn.setBackgroundDrawable(messageBtnGreen);*/
 
                 mMessageFragment.setArguments(getIntent().getExtras());
+                if(!mMessageFragment.isAdded()) {
+                    getSupportFragmentManager().beginTransaction()
+                            .add(R.id.fragment_container, mMeFragment)
+                            .add(R.id.fragment_container, mHomeFragment)
+                            .add(R.id.fragment_container, mMessageFragment).commit();
+                }
+
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.fragment_container, mMessageFragment).commit();
+                        .hide(mMeFragment)
+                        .hide(mHomeFragment)
+                        .show(mMessageFragment).commit();
+
+                ImageButton messageBtn = (ImageButton) findViewById(R.id.menu_2);
+                Drawable messageBtnGreen = getResources().getDrawable(R.drawable.mainmenu_message);
+                messageBtn.setBackgroundDrawable(messageBtnGreen);
             }
             else {
                 mHomeFragment.setArguments(getIntent().getExtras());
+
+                if(!mHomeFragment.isAdded()) {
+                    getSupportFragmentManager().beginTransaction()
+                            .add(R.id.fragment_container, mMeFragment)
+                            .add(R.id.fragment_container, mMessageFragment)
+                            .add(R.id.fragment_container, mHomeFragment).commit();
+                }
+
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.fragment_container, mHomeFragment).commit();
+                        .hide(mMeFragment)
+                        .hide(mMessageFragment)
+                        .show(mHomeFragment).commit();
+
+                ImageButton homeBtn = (ImageButton) findViewById(R.id.menu_1);
+                Drawable homeBtnGreen = getResources().getDrawable(R.drawable.mainmenu_home);
+                homeBtn.setBackgroundDrawable(homeBtnGreen);
             }
         }
 
@@ -144,7 +184,12 @@ public class MainActivity extends AppCompatActivity {
         Drawable homeBtnGreen = getResources().getDrawable(R.drawable.mainmenu_home);
         homeBtn.setBackgroundDrawable(homeBtnGreen);*/
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        getSupportFragmentManager().beginTransaction()
+                .hide(mMeFragment)
+                .hide(mMessageFragment)
+                .show(mHomeFragment).commit();
+
+/*        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         // Replace whatever is in the fragment_container view with this fragment,
         // and add the transaction to the back stack so the user can navigate back
@@ -152,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
         transaction.addToBackStack(null);
 
         // Commit the transaction
-        transaction.commit();
+        transaction.commit();*/
     }
 
     public void onClickMessageBtn(View view) {
@@ -165,7 +210,12 @@ public class MainActivity extends AppCompatActivity {
         Drawable messageBtnGreen = getResources().getDrawable(R.drawable.mainmenu_message);
         messageBtn.setBackgroundDrawable(messageBtnGreen);*/
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        getSupportFragmentManager().beginTransaction()
+                .hide(mMeFragment)
+                .hide(mHomeFragment)
+                .show(mMessageFragment).commit();
+
+/*        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         // Replace whatever is in the fragment_container view with this fragment,
         // and add the transaction to the back stack so the user can navigate back
@@ -173,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
         transaction.addToBackStack(null);
 
         // Commit the transaction
-        transaction.commit();
+        transaction.commit();*/
     }
 
     public void onClickMeBtn(View view) {
@@ -186,7 +236,12 @@ public class MainActivity extends AppCompatActivity {
         Drawable meBtnGray = getResources().getDrawable(R.drawable.mainmenu_me);
         meBtn.setBackgroundDrawable(meBtnGray);*/
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        getSupportFragmentManager().beginTransaction()
+                .hide(mHomeFragment)
+                .hide(mMessageFragment)
+                .show(mMeFragment).commit();
+
+/*        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         // Replace whatever is in the fragment_container view with this fragment,
         // and add the transaction to the back stack so the user can navigate back
@@ -194,7 +249,7 @@ public class MainActivity extends AppCompatActivity {
         transaction.addToBackStack(null);
 
         // Commit the transaction
-        transaction.commit();
+        transaction.commit();*/
     }
 
     public void setBadgeNumber(int num)
