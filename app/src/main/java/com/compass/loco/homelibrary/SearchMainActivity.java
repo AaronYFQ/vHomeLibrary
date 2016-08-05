@@ -544,7 +544,7 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
         if(text.equals(""))
             return;
 
-        hintAdapter.notifyDataSetChanged();
+        //hintAdapter.notifyDataSetChanged();
         lvResults.setVisibility(View.INVISIBLE);
         lvAearResults.setVisibility(View.INVISIBLE);
 
