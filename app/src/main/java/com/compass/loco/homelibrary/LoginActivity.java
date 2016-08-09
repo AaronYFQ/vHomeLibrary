@@ -1,6 +1,5 @@
 package com.compass.loco.homelibrary;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,6 +16,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TabHost;
 import android.widget.TextView;
+
+import com.compass.loco.homelibrary.http.HttpUtil;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
