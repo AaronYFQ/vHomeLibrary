@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -20,7 +22,6 @@ import com.compass.loco.homelibrary.adapter.SearchAearAdapter;
 import com.compass.loco.homelibrary.model.Bean;
 import com.compass.loco.homelibrary.model.ShopBean;
 import com.compass.loco.homelibrary.widge.SearchView;
-import com.compass.loco.homelibrary.http.HttpUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;

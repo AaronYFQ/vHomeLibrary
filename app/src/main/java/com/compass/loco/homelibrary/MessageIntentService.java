@@ -3,8 +3,8 @@ package com.compass.loco.homelibrary;
 import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
@@ -15,8 +15,6 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.SyncHttpClient;
 
 import org.json.JSONObject;
-
-import static com.compass.loco.homelibrary.http.HttpUtil.GET_MESSAGE_URL;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -109,7 +107,7 @@ public class MessageIntentService extends IntentService {
     private void checkNewMessageOnServer(String token)
     {
         SyncHttpClient client = new SyncHttpClient();
-        String url = GET_MESSAGE_URL + "?" + "token=" + token;
+        String url = HttpUtil.GET_MESSAGE_URL + "?" + "token=" + token;
         //Log.v(".....get Message", "token: " + token);
 
         client.get(url, new AsyncHttpResponseHandler() {

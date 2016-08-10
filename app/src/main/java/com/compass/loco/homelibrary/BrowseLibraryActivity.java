@@ -1,6 +1,7 @@
 package com.compass.loco.homelibrary;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,8 +13,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.compass.loco.homelibrary.http.HttpUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;

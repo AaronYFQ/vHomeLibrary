@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.compass.loco.homelibrary.BorrowedBookInfo;
 import com.compass.loco.homelibrary.BorrowedHistoryAdapter;
 import com.compass.loco.homelibrary.GlobalParams;
-import com.compass.loco.homelibrary.http.HttpUtil;
+import com.compass.loco.homelibrary.HttpUtil;
 import com.compass.loco.homelibrary.ManageBookActivity;
 import com.compass.loco.homelibrary.R;
 

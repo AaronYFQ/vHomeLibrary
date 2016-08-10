@@ -5,8 +5,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -14,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.compass.loco.homelibrary.model.DoubanBook;
-import com.compass.loco.homelibrary.http.HttpUtil;
 
 public class SaveBookActivity extends AppCompatActivity {
     public final static String INTENT_KEY_DOUBAN_BOOK = "com.compass.loco.vhomelibrary.INTENT_KEY_DOUBAN_BOOK";
