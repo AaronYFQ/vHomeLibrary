@@ -6,8 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -17,11 +15,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.baidu.mapapi.SDKInitializer;
+import com.baidu.mapapi.map.MapView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,6 +34,8 @@ public class CreateLibActivity extends AppCompatActivity {
     private AutoCompleteTextView villageTextView;
     private EditText adEditText;
     private EditText libraryEditText;
+    private MapView mMapView;
+
 
     private ArrayAdapter<CharSequence> districtAdapter;
     private ArrayAdapter<CharSequence> cityAdapter;
@@ -52,11 +53,18 @@ public class CreateLibActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //BMAP
+        SDKInitializer.initialize(getApplicationContext());
+
         setContentView(R.layout.activity_create_lib);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //get bmap control
+        mMapView = (MapView) findViewById(R.id.bmapView);
 
         Intent intent = getIntent();
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
@@ -137,32 +145,28 @@ public class CreateLibActivity extends AppCompatActivity {
 
             }
         });
-        /*
-        addItems();
-        SimpleAdapter notes = new SimpleAdapter(
-                this,
-                list,
-                android.R.layout.two_line_list_item,
-                new String[] { "villageSearchText", "villageName"},
-                new int[] { R.id.searchText, R.id.village_text_view } );
-        villageTextView.setAdapter(notes);
-        villageTextView.setThreshold(1);
-
-        villageTextView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-                                    long arg3) {
-                TextView tv = (TextView)arg1.findViewById(R.id.village_text_view);
-                villageTextView.setText(tv.getText().toString()+" ");
-                villageTextView.setSelection((villageTextView.getText().toString()).length());
-            }
-        });
-        */
 
         adEditText = (EditText) findViewById(R.id.ad_edit_text);
         libraryEditText = (EditText) findViewById(R.id.library_name);
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mMapView.onDestroy();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mMapView.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mMapView.onPause();
     }
 
     private void addItems() {
