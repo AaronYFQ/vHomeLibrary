@@ -1,5 +1,6 @@
 package com.compass.loco.homelibrary;
 
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -12,7 +13,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.ImageButton;
+
+import com.compass.loco.homelibrary.chatting.utils.DialogCreator;
+
+import cn.jpush.im.android.api.JMessageClient;
+import cn.jpush.im.android.api.event.UserLogoutEvent;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -35,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     }*/
 
     private BadgeView badge;
+    private Dialog mDialog; //for Jmessage
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +137,10 @@ public class MainActivity extends AppCompatActivity {
         badge.setTargetView(findViewById(R.id.menu_2));
         badge.setHideOnNull(true);
         badge.setBadgeCount(0);
+
+        JMessageClient.init(this);
+        JMessageClient.registerEventReceiver(this);
+
         //badge.setVisibility(View.INVISIBLE);
 
         //registerBroadcastReceiver();
@@ -205,25 +217,13 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-/*        disableAllMainMenuBtn();
-        ImageButton messageBtn = (ImageButton) findViewById(R.id.menu_2);
-        Drawable messageBtnGreen = getResources().getDrawable(R.drawable.mainmenu_message);
-        messageBtn.setBackgroundDrawable(messageBtnGreen);*/
 
         getSupportFragmentManager().beginTransaction()
                 .hide(mMeFragment)
                 .hide(mHomeFragment)
                 .show(mMessageFragment).commit();
 
-/*        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-        // Replace whatever is in the fragment_container view with this fragment,
-        // and add the transaction to the back stack so the user can navigate back
-        transaction.replace(R.id.fragment_container, mMessageFragment);
-        transaction.addToBackStack(null);
-
-        // Commit the transaction
-        transaction.commit();*/
     }
 
     public void onClickMeBtn(View view) {
@@ -291,4 +291,21 @@ public class MainActivity extends AppCompatActivity {
         Drawable meBtnGray = getResources().getDrawable(R.drawable.mainmenu_me_gray);
         meBtn.setBackgroundDrawable(meBtnGray);
     }
+
+
+    public void onEventMainThread(UserLogoutEvent event) {
+        String title = getApplicationContext().getString(R.string.jmui_user_logout_dialog_title);
+        String msg = getApplicationContext().getString(R.string.jmui_user_logout_dialog_message);
+        mDialog = DialogCreator.createBaseCustomDialog(getApplicationContext(), title, msg, onClickListener);
+        mDialog.getWindow().setLayout((int) (0.8 * 200), WindowManager.LayoutParams.WRAP_CONTENT);
+        mDialog.show();
+    }
+
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            mDialog.dismiss();
+        }
+    };
+
 }

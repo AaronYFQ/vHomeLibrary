@@ -1,6 +1,5 @@
 package com.compass.loco.homelibrary;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,8 +16,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TabHost;
 import android.widget.TextView;
+
+import com.compass.loco.homelibrary.chatting.BaseActivity;
+import com.compass.loco.homelibrary.chatting.ChatActivity;
+import com.compass.loco.homelibrary.chatting.utils.HandleResponseCode;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import cn.jpush.im.android.api.JMessageClient;
+import cn.jpush.im.api.BasicCallback;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -38,9 +45,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         tabHost = (TabHost) findViewById(R.id.tabHost);
@@ -121,7 +128,9 @@ public class LoginActivity extends AppCompatActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             //showProgress(true);
-            connectServer(username, password, ActionType.LOGIN);
+            connectJmessageServer(username, password, ActionType.LOGIN);
+            connectHttpServer(username, password, ActionType.LOGIN);
+
         }
     }
 
@@ -172,7 +181,9 @@ public class LoginActivity extends AppCompatActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             // showProgress(true);
-            connectServer(username, password, ActionType.REGISTER);
+            connectJmessageServer(username, password, ActionType.REGISTER);
+            connectHttpServer(username, password, ActionType.REGISTER);
+
             //showProgress(false);
             //mLoginRegPasswordView.requestFocus();
         }
@@ -201,7 +212,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    private void connectServer(final String username, String password, final ActionType type) {
+    private void connectHttpServer(final String username, String password, final ActionType type) {
         //handle server connect  response
         mToken = "";
         mShopname = "";
@@ -258,6 +269,49 @@ public class LoginActivity extends AppCompatActivity {
         mButtonView.setClickable(false);
         mButtonView.setBackgroundResource(R.color.colorBackgroundGray);
         mButtonView.setTextColor(Color.BLACK);
+
+    }
+
+    private void connectJmessageServer(final String username, final String password, final ActionType type) {
+
+        Log.i("JMessageApplication", "connect Jmessage server" + username);
+        if (type == ActionType.REGISTER) {
+            JMessageClient.register(username, GlobalParams.JMESSAGE_USER_PASSWORD, new BasicCallback() {
+                @Override
+                public void gotResult(int status, String desc) {
+                    if (status == 0) {
+                        Log.v("JMessageApplication", "register sucess");
+                        JMessageClient.login(username, GlobalParams.JMESSAGE_USER_PASSWORD, new BasicCallback() {
+                            @Override
+                            public void gotResult(int status, String desc) {
+                                if (status == 0) {
+                                    Log.v("JMessageApplication", "login sucess");
+                                } else {
+                                    Log.v("JMessageApplication", "login failure");
+                                    HandleResponseCode.onHandle(getApplicationContext(), status, false);
+                                }
+                            }
+                        });
+                    } else {
+                        Log.v("JMessageApplication", "register failure");
+                        HandleResponseCode.onHandle(getApplicationContext(), status, false);
+                    }
+                }
+            });
+        } else {
+            JMessageClient.login(username, GlobalParams.JMESSAGE_USER_PASSWORD, new BasicCallback() {
+                @Override
+                public void gotResult(int status, String desc) {
+                    if (status == 0) {
+                        Log.v("JMessageApplication", "login success");
+                        HandleResponseCode.onHandle(getApplicationContext(), status, false);
+                    } else {
+                        Log.v("JMessageApplication", "login failure");
+                        HandleResponseCode.onHandle(getApplicationContext(), status, false);
+                    }
+                }
+            });
+        }
 
     }
 }

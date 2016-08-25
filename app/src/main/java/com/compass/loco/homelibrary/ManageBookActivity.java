@@ -1,5 +1,6 @@
 package com.compass.loco.homelibrary;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,11 +21,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.compass.loco.homelibrary.chatting.ChatActivity;
+import com.compass.loco.homelibrary.chatting.utils.DialogCreator;
+import com.compass.loco.homelibrary.chatting.utils.HandleResponseCode;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import cn.jpush.im.android.api.JMessageClient;
+import cn.jpush.im.api.BasicCallback;
 
 /**
  * Created by EXIAOQU on 7/29/2016.
@@ -32,13 +40,16 @@ import java.util.ArrayList;
 public class ManageBookActivity extends AppCompatActivity {
 
     private static final String TAG = "ManageBookActivity";
-
+    private static final String TARGET_ID = "targetId";
+    private static final String TARGET_APP_KEY = "targetAppKey";
     private static final int REQUEST = 0;
     private static final int AGREE = 1;
     private static final int RETURN = 2;
 
     // Android objects
+    private String mTargetId = "";
     private Button buttonBook;
+    private Button buttonChat;
     private ImageView imageViewBook;
     private TextView textViewBookState;
 
@@ -73,6 +84,7 @@ public class ManageBookActivity extends AppCompatActivity {
     private void init() {
 
         buttonBook = (Button) findViewById(R.id.book_button);
+        buttonChat = (Button) findViewById(R.id.chat_button);
 
         imageViewBook = (ImageView) findViewById(R.id.book_image_view);
 
@@ -98,6 +110,18 @@ public class ManageBookActivity extends AppCompatActivity {
             }
         });
 
+        buttonChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(flag == REQUEST) {
+                    //take with shopowner
+                    mTargetId = user;
+                    startChat(mTargetId);
+                }
+
+            }
+        });
 
         Intent intent = getIntent();
 
@@ -138,6 +162,7 @@ public class ManageBookActivity extends AppCompatActivity {
                 flag = AGREE;
 
             }
+            buttonChat.setVisibility(View.INVISIBLE);
 
         }
         else
@@ -150,6 +175,7 @@ public class ManageBookActivity extends AppCompatActivity {
             if(token.equals("")) {
 
                 buttonBook.setVisibility(View.INVISIBLE);
+                buttonChat.setVisibility(View.INVISIBLE);
 
             }
 
@@ -460,6 +486,37 @@ public class ManageBookActivity extends AppCompatActivity {
 
             startActivity(intent);
 
+        }
+    }
+
+    /*start chat activity*/
+    private void startChat(final String targetId)
+    {
+
+        final Intent intent = new Intent();
+        if (JMessageClient.getMyInfo() != null) {
+            Log.d(TAG,"Logined Jmessage user in Jmessage!" + username);
+            intent.putExtra(TARGET_ID, targetId);
+            intent.putExtra(TARGET_APP_KEY,GlobalParams.JMESSAGE_APP_KEY);
+            intent.setClass(getApplicationContext(), ChatActivity.class);
+            startActivity(intent);
+
+        } else {
+            Log.d(TAG," Not logined Jmessage user in Jmessage!" + username);
+            JMessageClient.login(username, GlobalParams.JMESSAGE_USER_PASSWORD, new BasicCallback() {
+                @Override
+                public void gotResult(int status, String desc) {
+                    if (status == 0) {
+                        intent.putExtra(TARGET_ID, targetId);
+                        intent.putExtra(TARGET_APP_KEY,GlobalParams.JMESSAGE_APP_KEY);
+                        intent.setClass(getApplicationContext(), ChatActivity.class);
+                        startActivity(intent);
+                    } else {
+                        HandleResponseCode.onHandle(getApplicationContext(), status, false);
+                        Log.v(TAG,"login Jmessage failure");
+                    }
+                }
+            });
         }
     }
 }

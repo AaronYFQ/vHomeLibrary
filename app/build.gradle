@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion '23.0.2'
+    buildToolsVersion '24.0.1'
     useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "com.compass.loco.homelibrary"
@@ -18,6 +18,11 @@ android {
         }
         debug {
             minifyEnabled false
+        }
+    }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
         }
     }
     productFlavors {

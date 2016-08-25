@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import cn.jpush.im.android.api.JMessageClient;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -89,6 +91,7 @@ public class MeFragment extends Fragment implements View.OnClickListener {
             sharedata.putString("token", "");
             sharedata.putString("shopname", "");
             sharedata.commit();
+            JMessageClient.logout();
             return;
     }
 
