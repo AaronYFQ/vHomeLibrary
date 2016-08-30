@@ -39,6 +39,7 @@ public class LoginActivity extends BaseActivity {
     String mShopname;
     enum ActionType {LOGIN, REGISTER};
     Button mButtonView;
+    private boolean mJMLoginSuccess = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,17 +53,11 @@ public class LoginActivity extends BaseActivity {
 
         tabHost = (TabHost) findViewById(R.id.tabHost);
         tabHost.setup();
-        //LayoutInflater.from(this).inflate(R.layout.activity_main,
-        //   tabHost.getTabContentView(), true);
-        //TextView loginTab = (TextView) LayoutInflater.from(this).inflate(R.layout.login_tab_bg, null);
-        //loginTab.setText("登陆");
         tabHost.addTab(tabHost.newTabSpec("登陆").setIndicator("登陆")
                 .setContent(R.id.login_form));
         TextView x = (TextView) tabHost.getTabWidget().getChildAt(0).findViewById(android.R.id.title);
         x.setTextSize(17);
 
-        //TextView registerTab = (TextView) LayoutInflater.from(this).inflate(R.layout.login_tab_bg, null);
-        //registerTab.setText("注册");
         tabHost.addTab(tabHost.newTabSpec("注册").setIndicator("注册")
                 .setContent(R.id.register_form));
         x = (TextView) tabHost.getTabWidget().getChildAt(1).findViewById(android.R.id.title);
@@ -133,7 +128,9 @@ public class LoginActivity extends BaseActivity {
             // perform the user login attempt.
             //showProgress(true);
             connectJmessageServer(username, password, ActionType.LOGIN);
-            connectHttpServer(username, password, ActionType.LOGIN);
+            if(mJMLoginSuccess) {
+                connectHttpServer(username, password, ActionType.LOGIN);
+            }
 
         }
     }
@@ -186,10 +183,10 @@ public class LoginActivity extends BaseActivity {
             // perform the user login attempt.
             // showProgress(true);
             connectJmessageServer(username, password, ActionType.REGISTER);
-            connectHttpServer(username, password, ActionType.REGISTER);
+            if(mJMLoginSuccess) {
+                connectHttpServer(username, password, ActionType.REGISTER);
+            }
 
-            //showProgress(false);
-            //mLoginRegPasswordView.requestFocus();
         }
     }
 
@@ -200,7 +197,6 @@ public class LoginActivity extends BaseActivity {
     public void backToMainActivity(boolean isSuccess, String username) {
         //store Username
         //back to user profile pages
-        //showProgress(false);
         Intent intent = new Intent(this, MainActivity.class);
         if (isSuccess) {
             SharedPreferences sharedPref = getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
@@ -241,16 +237,7 @@ public class LoginActivity extends BaseActivity {
                     } else {
 
                         Log.v("Login_Register", ":" + "login/register error");
-                        if (type == ActionType.REGISTER) {
-                            mLoginRegUsernameView.setError(getString(R.string.error_existed_username));
-                        } else {
-                            mLoginRegUsernameView.setError(getString(R.string.error_username_or_password));
-                        }
-                        mLoginRegUsernameView.requestFocus();
-                        //recover button clickable and background resource
-                        mButtonView.setClickable(true);
-                        mButtonView.setBackgroundResource(R.color.colorBackgroundGreen);
-                        mButtonView.setTextColor(Color.WHITE);
+                        recoverLoginRegbutton(type);
                     }
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
@@ -290,15 +277,19 @@ public class LoginActivity extends BaseActivity {
                             public void gotResult(int status, String desc) {
                                 if (status == 0) {
                                     Log.v("JMessageApplication", "login sucess");
+                                    mJMLoginSuccess = true;
                                 } else {
                                     Log.v("JMessageApplication", "login failure");
+                                    mJMLoginSuccess = false;
                                     HandleResponseCode.onHandle(getApplicationContext(), status, false);
+                                    recoverLoginRegbutton(type);
                                 }
                             }
                         });
                     } else {
                         Log.v("JMessageApplication", "register failure");
                         HandleResponseCode.onHandle(getApplicationContext(), status, false);
+                        recoverLoginRegbutton(type);
                     }
                 }
             });
@@ -308,15 +299,31 @@ public class LoginActivity extends BaseActivity {
                 public void gotResult(int status, String desc) {
                     if (status == 0) {
                         Log.v("JMessageApplication", "login success");
-                        HandleResponseCode.onHandle(getApplicationContext(), status, false);
+                        mJMLoginSuccess = true;
                     } else {
                         Log.v("JMessageApplication", "login failure");
+                        mJMLoginSuccess = false;
                         HandleResponseCode.onHandle(getApplicationContext(), status, false);
+                        recoverLoginRegbutton(type);
                     }
                 }
             });
         }
 
+    }
+
+    private void recoverLoginRegbutton(final ActionType type)
+    {
+        if (type == ActionType.REGISTER) {
+            mLoginRegUsernameView.setError(getString(R.string.error_existed_username));
+        } else {
+            mLoginRegUsernameView.setError(getString(R.string.error_username_or_password));
+        }
+        mLoginRegUsernameView.requestFocus();
+        //recover button clickable and background resource
+        mButtonView.setClickable(true);
+        mButtonView.setBackgroundResource(R.color.colorBackgroundGreen);
+        mButtonView.setTextColor(Color.WHITE);
     }
 }
 
