@@ -1,6 +1,11 @@
 package com.compass.loco.homelibrary;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +14,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.compass.loco.homelibrary.widge.CacheBookImages;
+
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -99,8 +107,8 @@ public class ListViewAdapterBrowseBook extends BaseAdapter {
 
         String imageUrl = bookInfo.getImageUrl();
         if(imageUrl.length() > 0) {
-
-            new ImageLoadTask(imageUrl, imageViewBookPicture).execute();
+            loadImg( bookInfo.getIsbn(),imageUrl);
+            //new ImageLoadTask(imageUrl, imageViewBookPicture).execute();
 
         }
         else
@@ -113,6 +121,28 @@ public class ListViewAdapterBrowseBook extends BaseAdapter {
         }
 
         return convertView;
+    }
+
+    public void loadImg(String isbn, String image)  {
+
+        //String cacheImg = cacheDir + "/" + isbn;
+        SharedPreferences sharedata = activity.getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
+        String filePath = sharedata.getString("cachePath", null);
+
+        String cacheImg = filePath + "/"+ isbn;
+
+
+        File f = new File(cacheImg);
+        if (f.exists()) {
+            Bitmap bitmap = BitmapFactory.decodeFile(cacheImg);
+            imageViewBookPicture.setImageBitmap(bitmap);
+        }
+        else
+        {
+            new ImageLoadTask(image, imageViewBookPicture).execute();
+            //cache the img
+            new CacheBookImages(image,isbn ).execute();
+        }
     }
 
 }

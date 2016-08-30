@@ -1,8 +1,13 @@
 package com.compass.loco.homelibrary;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
@@ -18,6 +23,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.compass.loco.homelibrary.model.DoubanBook;
+import com.compass.loco.homelibrary.widge.CacheBookImages;
+
+import java.io.File;
 
 public class SaveBookActivity extends AppCompatActivity {
     public final static String INTENT_KEY_DOUBAN_BOOK = "com.compass.loco.vhomelibrary.INTENT_KEY_DOUBAN_BOOK";
@@ -40,7 +48,7 @@ public class SaveBookActivity extends AppCompatActivity {
             if ( extras.containsKey(INTENT_KEY_DOUBAN_BOOK)) {
                 DoubanBook result = (DoubanBook) extras.getSerializable(INTENT_KEY_DOUBAN_BOOK);
 
-                new ImageLoadTask(result.getImage(), (ImageView) findViewById(R.id.book_image_view)).execute();
+                loadImg(result.getIsbn13(),result.getImage());
 
                 TextView titleView = (TextView) findViewById(R.id.book_title);
                 titleView.setText(result.getTitle());
@@ -72,6 +80,27 @@ public class SaveBookActivity extends AppCompatActivity {
             if (extras.containsKey(ManageLibraryActivity.INTENT_KEY_SHOPNAME)) {
                 mShopName = extras.getString(ManageLibraryActivity.INTENT_KEY_SHOPNAME);
             }
+        }
+    }
+
+    public void loadImg(String isbn, String image)  {
+       
+        //String filePath = Environment.getExternalStorageDirectory().toString() + "/vbook/imgCache";
+        SharedPreferences sharedata = getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
+        String filePath = sharedata.getString("cachePath", null);
+        String cacheImg = filePath + "/"+ isbn;
+        ImageView image1 = (ImageView) findViewById(R.id.book_image_view);
+
+        File f = new File(cacheImg);
+        if (f.exists()) {
+            Bitmap bitmap = BitmapFactory.decodeFile(cacheImg);
+            image1.setImageBitmap(bitmap);
+        }
+        else
+        {
+            new ImageLoadTask(image, (ImageView) findViewById(R.id.book_image_view)).execute();
+            //cache the img
+            new CacheBookImages(image,isbn).execute();
         }
     }
 

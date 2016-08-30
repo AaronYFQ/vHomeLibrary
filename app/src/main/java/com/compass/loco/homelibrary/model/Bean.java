@@ -13,17 +13,21 @@ public class Bean {
     private String bookPublisher;
     private String shopName;
     private String bookAddr;
+    private String userName = "liangshui";
 
-    private String username;
+    private String isbn;
+    private String time;
 
-    public Bean(String bookName, String bookState, String bookAuthor, String bookPublisher, String shopName, String bookAddr,String username) {
+    public Bean(String bookName, String bookState, String bookAuthor, String bookPublisher, String shopName, String bookAddr, String userName, String isbn) {
         this.bookName = bookName;
         this.bookState = bookState;
         this.bookAuthor = bookAuthor;
         this.bookPublisher = bookPublisher;
         this.shopName = shopName;
         this.bookAddr = bookAddr;
-        this.username = username;
+        this.userName = userName;
+        this.isbn = isbn;
+        //this.time = time;
     }
 
    /* public int getBookIconId() {
@@ -61,11 +65,11 @@ public class Bean {
         this.bookPublisher = bookPublisher;
     }
 
-    public String getShopName() {
-        return shopName;
+    public String getUserName() {
+        return userName;
     }
-    public void setShopName(String content) {
-        this.shopName = shopName;
+    public void setUserName(String content) {
+        this.userName = userName;
     }
 
     public String getBookAddr() {
@@ -75,10 +79,24 @@ public class Bean {
         this.bookAddr = bookAddr;
     }
 
-    public String getUserName() {
-        return username;
+    public String getShopName() {
+        return shopName;
     }
-    public void setUsername(String username) {
-        this.username = username;
+    public void setShopName(String content) {
+        this.shopName = shopName;
     }
+
+    public String getIsbn() {
+        return isbn;
+    }
+    public void SetIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
+    public String getDbString()
+    {
+        return "bookName="+ bookName + ", bookState=" + bookState + ", bookAuthor="+ bookAuthor + ", shopName="+ shopName + ", bookAddr="+ bookAddr ;
+    }
+
+
 }

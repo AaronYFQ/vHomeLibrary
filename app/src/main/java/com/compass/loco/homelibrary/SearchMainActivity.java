@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 import com.compass.loco.homelibrary.adapter.SearchAdapter;
 import com.compass.loco.homelibrary.adapter.SearchAearAdapter;
 import com.compass.loco.homelibrary.model.Bean;
+import com.compass.loco.homelibrary.model.DbBookHelper;
 import com.compass.loco.homelibrary.model.ShopBean;
 import com.compass.loco.homelibrary.widge.SearchView;
 
@@ -27,6 +29,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.RandomAccessFile;
+import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,8 +51,6 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
          * 默认提示框显示项的个数
          */
         private static int DEFAULT_HINT_SIZE = 14;
-
-
 
         /**
          * 搜索结果列表view
@@ -71,6 +81,7 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
         private SearchAearAdapter resultAdapter2;
 
         private List<Bean> dbData;
+        private List<Bean> dbCacheData;
         private List<ShopBean> dbAreaData;
 
         /**
@@ -101,6 +112,8 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
             hintSize = hintSize;
         }
 
+        private DbBookHelper db;
+
         @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,10 +123,245 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
+            db = new DbBookHelper(this.getApplicationContext());
+
+            String state = Environment.getExternalStorageState();
+           /* String s = getExternalCacheDir().toString();
+            String sq =getExternalFilesDir("").toString();
+
+            String dd = Environment.getExternalStoragePublicDirectory("").toString();*/
+            String d1 = Environment.getExternalStorageDirectory().toString();
+
+            /*String filepath = "";
+            File file = new File(Environment.getExternalStorageDirectory(),
+                    "abc.txt");
+            if (file.exists()) {
+                filepath = file.getAbsolutePath();
+            } else {
+                filepath = "不适用";
+            }*/
+
+            String sDir = d1 +"/vbook";
+
+            makeRootDirectory(sDir);
+            File destDir = new File(sDir);
+            if (!destDir.exists()) {
+                destDir.mkdirs();
+            }
+            sDir = sDir + "/habcd" + ".txt";
+            File dir = new File(sDir);
+            String abc = "";
+
+            if (!dir.exists()) {
+
+                try {
+
+                    //在指定的文件夹中创建文件
+
+                    dir.createNewFile();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+            else
+            {
+                abc = getString("habcd.txt");
+            }
+
+            File[] files = new File("/").listFiles();
+            for (File file : files) {
+                if (file.getName().contains("book") ) {
+                    String ssdd= file.getPath() + "\n";
+                }
+            }
+
+
+            if (Environment.MEDIA_MOUNTED.equals(state)) {
+                File f = new File("/vbook2" );
+//                writeTxtToFile("txt content", sq + "/vbook2"  , "111.txt");
+//                writeTxtToFile("txt content", d1 + "/testDir" , "222.txt");
+                writeTxtToFile("txt content", "/vbook1"  , "111.txt");
+                writeTxtToFile("txt content", d1 + "/vbook2" , "222.txt");
+                /*if (f.exists()) {
+
+                    Toast.makeText(getApplicationContext(), "testDir OK", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    try {
+                        f.createNewFile();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }*/
+
+            }
+
+
+
             initData();
             initViews();
             initListViews();
     }
+
+    //向已创建的文件中写入数据
+
+    public void print(String str) {
+
+        FileWriter fw = null;
+
+        BufferedWriter bw = null;
+
+        String datetime = "";
+
+        try {
+
+            SimpleDateFormat tempDate = new SimpleDateFormat("yyyy-MM-dd" + " "
+
+                    + "hh:mm:ss");
+
+            datetime = tempDate.format(new java.util.Date()).toString();
+
+            String sDir = getFilesDir() + "/habcd" + ".txt";
+
+            fw = new FileWriter(sDir, true);//
+
+            // 创建FileWriter对象，用来写入字符流
+
+            bw = new BufferedWriter(fw); // 将缓冲对文件的输出
+
+            String myreadline = datetime + "[]" + str;
+
+
+
+            bw.write(myreadline + "\n"); // 写入文件
+
+            bw.newLine();
+
+            bw.flush(); // 刷新该流的缓冲
+
+            bw.close();
+
+            fw.close();
+
+        } catch (IOException e) {
+
+            // TODO Auto-generated catch block
+
+            e.printStackTrace();
+        }
+
+    }
+
+    public String getString(String fileName)
+    {
+        String readed = "";
+        try {
+            //FileInputStream fis =openFileInput(getFilesDir() + fileName);
+            FileInputStream fis0 = this.getApplicationContext().openFileInput(fileName);
+
+            File file = new File(getFilesDir() +"/"+ fileName);
+            FileInputStream fis =new FileInputStream(file);
+            InputStreamReader is=new InputStreamReader(fis,"UTF-8");
+            //fis.available()文件可用长度
+            char input[]=new char[fis.available()];
+            is.read(input);
+            is.close();
+            fis.close();
+            readed=new String(input);
+
+
+
+        } catch (FileNotFoundException e) {
+
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return readed;
+
+    }
+    public void writeTxtToFile(String strcontent, String filePath, String fileName) {
+        //生成文件夹之后，再生成文件，不然会出错
+        //makeFilePath(filePath, fileName);
+
+
+        String strFilePath = filePath+ "/"+fileName;
+
+        makeRootDir(strFilePath);
+        // 每次写入时，都换行写
+        String strContent = strcontent + "\r\n";
+        try {
+            File file = new File(strFilePath);
+            if (!file.exists()) {
+                Log.d("TestFile", "Create the file:" + strFilePath);
+                file.getParentFile().mkdirs();
+                file.createNewFile();
+            }
+            RandomAccessFile raf = new RandomAccessFile(file, "rwd");
+            raf.seek(file.length());
+            raf.write(strContent.getBytes());
+            raf.close();
+        } catch (Exception e) {
+            Log.e("TestFile", "Error on write File:" + e);
+        }
+    }
+
+    // 生成文件
+    public File makeFilePath(String filePath, String fileName) {
+        File file = null;
+        makeRootDirectory(filePath);
+        try {
+            file = new File(filePath + "/"+fileName);
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return file;
+    }
+
+    // 生成文件夹
+    public static void makeRootDirectory(String filePath) {
+        File file = null;
+        try {
+            file = new File(filePath);
+            if (!file.exists()) {
+                file.mkdir();
+            }
+        } catch (Exception e) {
+            Log.i("error:", e + "");
+        }
+    }
+
+    public void  makeRootDir(String filePath)
+    {
+        File file=null;
+        String newPath=null;
+        String[] path=filePath.split("/");
+        for(int i=0;i<path.length;i++)
+        {
+            if(newPath==null){
+                newPath=path[i];
+            }else{
+                newPath=newPath+"/"+path[i];
+            }
+            file=new File(newPath);
+            if (!file.exists()) {
+                file.mkdir();
+
+            }
+        }
+    }
+
 
     private void initListViews()
     {
@@ -181,6 +429,10 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
         if (dbData == null) {
             dbData = new ArrayList<>();
         }
+        if (dbCacheData == null) {
+            dbCacheData = new ArrayList<>();
+        }
+
         if (dbAreaData == null) {
             dbAreaData = new ArrayList<>();
         }
@@ -190,7 +442,7 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
         //
         // getHintData();
         //初始化自动补全数据
-        getLocalData();
+        //getLocalData();
         getAutoCompleteData(null);
         //初始化搜索结果数据
         //getResultData(null);
@@ -256,7 +508,8 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
                                                 jsonObj.getString("publisher"),
                                                 jsonObj.getString("shopname"),
                                                 jsonObj.getString("shopaddr"),
-                                                jsonObj.getString("username")
+                                                jsonObj.getString("username"),
+                                                jsonObj.getString("isbn")
                                         ));
                             }
                         }
@@ -279,6 +532,15 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
 
                         // resultAdapter.notifyDataSetChanged();
                         resultAdapter.notifyDataSetChanged();
+
+
+                        //添加到cache database
+                        for (int i = 0; i < dbData.size(); i++) {
+                            if(db.insertBook(dbData.get(i)) < 0)
+                            {
+                                Log.v("Insert error", "Insert error");
+                            }
+                        }
                     }
                 }
 
@@ -391,24 +653,13 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
     private void getLocalData() {
 
         LocalData = new ArrayList<>();
-        getDbDataByBookName("*");
-      /*  for (int i = 0; i < dbData.size(); i++) {
-            LocalData.add(dbData.get(i).getBookName());
-        }*/
+        //getDbDataByBookName("*");
+
         String [] villageList = getResources().getStringArray(R.array.village_array);
         for(int i = 0; i< villageList.length; i++)
         {
             LocalData.add(villageList[i]);
         }
-
-            /*autoCompleteData.add("望京新城");
-            autoCompleteData.add("首开知语");
-            autoCompleteData.add("利泽西园");
-            autoCompleteData.add("南湖东园");
-            autoCompleteData.add("澳洲康都");
-            autoCompleteData.add("望京花园");*/
-
-
     }
     /**
      * 获取自动补全data 和adapter

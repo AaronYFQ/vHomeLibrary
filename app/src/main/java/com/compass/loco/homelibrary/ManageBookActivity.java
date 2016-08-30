@@ -4,11 +4,14 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -24,12 +27,14 @@ import android.widget.Toast;
 import com.compass.loco.homelibrary.chatting.ChatActivity;
 import com.compass.loco.homelibrary.chatting.utils.DialogCreator;
 import com.compass.loco.homelibrary.chatting.utils.HandleResponseCode;
+import com.compass.loco.homelibrary.widge.CacheBookImages;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.io.File;
 
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.api.BasicCallback;
@@ -278,8 +283,8 @@ public class ManageBookActivity extends AppCompatActivity {
                         }
 
                         if(imageUrl.length() > 0) {
-
-                            new ImageLoadTask(imageUrl, imageViewBook).execute();
+                            loadImg(isbn,imageUrl);
+                            //new ImageLoadTask(imageUrl, imageViewBook).execute();
 
                         }
                         else
@@ -312,6 +317,36 @@ public class ManageBookActivity extends AppCompatActivity {
         HttpUtil httptd = new HttpUtil();
         httptd.submitAsyncHttpClientGetViewBook(user, shopName, bookName, handler);
 
+    }
+
+    public void loadImg(String isbn, String image)  {
+       
+
+        //String filePath = Environment.getExternalStorageDirectory().toString() + "/vbook/imgCache";
+        SharedPreferences sharedata = getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
+        String filePath = sharedata.getString("cachePath", null);
+        String cacheImg = filePath + "/"+ isbn;
+        File file = null;
+        try {
+            file = new File(cacheImg);
+            if (!file.exists()) {
+                file.mkdir();
+            }
+        } catch (Exception e) {
+            Log.i("error:", e + "");
+        }
+
+        File f = new File(cacheImg);
+        if (f.exists()) {
+            Bitmap bitmap = BitmapFactory.decodeFile(cacheImg);
+            imageViewBook.setImageBitmap(bitmap);
+        }
+        else
+        {
+            new ImageLoadTask(image, imageViewBook).execute();
+            //cache the img
+            new CacheBookImages(image,isbn).execute();
+        }
     }
 
     private void registerRequest() {
