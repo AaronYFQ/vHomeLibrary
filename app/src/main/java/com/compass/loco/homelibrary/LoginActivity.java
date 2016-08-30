@@ -27,7 +27,7 @@ import org.json.JSONObject;
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.api.BasicCallback;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     TabHost tabHost;
     // UI references.
@@ -46,9 +46,9 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+       /* Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);*/
 
         tabHost = (TabHost) findViewById(R.id.tabHost);
         tabHost.setup();
@@ -82,6 +82,10 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+
+        // for JMessage
+        //JMessageClient.init(this);
+        //JMessageClient.registerEventReceiver(this);
     }
 
     //cancel tag handler
@@ -209,6 +213,7 @@ public class LoginActivity extends AppCompatActivity {
         }
         intent.putExtra(MainActivity.INTENT_KEY_LOGIN_RESULT, isSuccess);
         startActivity(intent);
+        finish();
     }
 
 
@@ -222,7 +227,6 @@ public class LoginActivity extends AppCompatActivity {
                 String json = msg.getData().getString("responseBody");
                 Log.v("Login_Register", json);
                 try {
-                    // showProgress(false)
                     // handler item from Json
                     Log.v("Login_Register", "username" + ":" + username);
                     JSONObject item = new JSONObject(json);
@@ -280,7 +284,7 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void gotResult(int status, String desc) {
                     if (status == 0) {
-                        Log.v("JMessageApplication", "register sucess");
+                        Log.v("JMessageApplication", "register success");
                         JMessageClient.login(username, GlobalParams.JMESSAGE_USER_PASSWORD, new BasicCallback() {
                             @Override
                             public void gotResult(int status, String desc) {

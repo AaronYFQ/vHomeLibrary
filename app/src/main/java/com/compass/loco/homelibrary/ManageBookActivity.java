@@ -119,13 +119,18 @@ public class ManageBookActivity extends AppCompatActivity {
                     mTargetId = user;
                     startChat(mTargetId);
                 }
+                if(flag == AGREE) {
+                    //take with shopowner
+                    mTargetId = borrower;
+                    startChat(mTargetId);
+                }
 
             }
         });
 
         Intent intent = getIntent();
 
-        user = intent.getStringExtra("user");
+        user = intent.getStringExtra("user");  //shopowner
         borrower = intent.getStringExtra("borrower");
         shopName = intent.getStringExtra("shopname");
         bookName = intent.getStringExtra("bookname");
@@ -143,6 +148,7 @@ public class ManageBookActivity extends AppCompatActivity {
         username = sharePref.getString("username", "");
 
         buttonBook.setVisibility(View.INVISIBLE);
+        buttonChat.setVisibility(View.INVISIBLE);
 
         if(username.equals(user)) {
 
@@ -162,7 +168,6 @@ public class ManageBookActivity extends AppCompatActivity {
                 flag = AGREE;
 
             }
-            buttonChat.setVisibility(View.INVISIBLE);
 
         }
         else
@@ -223,18 +228,22 @@ public class ManageBookActivity extends AppCompatActivity {
                         ((TextView)activity.findViewById(R.id.book_state)).setText(state? "在库" : "借出");
                         ((TextView)activity.findViewById(R.id.book_summary)).setText(detail);
 
+                        buttonBook.setVisibility(View.INVISIBLE);
+                        buttonChat.setVisibility(View.INVISIBLE);
 
                         if(!token.equals("")) {
 
                             if (flag == REQUEST) {
 
-                                if (state) {
+                                if (state) { // state: true  在库
 
                                     buttonBook.setVisibility(View.VISIBLE);
+                                    buttonChat.setVisibility(View.VISIBLE);
 
-                                } else {
+                                } else {     // 借出
 
                                     buttonBook.setVisibility(View.INVISIBLE);
+                                    buttonChat.setVisibility(View.INVISIBLE);
 
                                 }
                             } else if (flag == AGREE) {
@@ -242,10 +251,12 @@ public class ManageBookActivity extends AppCompatActivity {
                                 if (state) {
 
                                     buttonBook.setVisibility(View.VISIBLE);
+                                    buttonChat.setVisibility(View.VISIBLE);
 
                                 } else {
 
                                     buttonBook.setVisibility(View.INVISIBLE);
+                                    buttonChat.setVisibility(View.INVISIBLE);
 
                                 }
 
@@ -254,10 +265,12 @@ public class ManageBookActivity extends AppCompatActivity {
                                 if (state) {
 
                                     buttonBook.setVisibility(View.INVISIBLE);
+                                    buttonChat.setVisibility(View.INVISIBLE);
 
                                 } else {
 
                                     buttonBook.setVisibility(View.VISIBLE);
+                                    buttonChat.setVisibility(View.VISIBLE);
 
                                 }
                             }

@@ -104,12 +104,14 @@ public class BrowseLibraryActivity extends AppCompatActivity {
                 }
 
                 String bookName = arrayListBookInfo.get(position).getName();
+                String borrower = arrayListBookInfo.get(position).getBorrower();
 
                 Intent intent = new Intent(getApplicationContext(), ManageBookActivity.class);
 
-                intent.putExtra("user", user);
+                intent.putExtra("user", user);//shopowner
                 intent.putExtra("shopname", shopName);
                 intent.putExtra("bookname",  bookName);
+                intent.putExtra("borrower",  borrower);
                 intent.putExtra("request",  "borrow");
 
                 startActivity(intent);
@@ -120,7 +122,7 @@ public class BrowseLibraryActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        user = intent.getStringExtra("user");
+        user = intent.getStringExtra("user");//shopowner
         shopName = intent.getStringExtra("shopname");
 
         Log.d(TAG, "pass through intent: " + "user = " + user + ", shopname = " + shopName);
@@ -166,7 +168,8 @@ public class BrowseLibraryActivity extends AppCompatActivity {
                                             jsonObj.getString("isbn"),
                                             jsonObj.getString("detail"),
                                             jsonObj.getString("imageurl"),
-                                            (jsonObj.getBoolean("state"))));
+                                            (jsonObj.getBoolean("state")),
+                                            jsonObj.getString("borrower")));
                         }
                     }
                     else

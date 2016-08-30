@@ -20,7 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baidu.mapapi.SDKInitializer;
-import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.TextureMapView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,7 +34,7 @@ public class CreateLibActivity extends AppCompatActivity {
     private AutoCompleteTextView villageTextView;
     private EditText adEditText;
     private EditText libraryEditText;
-    private MapView mMapView;
+    private TextureMapView mTextureMapView;
 
 
     private ArrayAdapter<CharSequence> districtAdapter;
@@ -64,7 +64,7 @@ public class CreateLibActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //get bmap control
-        mMapView = (MapView) findViewById(R.id.bmapView);
+        mTextureMapView = (TextureMapView) findViewById(R.id.bTextureMapView);
 
         Intent intent = getIntent();
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
@@ -154,19 +154,19 @@ public class CreateLibActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mMapView.onDestroy();
+        mTextureMapView.onDestroy();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mMapView.onResume();
+        mTextureMapView.onResume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mMapView.onPause();
+        mTextureMapView.onPause();
     }
 
     private void addItems() {

@@ -31,15 +31,20 @@ public class  BookInfo {
 
     public Boolean getState() { return state; }
 
+    public String getBorrower() {
+        return borrower;
+    }
+
     private String name;
     private String author;
     private String publisher;
     private String isbn;
     private String detail;
     private String imageUrl;
+    private String borrower;
     private Boolean state;
 
-    public BookInfo(String name, String author, String publisher, String isbn, String detail, String imageUrl, Boolean state) {
+    public BookInfo(String name, String author, String publisher, String isbn, String detail, String imageUrl, Boolean state,String borrower) {
         this.name = name;
         this.author = author;
         this.publisher = publisher;
@@ -47,6 +52,7 @@ public class  BookInfo {
         this.detail = detail;
         this.imageUrl = imageUrl;
         this.state = state;
+        this.borrower = borrower;
     }
 
 }

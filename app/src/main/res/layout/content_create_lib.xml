@@ -64,8 +64,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="3.5">
-        <com.baidu.mapapi.map.MapView
-            android:id="@+id/bmapView"
+        <com.baidu.mapapi.map.TextureMapView
+            android:id="@+id/bTextureMapView"
             android:layout_width="fill_parent"
             android:layout_height="160dp"
             android:clickable="true" />
