@@ -27,7 +27,9 @@ public class ThirdPartyAsyncHttpRequest {
                 bundle.putString("responseBody", iString);
                 Message message = new Message();
                 message.setData(bundle);
-                handler.sendMessage(message);
+                if(handler != null) {
+                    handler.sendMessage(message);
+                }
             }
 
             @Override
@@ -49,7 +51,9 @@ public class ThirdPartyAsyncHttpRequest {
                 bundle.putString("responseBody", iString);
                 Message message = new Message();
                 message.setData(bundle);
-                handler.sendMessage(message);
+                if(handler != null) {
+                    handler.sendMessage(message);
+                }
             }
 
             @Override

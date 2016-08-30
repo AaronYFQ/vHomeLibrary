@@ -31,6 +31,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import cn.jpush.android.api.JPushInterface;
 
 
 public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
@@ -124,10 +125,12 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
                     Toast.LENGTH_SHORT).show();
         }*/
 
-        MessageIntentService.startActionPoll(getContext());
+        //MessageIntentService.startActionPoll(getContext());
 
         DisplayMessages();
         registerBroadcastReceiver();
+
+        sendRegisterIDToServer(getActivity().getApplicationContext());
 
         return view;
     }
@@ -384,6 +387,19 @@ public class ShowMessagesFragment extends Fragment implements SwipeRefreshLayout
             Toast.makeText(getContext(),
                     "请先登录.",
                     Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void sendRegisterIDToServer(Context context)
+    {
+        String regid = JPushInterface.getRegistrationID(context);
+
+        SharedPreferences sharedPref = context.getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
+        String token = sharedPref.getString("token", "");
+
+        if(!token.isEmpty()) {
+            HttpUtil httptd = new HttpUtil();
+            httptd.submitAsyncHttpClientPostRegisterID(token, regid, null);
         }
     }
 }

@@ -24,6 +24,7 @@ import com.compass.loco.homelibrary.chatting.utils.HandleResponseCode;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import cn.jpush.android.api.JPushInterface;
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.api.BasicCallback;
 
@@ -128,9 +129,10 @@ public class LoginActivity extends BaseActivity {
             // perform the user login attempt.
             //showProgress(true);
             connectJmessageServer(username, password, ActionType.LOGIN);
-            if(mJMLoginSuccess) {
+            /*if(mJMLoginSuccess) {
                 connectHttpServer(username, password, ActionType.LOGIN);
-            }
+                sendRegisterIDToServer(getApplicationContext());
+            }*/
 
         }
     }
@@ -183,9 +185,10 @@ public class LoginActivity extends BaseActivity {
             // perform the user login attempt.
             // showProgress(true);
             connectJmessageServer(username, password, ActionType.REGISTER);
-            if(mJMLoginSuccess) {
+            /*if(mJMLoginSuccess) {
                 connectHttpServer(username, password, ActionType.REGISTER);
-            }
+                sendRegisterIDToServer(getApplicationContext());
+            }*/
 
         }
     }
@@ -206,9 +209,12 @@ public class LoginActivity extends BaseActivity {
             sharedata.putString("shopname", mShopname);
             intent.putExtra(MainActivity.INTENT_KEY_USER_NAME, username);
             sharedata.commit();
+
+            sendRegisterIDToServer(getApplicationContext());
         }
-        intent.putExtra(MainActivity.INTENT_KEY_LOGIN_RESULT, isSuccess);
-        startActivity(intent);
+        //intent.putExtra(MainActivity.INTENT_KEY_LOGIN_RESULT, isSuccess);
+        //startActivity(intent);
+        setResult(0);
         finish();
     }
 
@@ -278,6 +284,7 @@ public class LoginActivity extends BaseActivity {
                                 if (status == 0) {
                                     Log.v("JMessageApplication", "login sucess");
                                     mJMLoginSuccess = true;
+                                    connectHttpServer(username, password, ActionType.REGISTER);
                                 } else {
                                     Log.v("JMessageApplication", "login failure");
                                     mJMLoginSuccess = false;
@@ -300,6 +307,7 @@ public class LoginActivity extends BaseActivity {
                     if (status == 0) {
                         Log.v("JMessageApplication", "login success");
                         mJMLoginSuccess = true;
+                        connectHttpServer(username, password, ActionType.LOGIN);
                     } else {
                         Log.v("JMessageApplication", "login failure");
                         mJMLoginSuccess = false;
@@ -324,6 +332,19 @@ public class LoginActivity extends BaseActivity {
         mButtonView.setClickable(true);
         mButtonView.setBackgroundResource(R.color.colorBackgroundGreen);
         mButtonView.setTextColor(Color.WHITE);
+    }
+
+    private void sendRegisterIDToServer(Context context)
+    {
+        String regid = JPushInterface.getRegistrationID(context);
+
+        SharedPreferences sharedPref = context.getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
+        String token = sharedPref.getString("token", "");
+
+        if(!token.isEmpty()) {
+            HttpUtil httptd = new HttpUtil();
+            httptd.submitAsyncHttpClientPostRegisterID(token, regid, null);
+        }
     }
 }
 

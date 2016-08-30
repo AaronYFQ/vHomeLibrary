@@ -38,7 +38,18 @@ public class MeFragment extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_me, container, false);
         mLoginBtn = (Button)view.findViewById(R.id.user_login_btn);
-        SharedPreferences sharedata = getContext().getSharedPreferences(GlobalParams.PREF_NAME,Context.MODE_PRIVATE);
+        updateBtn();
+
+        mLoginBtn.setOnClickListener(this);
+
+        mLoginOut = (LinearLayout)view.findViewById(R.id.user_login_out);
+        mLoginOut.setOnClickListener(this);
+        return view;
+    }
+
+    private void updateBtn() {
+        String username;
+        String token;SharedPreferences sharedata = getContext().getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
         username = sharedata.getString("username", null);
         token = sharedata.getString("token", null);
         if(token!=null)
@@ -51,12 +62,6 @@ public class MeFragment extends Fragment implements View.OnClickListener {
         {
             mLoginBtn.setText("登陆/注册");
         }
-
-        mLoginBtn.setOnClickListener(this);
-
-        mLoginOut = (LinearLayout)view.findViewById(R.id.user_login_out);
-        mLoginOut.setOnClickListener(this);
-        return view;
     }
 
     public void onUserLoginBtnClick(View view) {
@@ -66,7 +71,14 @@ public class MeFragment extends Fragment implements View.OnClickListener {
             return;
         }
         Intent intent = new Intent(this.getContext(), LoginActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, 0);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        updateBtn();
     }
 
     @Override
@@ -114,6 +126,8 @@ public class MeFragment extends Fragment implements View.OnClickListener {
             ImageButton meBtn = (ImageButton) getActivity().findViewById(R.id.menu_4);
             Drawable meBtnGreen = getResources().getDrawable(R.drawable.mainmenu_me);
             meBtn.setBackgroundDrawable(meBtnGreen);
+
+            updateBtn();
         }
     }
 

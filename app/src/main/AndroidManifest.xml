@@ -20,7 +20,8 @@
         android:icon="@drawable/app_icon"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:name=".MyApplication">
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="kzU2fI1IZwbNByQab6oN5emvMvaLDv2a" />
@@ -69,9 +70,9 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <service
+        <!--service
             android:name=".MessageIntentService"
-            android:exported="false" />
+            android:exported="false" /-->
 
         <activity
             android:name=".ScanBookActivity"
@@ -176,6 +177,21 @@
             </intent-filter>
         </receiver>
 
+        <receiver
+            android:name=".MyReceiver"
+            android:exported="false"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.REGISTRATION" /> <!--Required  用户注册SDK的intent-->
+                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" /> <!--Required  用户接收SDK消息的intent-->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" /> <!--Required  用户接收SDK通知栏信息的intent-->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" /> <!--Required  用户打开自定义通知栏的intent-->
+                <action android:name="cn.jpush.android.intent.ACTION_RICHPUSH_CALLBACK" /> <!--Optional 用户接受Rich Push Javascript 回调函数的intent-->
+                <action android:name="cn.jpush.android.intent.CONNECTION" /><!-- 接收网络变化 连接/断开 since 1.6.3 -->
+                <category android:name="com.compass.loco.homelibrary" />
+            </intent-filter>
+        </receiver>
+
         <!-- option 可选项。用于同一设备中不同应用的JPush服务相互拉起的功能。 -->
         <!-- 若不启用该功能可删除该组件，将不拉起其他应用也不能被其他应用拉起 -->
         <service
@@ -197,6 +213,8 @@
         <meta-data
             android:name="JPUSH_APPKEY"
             android:value="77f80ebef5571a87bc17f616" />
+            <!--android:value="3f99eaa30b5c5daae63f2647" /-->
+
         <!-- </>值来自开发者平台取得的AppKey -->
 
         <activity android:name="com.compass.loco.homelibrary.chatting.BaseActivity"/>
@@ -219,6 +237,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

@@ -17,7 +17,7 @@ import java.util.Map;
 public class HttpUtil {
     // static final String REMOTE_URL = "http://54.204.114.208:8000";
     //static final String REMOTE_URL = "http://ec2-54-204-114-208.compute-1.amazonaws.com:8000";
-    static final String REMOTE_URL = "http://123.206.62.57";
+    static final String REMOTE_URL = "http://123.206.62.57:8080";
     final String REGIST_URL = REMOTE_URL+"/book/regist/";
     final String LOGIN_URL = REMOTE_URL+"/book/login/";
     final String CREATESHOP_URL = REMOTE_URL+"/book/createShop/";
@@ -40,6 +40,7 @@ public class HttpUtil {
 
     static final String CHECK_MESSAGE_URL  = REMOTE_URL + "/book/checkMessage/";
     public static final String GET_MESSAGE_URL = REMOTE_URL + "/book/getMessage/";
+    public static final String POST_REGISTER_ID = REMOTE_URL + "/book/postRegisterID/";
     private ThirdPartyAsyncHttpRequest proxy = new ThirdPartyAsyncHttpRequest();
 
     public void submitAsyncHttpClientPostRegisterUser(String userName, String pwd, final Handler handler) {
@@ -224,4 +225,12 @@ public class HttpUtil {
         proxy.asyncHttpRequestGetHandler(GET_MESSAGE_URL, param, handler);
     }
 
+    public void submitAsyncHttpClientPostRegisterID(String token, String registerID, final Handler handler) {
+
+        Map<String, String> param = new HashMap<String, String>();
+        param.put("token", token);
+        param.put("regid", registerID);
+
+        proxy.asyncHttpRequestPostHandler(POST_REGISTER_ID, param, handler);
+    }
 }
