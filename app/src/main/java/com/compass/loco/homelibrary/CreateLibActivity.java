@@ -64,7 +64,7 @@ public class CreateLibActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //get bmap control
-        mTextureMapView = (TextureMapView) findViewById(R.id.bTextureMapView);
+        //mTextureMapView = (TextureMapView) findViewById(R.id.bTextureMapView);
 
         Intent intent = getIntent();
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
@@ -154,19 +154,19 @@ public class CreateLibActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mTextureMapView.onDestroy();
+        //mTextureMapView.onDestroy();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mTextureMapView.onResume();
+        //mTextureMapView.onResume();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mTextureMapView.onPause();
+        //mTextureMapView.onPause();
     }
 
     private void addItems() {
