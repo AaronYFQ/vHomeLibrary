@@ -338,12 +338,11 @@ public class LoginActivity extends BaseActivity {
     {
         String regid = JPushInterface.getRegistrationID(context);
 
-        SharedPreferences sharedPref = context.getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
-        String token = sharedPref.getString("token", "");
-
-        if(!token.isEmpty()) {
+        if(!mToken.isEmpty()) {
             HttpUtil httptd = new HttpUtil();
-            httptd.submitAsyncHttpClientPostRegisterID(token, regid, null);
+            httptd.submitAsyncHttpClientPostRegisterID(mToken, regid, null);
+
+            Log.v("Login", "Send register ID.");
         }
     }
 }

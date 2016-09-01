@@ -145,8 +145,8 @@ public class MainActivity extends AppCompatActivity {
         badge.setHideOnNull(true);
         badge.setBadgeCount(0);
 
-        JMessageClient.init(this);
-        JMessageClient.registerEventReceiver(this);
+        //JMessageClient.init(this);
+        //JMessageClient.registerEventReceiver(this);
 
         //badge.setVisibility(View.INVISIBLE);
 
