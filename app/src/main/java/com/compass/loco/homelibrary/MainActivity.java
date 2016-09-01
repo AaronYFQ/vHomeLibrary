@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -72,15 +71,12 @@ public class MainActivity extends AppCompatActivity {
         // the fragment_container FrameLayout
         if (findViewById(R.id.fragment_container) != null) {
 
-            Log.v("MainActivity", "OnCreate");
             // However, if we're being restored from a previous state,
             // then we don't need to do anything and should return or else
             // we could end up with overlapping fragments.
-            if (savedInstanceState != null) {
+/*            if (savedInstanceState != null) {
                 return;
-            }
-
-            Log.v("MainActivity", "OnCreate inside.");
+            }*/
 
             if (getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().containsKey(INTENT_KEY_LOGIN_RESULT)) {
                 mMeFragment.setArguments(getIntent().getExtras());
@@ -207,13 +203,10 @@ public class MainActivity extends AppCompatActivity {
         Drawable homeBtnGreen = getResources().getDrawable(R.drawable.mainmenu_home);
         homeBtn.setBackgroundDrawable(homeBtnGreen);*/
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction
+        getSupportFragmentManager().beginTransaction()
                 .hide(mMeFragment)
                 .hide(mMessageFragment)
-                .show(mHomeFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+                .show(mHomeFragment).commit();
 
 /*        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
@@ -232,13 +225,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction
+        getSupportFragmentManager().beginTransaction()
                 .hide(mMeFragment)
                 .hide(mHomeFragment)
-                .show(mMessageFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+                .show(mMessageFragment).commit();
 
 
     }
@@ -253,13 +243,10 @@ public class MainActivity extends AppCompatActivity {
         Drawable meBtnGray = getResources().getDrawable(R.drawable.mainmenu_me);
         meBtn.setBackgroundDrawable(meBtnGray);*/
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction
+        getSupportFragmentManager().beginTransaction()
                 .hide(mHomeFragment)
                 .hide(mMessageFragment)
-                .show(mMeFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+                .show(mMeFragment).commit();
 
 /*        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 

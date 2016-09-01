@@ -147,7 +147,6 @@ public class MessageIntentService extends IntentService {
                         .setSmallIcon(R.drawable.app_icon)
                         .setContentTitle("v书房")
                         .setContentText("收到" + numOfMessage +  "条新消息!")
-                        .setAutoCancel(true)
                         .setDefaults(NotificationCompat.DEFAULT_ALL);
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
