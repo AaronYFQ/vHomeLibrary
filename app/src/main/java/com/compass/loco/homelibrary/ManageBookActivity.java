@@ -1,17 +1,12 @@
 package com.compass.loco.homelibrary;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.ColorFilter;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -19,21 +14,17 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.compass.loco.homelibrary.chatting.ChatActivity;
-import com.compass.loco.homelibrary.chatting.utils.DialogCreator;
 import com.compass.loco.homelibrary.chatting.utils.HandleResponseCode;
 import com.compass.loco.homelibrary.widge.CacheBookImages;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.io.File;
 
 import cn.jpush.im.android.api.JMessageClient;
@@ -545,18 +536,18 @@ public class ManageBookActivity extends AppCompatActivity {
         if (JMessageClient.getMyInfo() != null) {
             Log.d(TAG,"Logined Jmessage user in Jmessage!" + username);
             intent.putExtra(TARGET_ID, targetId);
-            intent.putExtra(TARGET_APP_KEY,GlobalParams.JMESSAGE_APP_KEY);
+            intent.putExtra(TARGET_APP_KEY,GlobalParams.JCHAT_APP_KEY);
             intent.setClass(getApplicationContext(), ChatActivity.class);
             startActivity(intent);
 
         } else {
             Log.d(TAG," Not logined Jmessage user in Jmessage!" + username);
-            JMessageClient.login(username, GlobalParams.JMESSAGE_USER_PASSWORD, new BasicCallback() {
+            JMessageClient.login(username, GlobalParams.JCHAT_USER_PASSWORD, new BasicCallback() {
                 @Override
                 public void gotResult(int status, String desc) {
                     if (status == 0) {
                         intent.putExtra(TARGET_ID, targetId);
-                        intent.putExtra(TARGET_APP_KEY,GlobalParams.JMESSAGE_APP_KEY);
+                        intent.putExtra(TARGET_APP_KEY,GlobalParams.JCHAT_APP_KEY);
                         intent.setClass(getApplicationContext(), ChatActivity.class);
                         startActivity(intent);
                     } else {

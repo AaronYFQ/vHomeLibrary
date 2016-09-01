@@ -7,8 +7,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -18,7 +16,6 @@ import android.widget.TabHost;
 import android.widget.TextView;
 
 import com.compass.loco.homelibrary.chatting.BaseActivity;
-import com.compass.loco.homelibrary.chatting.ChatActivity;
 import com.compass.loco.homelibrary.chatting.utils.HandleResponseCode;
 
 import org.json.JSONException;
@@ -79,9 +76,6 @@ public class LoginActivity extends BaseActivity {
             }
         });
 
-        // for JMessage
-        //JMessageClient.init(this);
-        //JMessageClient.registerEventReceiver(this);
     }
 
     //cancel tag handler
@@ -129,10 +123,6 @@ public class LoginActivity extends BaseActivity {
             // perform the user login attempt.
             //showProgress(true);
             connectJmessageServer(username, password, ActionType.LOGIN);
-            /*if(mJMLoginSuccess) {
-                connectHttpServer(username, password, ActionType.LOGIN);
-                sendRegisterIDToServer(getApplicationContext());
-            }*/
 
         }
     }
@@ -185,11 +175,6 @@ public class LoginActivity extends BaseActivity {
             // perform the user login attempt.
             // showProgress(true);
             connectJmessageServer(username, password, ActionType.REGISTER);
-            /*if(mJMLoginSuccess) {
-                connectHttpServer(username, password, ActionType.REGISTER);
-                sendRegisterIDToServer(getApplicationContext());
-            }*/
-
         }
     }
 
@@ -273,12 +258,12 @@ public class LoginActivity extends BaseActivity {
 
         Log.i("JMessageApplication", "connect Jmessage server" + username);
         if (type == ActionType.REGISTER) {
-            JMessageClient.register(username, GlobalParams.JMESSAGE_USER_PASSWORD, new BasicCallback() {
+            JMessageClient.register(username, GlobalParams.JCHAT_USER_PASSWORD, new BasicCallback() {
                 @Override
                 public void gotResult(int status, String desc) {
                     if (status == 0) {
                         Log.v("JMessageApplication", "register success");
-                        JMessageClient.login(username, GlobalParams.JMESSAGE_USER_PASSWORD, new BasicCallback() {
+                        JMessageClient.login(username, GlobalParams.JCHAT_USER_PASSWORD, new BasicCallback() {
                             @Override
                             public void gotResult(int status, String desc) {
                                 if (status == 0) {
@@ -301,7 +286,7 @@ public class LoginActivity extends BaseActivity {
                 }
             });
         } else {
-            JMessageClient.login(username, GlobalParams.JMESSAGE_USER_PASSWORD, new BasicCallback() {
+            JMessageClient.login(username, GlobalParams.JCHAT_USER_PASSWORD, new BasicCallback() {
                 @Override
                 public void gotResult(int status, String desc) {
                     if (status == 0) {

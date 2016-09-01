@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 
+import com.compass.loco.homelibrary.chatting.receiver.NotificationClickEventReceiver;
 import com.compass.loco.homelibrary.chatting.utils.DialogCreator;
 
 import cn.jpush.im.android.api.JMessageClient;
@@ -145,7 +146,11 @@ public class MainActivity extends AppCompatActivity {
         badge.setHideOnNull(true);
         badge.setBadgeCount(0);
 
-        //JMessageClient.init(this);
+        //JMessage
+        JMessageClient.init(this);
+        JMessageClient.setDebugMode(true);
+        JMessageClient.setNotificationMode(JMessageClient.NOTI_MODE_DEFAULT);
+        new NotificationClickEventReceiver(getApplicationContext());
         //JMessageClient.registerEventReceiver(this);
 
         //badge.setVisibility(View.INVISIBLE);
