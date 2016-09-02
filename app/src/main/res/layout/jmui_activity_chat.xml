@@ -126,9 +126,10 @@
                         android:gravity="start"
                         android:cursorVisible="true"
                         android:textCursorDrawable="@drawable/jmui_text_cursor_bg"
+                        android:inputType="textNoSuggestions"
                         android:padding="5dp"
-                        android:textColor="#000000"
-                        android:inputType="textMultiLine"/>
+                        android:textColor="#000000"/>
+                   <!-- android:inputType="textMultiLine" -->
 
                     <ImageButton
                         android:id="@+id/jmui_expression_btn"

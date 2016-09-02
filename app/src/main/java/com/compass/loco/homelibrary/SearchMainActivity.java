@@ -127,13 +127,13 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
             db = new DbBookHelper(this.getApplicationContext());
 
             String state = Environment.getExternalStorageState();
-           /* String s = getExternalCacheDir().toString();
+            String s = getExternalCacheDir().toString();
             String sq =getExternalFilesDir("").toString();
 
-            String dd = Environment.getExternalStoragePublicDirectory("").toString();*/
+            String dd = Environment.getExternalStoragePublicDirectory("").toString();
             String d1 = Environment.getExternalStorageDirectory().toString();
 
-            /*String filepath = "";
+           /* String filepath = "";
             File file = new File(Environment.getExternalStorageDirectory(),
                     "abc.txt");
             if (file.exists()) {
@@ -142,9 +142,17 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
                 filepath = "不适用";
             }*/
 
-            String sDir = d1 +"/vbook";
+          String sDir = d1 +"/vbook";
 
-            makeRootDirectory(sDir);
+            makeRootDir(sDir);
+
+            File[] files = new File("/").listFiles();
+            for (File file : files) {
+                if (file.getName().contains("book") ) {
+                    String ssdd= file.getPath() + "\n";
+                }
+            }
+             /*
             File destDir = new File(sDir);
             if (!destDir.exists()) {
                 destDir.mkdirs();
@@ -185,7 +193,7 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
 //                writeTxtToFile("txt content", d1 + "/testDir" , "222.txt");
                 writeTxtToFile("txt content", "/vbook1"  , "111.txt");
                 writeTxtToFile("txt content", d1 + "/vbook2" , "222.txt");
-                /*if (f.exists()) {
+                *//*if (f.exists()) {
 
                     Toast.makeText(getApplicationContext(), "testDir OK", Toast.LENGTH_SHORT).show();
                 }
@@ -196,9 +204,9 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                }*/
+                }*//*
 
-            }
+            }*/
 
 
 

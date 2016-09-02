@@ -13,11 +13,10 @@ public class GlobalParams {
    public final static String PREF_NAME = "com.compass.loco.homelibrary";
    public final static String SHARED_KEY_ADVERTISEMENT = "advertisement";
 
-   public final static String JCHAT_APP_KEY = "7f80ebef5571a87bc17f616";
-   public final static String JCHAT_LOGIN ="JmessageLogined";
+   public final static String JCHAT_APP_KEY = "77f80ebef5571a87bc17f616";
    public final static String JCHAT_USER_PASSWORD = "123456";
 
-   private static final String JCHAT_CONFIGS = "JChat_configs";
+   public static final String JCHAT_CONFIGS = "JChat_configs";
    public static final String TARGET_APP_KEY = "targetAppKey";
    public static final String TARGET_ID = "targetId";
    public static final String NAME = "name";

@@ -113,12 +113,16 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
         Intent intent = getIntent();
         mTargetId = intent.getStringExtra(TARGET_ID);
         mTargetAppKey = intent.getStringExtra(TARGET_APP_KEY);
-        Log.i("JMessageApplication",mTargetId + mTargetAppKey);
+        Log.i("ChatActivity","target is " + mTargetId);
+
         if (!TextUtils.isEmpty(mTargetId)) {
             mIsSingle = true;
             mConv = JMessageClient.getSingleConversation(mTargetId, mTargetAppKey);
             if (mConv != null) {
                 UserInfo userInfo = (UserInfo)mConv.getTargetInfo();
+                Log.i("ChatActivity","getSingleConversation  " + "mConv.getTargetId()" + mConv.getTargetId());
+                Log.i("ChatActivity","getSingleConversation  " + "mConv.getTargetAppKey()" + mConv.getTargetAppKey().toString());
+                Log.i("ChatActivity","getSingleConversation  " + "mConv.getTargetInfo().getUserName" + userInfo.getUserName());
                 if (TextUtils.isEmpty(userInfo.getNickname())) {
                     mChatView.setChatTitle(userInfo.getUserName());
                 }else {
@@ -127,6 +131,9 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
             } else {
                 mConv = Conversation.createSingleConversation(mTargetId, mTargetAppKey);
                 UserInfo userInfo = (UserInfo)mConv.getTargetInfo();
+                Log.i("ChatActivity","createSingleConversation  " + "mConv.getTargetId()" + mConv.getTargetId());
+                Log.i("ChatActivity","createSingleConversation  " + "mConv.getTargetAppKey()" + mConv.getTargetAppKey().toString());
+                Log.i("ChatActivity","createSingleConversation  " + "mConv.getTargetInfo().getUserName" + userInfo.getUserName());
                 if (TextUtils.isEmpty(userInfo.getNickname())) {
                     mChatView.setChatTitle(userInfo.getUserName());
                 }else {
@@ -241,12 +248,20 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener, 
             }
             // 发送文本消息
         } else if (v.getId() == IdHelper.getViewID(mContext, "jmui_send_msg_btn")) {
+            Log.i("ChatActivity","prepare send text message");
             String msgContent = mChatView.getChatInput();
             mChatView.clearInput();
             mChatView.setToBottom();
             if (msgContent.equals("")) {
                 return;
             }
+
+            UserInfo userInfo = (UserInfo)mConv.getTargetInfo();
+            Log.i("ChatActivity","prepare send text message  " + "mConv.getTargetId()" + mConv.getTargetId());
+            Log.i("ChatActivity","prepare send text message  " + "mConv.getTargetAppKey()" + mConv.getTargetAppKey().toString());
+            Log.i("ChatActivity","prepare send text message  " + "mConv.getTargetInfo().getUserName" + userInfo.getUserName());
+            Log.i("ChatActivity","prepare send text message  " + "JMessageClient.getMyInfo()" + JMessageClient.getMyInfo().toString());
+            Log.i("ChatActivity", "msg: " + msgContent );
             TextContent content = new TextContent(msgContent);
             final Message msg = mConv.createSendMessage(content);
             mChatAdapter.addMsgToList(msg);

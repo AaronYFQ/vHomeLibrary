@@ -15,6 +15,7 @@ import android.view.WindowManager;
 
 import java.io.File;
 
+import com.compass.loco.homelibrary.LoginActivity;
 import com.compass.loco.homelibrary.MainActivity;
 import com.compass.loco.homelibrary.chatting.utils.DialogCreator;
 import com.compass.loco.homelibrary.chatting.utils.FileHelper;
@@ -62,11 +63,29 @@ public class BaseActivity extends Activity {
         public void onClick(View v) {
             dialog.dismiss();
             Intent intent = new Intent();
+            if (null != myInfo) {
+                intent.setClass(BaseActivity.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                BaseActivity.this.finish();
+            } else {
+                Log.i(TAG, "user info is null! Jump to Login activity");
+                intent.setClass(BaseActivity.this, LoginActivity.class);
+                startActivity(intent);
+                BaseActivity.this.finish();
+            }
+        }
+    };
+    /*private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            dialog.dismiss();
+            Intent intent = new Intent();
             intent.setClass(BaseActivity.this, MainActivity.class);
             startActivity(intent);
             BaseActivity.this.finish();
         }
-    };
+    };*/
 
     /**
      * 接收登录状态相关事件:登出事件,修改密码事件及被删除事件
@@ -106,7 +125,7 @@ public class BaseActivity extends Activity {
                     public void onClick(View v) {
                         dialog.dismiss();
                         Intent intent = new Intent();
-                        intent.setClass(BaseActivity.this, MainActivity.class);
+                        intent.setClass(BaseActivity.this, LoginActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                         BaseActivity.this.finish();
