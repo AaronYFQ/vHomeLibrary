@@ -450,7 +450,7 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
         //
         // getHintData();
         //初始化自动补全数据
-        //getLocalData();
+        getLocalData();
         getAutoCompleteData(null);
         //初始化搜索结果数据
         //getResultData(null);

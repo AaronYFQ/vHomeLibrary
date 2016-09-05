@@ -239,7 +239,7 @@ public class ManageBookActivity extends AppCompatActivity {
                                 } else {     // 借出
 
                                     buttonBook.setVisibility(View.INVISIBLE);
-                                    buttonChat.setVisibility(View.INVISIBLE);
+                                    buttonChat.setVisibility(View.VISIBLE);
 
                                 }
                             } else if (flag == AGREE) {
@@ -252,7 +252,7 @@ public class ManageBookActivity extends AppCompatActivity {
                                 } else {
 
                                     buttonBook.setVisibility(View.INVISIBLE);
-                                    buttonChat.setVisibility(View.INVISIBLE);
+                                    buttonChat.setVisibility(View.VISIBLE);
 
                                 }
 

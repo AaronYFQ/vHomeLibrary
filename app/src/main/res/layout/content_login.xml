@@ -66,11 +66,11 @@
                                 android:layout_height="wrap_content"
                                 android:paddingLeft="16dp"
                                 android:text="用户名" />
-
                             <EditText
                                 android:id="@+id/login_username"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
+                                android:layout_height="wrap_content"
+                                android:singleLine="true"
                                 android:paddingRight="16dp"/>
                         </TableRow>
 
@@ -91,6 +91,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:paddingRight="16dp"
+                                android:singleLine="true"
                                 android:password="true" />
                         </TableRow>
                     </TableLayout>
