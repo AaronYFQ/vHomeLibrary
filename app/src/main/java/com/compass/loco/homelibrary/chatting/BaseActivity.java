@@ -62,18 +62,15 @@ public class BaseActivity extends Activity {
         @Override
         public void onClick(View v) {
             dialog.dismiss();
-            Intent intent = new Intent();
-            if (null != myInfo) {
-                intent.setClass(BaseActivity.this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                BaseActivity.this.finish();
-            } else {
+            BaseActivity.this.finish();
+            /*Intent intent = new Intent();
+            if (null == myInfo) {
                 Log.i(TAG, "user info is null! Jump to Login activity");
                 intent.setClass(BaseActivity.this, LoginActivity.class);
                 startActivity(intent);
                 BaseActivity.this.finish();
-            }
+            }*/
+
         }
     };
     /*private View.OnClickListener onClickListener = new View.OnClickListener() {
