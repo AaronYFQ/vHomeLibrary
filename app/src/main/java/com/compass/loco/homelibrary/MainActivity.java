@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 
+import com.compass.loco.homelibrary.chatting.ConversationListFragment;
 import com.compass.loco.homelibrary.chatting.receiver.NotificationClickEventReceiver;
 import com.compass.loco.homelibrary.chatting.utils.DialogCreator;
 import com.compass.loco.homelibrary.chatting.utils.SharePreferenceManager;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private final HomeFragment mHomeFragment = new HomeFragment();
     private final ShowMessagesFragment mMessageFragment = new ShowMessagesFragment();
     private final MeFragment mMeFragment = new MeFragment();
+    private final ConversationListFragment mCovFragment = new ConversationListFragment();
 
     final  GlobalParams mGlobal = new GlobalParams();
     /*public MainActivity() {
@@ -83,12 +85,14 @@ public class MainActivity extends AppCompatActivity {
                     getSupportFragmentManager().beginTransaction()
                             .add(R.id.fragment_container, mHomeFragment)
                             .add(R.id.fragment_container, mMessageFragment)
+                            .add(R.id.fragment_container, mCovFragment)
                             .add(R.id.fragment_container, mMeFragment).commit();
                 }
 
                 getSupportFragmentManager().beginTransaction()
                         .hide(mMessageFragment)
                         .hide(mHomeFragment)
+                        .hide(mCovFragment)
                         .show(mMeFragment).commit();
 
                 ImageButton meBtn = (ImageButton) findViewById(R.id.menu_4);
@@ -106,12 +110,14 @@ public class MainActivity extends AppCompatActivity {
                     getSupportFragmentManager().beginTransaction()
                             .add(R.id.fragment_container, mMeFragment)
                             .add(R.id.fragment_container, mHomeFragment)
+                            .add(R.id.fragment_container, mCovFragment)
                             .add(R.id.fragment_container, mMessageFragment).commit();
                 }
 
                 getSupportFragmentManager().beginTransaction()
                         .hide(mMeFragment)
                         .hide(mHomeFragment)
+                        .hide(mCovFragment)
                         .show(mMessageFragment).commit();
 
                 ImageButton messageBtn = (ImageButton) findViewById(R.id.menu_2);
@@ -125,12 +131,14 @@ public class MainActivity extends AppCompatActivity {
                     getSupportFragmentManager().beginTransaction()
                             .add(R.id.fragment_container, mMeFragment)
                             .add(R.id.fragment_container, mMessageFragment)
+                            .add(R.id.fragment_container, mCovFragment)
                             .add(R.id.fragment_container, mHomeFragment).commit();
                 }
 
                 getSupportFragmentManager().beginTransaction()
                         .hide(mMeFragment)
                         .hide(mMessageFragment)
+                        .hide(mCovFragment)
                         .show(mHomeFragment).commit();
 
                 ImageButton homeBtn = (ImageButton) findViewById(R.id.menu_1);
@@ -202,6 +210,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .hide(mMeFragment)
                 .hide(mMessageFragment)
+                .hide(mCovFragment)
                 .show(mHomeFragment).commit();
 
 /*        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -224,7 +233,23 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .hide(mMeFragment)
                 .hide(mHomeFragment)
+                .hide(mCovFragment)
                 .show(mMessageFragment).commit();
+
+
+    }
+
+    public void onClickCovBtn(View view) {
+        if (mCovFragment.isVisible()) {
+            return;
+        }
+
+
+        getSupportFragmentManager().beginTransaction()
+                .hide(mMeFragment)
+                .hide(mHomeFragment)
+                .hide(mMessageFragment)
+                .show(mCovFragment).commit();
 
 
     }
@@ -242,6 +267,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .hide(mHomeFragment)
                 .hide(mMessageFragment)
+                .hide(mCovFragment)
                 .show(mMeFragment).commit();
 
 /*        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

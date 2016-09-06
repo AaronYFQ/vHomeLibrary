@@ -50,4 +50,9 @@
     <color name="white">#FFFFFF</color>
 
     <color name="light_blue">#8CA4FF</color>
+
+    <color name="network_disconnected_bg_color">#ffdfe0</color>
+    <color name="conv_list_split_line_color">#d6d6d6</color>
+    <color name="menu_item_back_pres_color">#3773cb</color>
+    <color name="menu_item_click_color">#346fc3</color>
 </resources>

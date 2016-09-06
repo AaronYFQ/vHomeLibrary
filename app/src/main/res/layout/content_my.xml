@@ -94,6 +94,30 @@
                 android:id="@+id/menu_title_2" />
         </LinearLayout>
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="1">
+            <ImageButton
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_toRightOf="@id/menu_2"
+                android:onClick="onClickCovBtn"
+                android:background="@drawable/mainmenu_community"
+                android:id="@+id/menu_3" />
+
+            <TextView
+                android:layout_width="30dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_toRightOf="@id/menu_title_2"
+                android:textAlignment="center"
+                android:text="对话"
+                android:id="@+id/menu_title_3" />
+        </LinearLayout>
+
         <!--LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"

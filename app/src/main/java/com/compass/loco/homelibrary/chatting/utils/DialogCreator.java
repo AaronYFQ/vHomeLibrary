@@ -89,4 +89,20 @@ public class DialogCreator {
         return dialog;
     }
 
+    public static Dialog createDelConversationDialog(Context context, String title,
+                                                     View.OnClickListener listener){
+        Dialog dialog = new Dialog(context, IdHelper.getStyle(context, "jmui_default_dialog_style"));
+        View v = LayoutInflater.from(context).inflate(
+                IdHelper.getLayout(context, "jmui_dialog_delete_conv"), null);
+        dialog.setContentView(v);
+        TextView titleTv = (TextView) v.findViewById(IdHelper.getViewID(context, "jmui_dialog_title"));
+        final LinearLayout deleteLl = (LinearLayout) v.findViewById(IdHelper
+                .getViewID(context, "jmui_delete_conv_ll"));
+        titleTv.setText(title);
+        deleteLl.setOnClickListener(listener);
+        dialog.setCancelable(true);
+        dialog.setCanceledOnTouchOutside(true);
+        return dialog;
+    }
+
 }
