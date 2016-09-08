@@ -52,10 +52,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
 
-        SharedPreferences sharedPref = getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor sharedata = sharedPref.edit();
-        sharedata.putString( "cachePath",Environment.getExternalStorageDirectory().toString() + "/vbook/imgCache");
-        sharedata.commit();
+       
 
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);

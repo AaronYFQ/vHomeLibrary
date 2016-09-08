@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.compass.loco.homelibrary.widge.CacheBookImages;
 
 import java.io.File;
@@ -144,22 +146,32 @@ public class ListViewAdapterManageBook extends BaseAdapter {
         return convertView;
     }
 
-    public void loadImg(String isbn, String image)  {
+    public void loadImg(String isbn, String imageUrl)  {
 
-        SharedPreferences sharedata = activity.getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
-        String filePath = sharedata.getString("cachePath", null);
+        String filePath = Environment.getExternalStorageDirectory().toString() + activity.getResources().getString(R.string.cache_path);
         String cacheImg = filePath + "/"+ isbn;
 
         File f = new File(cacheImg);
         if (f.exists()) {
-            Bitmap bitmap = BitmapFactory.decodeFile(cacheImg);
-            imageViewBookPicture.setImageBitmap(bitmap);
+
+            Glide.with(activity)
+                    .load(cacheImg)
+                    //.skipMemoryCache(true) //不使用内存缓存
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)//不使用硬盘缓存;
+                    .into(imageViewBookPicture);
+
         }
         else
         {
-            new ImageLoadTask(image, imageViewBookPicture).execute();
+            /*new ImageLoadTask(image, imageViewBookPicture).execute();
+            */
+            Glide.with(activity)
+                    .load(imageUrl)
+                   // .skipMemoryCache(true) //不使用内存缓存
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)//不使用硬盘缓存;
+                    .into(imageViewBookPicture);
             //cache the img
-            new CacheBookImages(image,isbn).execute();
+            new CacheBookImages(imageUrl,isbn).execute();
         }
     }
 }

@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.target.Target;
 import com.compass.loco.homelibrary.chatting.ChatActivity;
 import com.compass.loco.homelibrary.chatting.utils.HandleResponseCode;
 import com.compass.loco.homelibrary.widge.CacheBookImages;
@@ -310,33 +314,37 @@ public class ManageBookActivity extends AppCompatActivity {
 
     }
 
-    public void loadImg(String isbn, String image)  {
-       
+    public void loadImg(String isbn, String imageUrl)  {
 
-        //String filePath = Environment.getExternalStorageDirectory().toString() + "/vbook/imgCache";
-        SharedPreferences sharedata = getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
-        String filePath = sharedata.getString("cachePath", null);
+
+        String filePath = Environment.getExternalStorageDirectory().toString() + getResources().getString(R.string.cache_path);
         String cacheImg = filePath + "/"+ isbn;
-        File file = null;
-        try {
-            file = new File(cacheImg);
-            if (!file.exists()) {
-                file.mkdir();
-            }
-        } catch (Exception e) {
-            Log.i("error:", e + "");
-        }
+
+
+        //new ImageLoadTask(filePath + "/9787115172891111111", imageViewBook,this).execute();
 
         File f = new File(cacheImg);
         if (f.exists()) {
-            Bitmap bitmap = BitmapFactory.decodeFile(cacheImg);
-            imageViewBook.setImageBitmap(bitmap);
+           /* Bitmap bitmap = BitmapFactory.decodeFile(cacheImg);
+            imageViewBook.setImageBitmap(bitmap);*/
+            Glide.with(this)
+                    .load(cacheImg)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)//不使用硬盘缓存;
+                    .into(imageViewBook);
+
         }
         else
         {
-            new ImageLoadTask(image, imageViewBook).execute();
+            Glide.with(this)
+                    .load(imageUrl)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)//不使用硬盘缓存;
+                    .into(imageViewBook);
+
+            new CacheBookImages(imageUrl,isbn ).execute();
+
+           /* new ImageLoadTask(image, imageViewBook).execute();
             //cache the img
-            new CacheBookImages(image,isbn).execute();
+            new CacheBookImages(image,isbn).execute();*/
         }
     }
 

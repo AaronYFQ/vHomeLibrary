@@ -22,7 +22,7 @@ import android.content.Context;
 public  class CacheBookImages extends AsyncTask<Void, Void,Bitmap> {
     private String url;
     private String isbn;
-    private static String filePath = Environment.getExternalStorageDirectory().toString() + "/vbook/imgCache";
+    private static String filePath = Environment.getExternalStorageDirectory().toString() + "/vbook/imgCache/";
 
     public CacheBookImages(String url,  String isbn) {
         this.url = url;
@@ -61,7 +61,7 @@ public  class CacheBookImages extends AsyncTask<Void, Void,Bitmap> {
 
         makeRootDir(filePath);
 
-        String cacheImg = filePath + "/"+ isbn;
+        String cacheImg = filePath + isbn;
         File file = null;
         try {
             file = new File(cacheImg);
@@ -84,7 +84,7 @@ public  class CacheBookImages extends AsyncTask<Void, Void,Bitmap> {
                 return;
             }
             FileOutputStream out = new FileOutputStream(f);
-            bm.compress(Bitmap.CompressFormat.PNG, 90, out);
+            bm.compress(Bitmap.CompressFormat.JPEG, 50, out);
             out.flush();
             out.close();
             Log.i("ddd", "已经保存");

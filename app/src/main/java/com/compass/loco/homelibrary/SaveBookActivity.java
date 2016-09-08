@@ -22,6 +22,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.compass.loco.homelibrary.model.DoubanBook;
 import com.compass.loco.homelibrary.widge.CacheBookImages;
 
@@ -83,24 +85,33 @@ public class SaveBookActivity extends AppCompatActivity {
         }
     }
 
-    public void loadImg(String isbn, String image)  {
-       
-        //String filePath = Environment.getExternalStorageDirectory().toString() + "/vbook/imgCache";
-        SharedPreferences sharedata = getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
-        String filePath = sharedata.getString("cachePath", null);
+    public void loadImg(String isbn, String imageUrl)  {
+
+        String filePath = Environment.getExternalStorageDirectory().toString() + getResources().getString(R.string.cache_path);
         String cacheImg = filePath + "/"+ isbn;
         ImageView image1 = (ImageView) findViewById(R.id.book_image_view);
 
         File f = new File(cacheImg);
         if (f.exists()) {
-            Bitmap bitmap = BitmapFactory.decodeFile(cacheImg);
-            image1.setImageBitmap(bitmap);
+           /* Bitmap bitmap = BitmapFactory.decodeFile(cacheImg);
+            image1.setImageBitmap(bitmap);*/
+            Glide.with(this)
+                    .load(cacheImg)
+                   // .skipMemoryCache(true) //不使用内存缓存
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)//不使用硬盘缓存;
+                    .into(image1);
         }
         else
         {
-            new ImageLoadTask(image, (ImageView) findViewById(R.id.book_image_view)).execute();
+            Glide.with(this)
+                    .load(imageUrl)
+                    //.skipMemoryCache(true) //不使用内存缓存
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)//不使用硬盘缓存;
+                    .into(image1);
+
             //cache the img
-            new CacheBookImages(image,isbn).execute();
+            new CacheBookImages(imageUrl,isbn ).execute();
+            //new ImageLoadTask(image, (ImageView) findViewById(R.id.book_image_view)).execute();
         }
     }
 
