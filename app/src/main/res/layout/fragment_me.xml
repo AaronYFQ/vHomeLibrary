@@ -108,32 +108,6 @@
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:src="@drawable/me_location"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="30dp"
-                        android:textSize="15sp"
-                        android:text="我关注的书"/>
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentEnd="true"
-                        android:src="@drawable/arrow_right"/>
-                </RelativeLayout>
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="13dp"
-                    android:paddingRight="13dp"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:background="@drawable/shadow_border"
-                    android:orientation="horizontal">
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
                         android:src="@drawable/user_heart"/>
                     <TextView
                         android:layout_width="wrap_content"
@@ -175,7 +149,9 @@
                         android:layout_alignParentEnd="true"
                         android:src="@drawable/arrow_right"/>
                 </RelativeLayout>
+
                 <RelativeLayout
+                    android:id="@+id/my_borrowing_history"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="13dp"
@@ -204,6 +180,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/my_chat_msg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -226,7 +203,7 @@
                         android:layout_height="wrap_content"
                         android:paddingLeft="30dp"
                         android:textSize="15sp"
-                        android:text="我的消息"/>
+                        android:text="我的聊天记录"/>
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
@@ -338,8 +315,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/shadow_border"
-                android:onClick="onClickLoginout">
+                android:background="@drawable/shadow_border">
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

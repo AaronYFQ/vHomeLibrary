@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import cn.jpush.im.android.api.JMessageClient;
 
@@ -25,7 +26,8 @@ public class MeFragment extends Fragment implements View.OnClickListener {
 
     private Button mLoginBtn;
     private LinearLayout mLoginOut;
-
+    private LinearLayout mChatMsg;
+    private RelativeLayout mBorrowingHistory;
     public MeFragment() {
         // Required empty public constructor
     }
@@ -44,6 +46,12 @@ public class MeFragment extends Fragment implements View.OnClickListener {
 
         mLoginOut = (LinearLayout)view.findViewById(R.id.user_login_out);
         mLoginOut.setOnClickListener(this);
+
+        mChatMsg  = (LinearLayout)view.findViewById(R.id.my_chat_msg);
+        mChatMsg.setOnClickListener(this);
+
+        mBorrowingHistory = (RelativeLayout)view.findViewById(R.id.my_borrowing_history);
+        mBorrowingHistory.setOnClickListener(this);
         return view;
     }
 
@@ -64,7 +72,7 @@ public class MeFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    public void onUserLoginBtnClick(View view) {
+    public void onUserLoginBtnClick() {
         SharedPreferences sharedPref = getContext().getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
         String userName = sharedPref.getString("username", "");
         if (!"".endsWith(userName)) {
@@ -85,17 +93,23 @@ public class MeFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch(view.getId()) {
             case R.id.user_login_btn:
-                onUserLoginBtnClick(view);
+                onUserLoginBtnClick();
                 break;
             case R.id.user_login_out:
-                onUserClickLoginout(view);
+                onUserClickLoginout();
+                break;
+            case R.id.my_chat_msg:
+                onUserClickChatMsg();
+                break;
+            case R.id.my_borrowing_history:
+                onUserClickBorrowingHistory();
                 break;
             default:
                 // do nothing
                 break;
         }
     }
-    public void onUserClickLoginout(View view) {
+    public void onUserClickLoginout() {
             mLoginBtn.setText("登陆/注册");
             SharedPreferences sharedPref = getContext().getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
             SharedPreferences.Editor sharedata = sharedPref.edit();
@@ -104,7 +118,29 @@ public class MeFragment extends Fragment implements View.OnClickListener {
             sharedata.putString("shopname", "");
             sharedata.commit();
             JMessageClient.logout();
+            broadcastLogoutMsg(getContext());
             return;
+    }
+
+    public void onUserClickChatMsg()
+    {
+        MainActivity activity = (MainActivity)getActivity();
+        activity.showCovList();
+    }
+
+    public void onUserClickBorrowingHistory()
+    {
+
+        Intent intent = new Intent(this.getContext(), Borrowed_Activity.class);
+        startActivity(intent);
+    }
+
+
+    private void broadcastLogoutMsg(Context context){
+
+        Intent intent = new Intent();
+        intent.setAction(GlobalParams.LOGOUT_ACTION);
+        context.sendBroadcast(intent);
     }
 
     @Override

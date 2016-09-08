@@ -6,22 +6,28 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
+import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
+import com.compass.loco.homelibrary.GlobalParams;
 import com.compass.loco.homelibrary.R;
 import com.compass.loco.homelibrary.chatting.utils.HandleResponseCode;
 import com.compass.loco.homelibrary.controller.ConversationListController;
@@ -76,6 +82,7 @@ public class ConversationListFragment extends BaseFragment {
         mBackgroundHandler = new BackgroundHandler(mThread.getLooper());
         mMenuView = getActivity().getLayoutInflater().inflate(R.layout.jmui_drop_down_menu, null);
         mConvListController = new ConversationListController(mConvListView, this, mWidth);
+        mConvListController.initConvListAdapter();
         mConvListView.setListener(mConvListController);
         mConvListView.setItemListeners(mConvListController);
         mConvListView.setLongClickListener(mConvListController);
@@ -93,6 +100,7 @@ public class ConversationListFragment extends BaseFragment {
             mConvListView.dismissHeaderView();
         }
         initReceiver();
+        initViewAndController();
 
     }
 
@@ -100,15 +108,30 @@ public class ConversationListFragment extends BaseFragment {
         mReceiver = new NetworkReceiver();
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        filter.addAction(GlobalParams.LOGIN_ACTION);
+        filter.addAction(GlobalParams.LOGOUT_ACTION);
         mContext.registerReceiver(mReceiver, filter);
     }
 
-    //监听网络状态的广播
+    private void initViewAndController() {
+
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
+        String token = sharedPref.getString("token", "");
+        if(!token.isEmpty()) {
+            mConvListView.initModule();
+            mConvListController.initConvListAdapter();
+        }
+    }
+
+
+    //监听网络状态的广播 &login and logout
     private class NetworkReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent != null && intent.getAction().equals("android.net.conn.CONNECTIVITY_CHANGE")) {
+            String  action = intent.getAction();
+            //for network state change
+            if (intent != null && action.equals("android.net.conn.CONNECTIVITY_CHANGE")) {
                 ConnectivityManager manager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
                 NetworkInfo activeInfo = manager.getActiveNetworkInfo();
                 if (null == activeInfo) {
@@ -116,6 +139,20 @@ public class ConversationListFragment extends BaseFragment {
                 } else {
                     mConvListView.dismissHeaderView();
                 }
+            }
+            // for login
+            if (intent != null && GlobalParams.LOGIN_ACTION.equals(action)) {
+                Log.v("ConversationListFragment", "Handle login in action");
+
+                mConvListController.updateConversationsList();
+
+            }
+
+            // for logout
+            if (intent != null && GlobalParams.LOGOUT_ACTION.equals(action)) {
+
+                Log.v("ConversationListFragment", "Handle login out action");
+                mConvListController.clearConversationsList();
             }
         }
 
@@ -262,6 +299,7 @@ public class ConversationListFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // TODO Auto-generated method stub
+        //mRootView = inflater.inflate(R.layout.fragment_conv_list, container, false);
         ViewGroup p = (ViewGroup) mRootView.getParent();
         if (p != null) {
             p.removeAllViewsInLayout();
@@ -304,4 +342,46 @@ public class ConversationListFragment extends BaseFragment {
         }
     }
 
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+
+        FragmentActivity activity = getActivity();
+        if(hidden)
+        {
+            if(activity != null) {
+                ImageButton messageBtn = (ImageButton) getActivity().findViewById(R.id.menu_3);
+                Drawable messageBtnGray = getResources().getDrawable(R.drawable.mainmenu_chat_gray);
+                messageBtn.setBackgroundDrawable(messageBtnGray);
+            }
+        }
+        else
+        {
+            if(activity != null) {
+                ImageButton messageBtn = (ImageButton) getActivity().findViewById(R.id.menu_3);
+                Drawable messageBtnGreen = getResources().getDrawable(R.drawable.mainmenu_chat_green);
+                messageBtn.setBackgroundDrawable(messageBtnGreen);
+            }
+
+        }
+    }
+
+
+
+   /* @Override
+    public void onRefresh() {
+        swipeRefreshLayout.setRefreshing(true);
+        SharedPreferences sharedPref = view.getContext().getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
+        String token = sharedPref.getString("token", null);
+        if(!token.isEmpty()) {
+            getNewMessages(token);
+        }
+        else {
+            swipeRefreshLayout.setRefreshing(false);
+            Toast.makeText(getContext(),
+                    "请先登录.",
+                    Toast.LENGTH_SHORT).show();
+        }
+    }*/
 }

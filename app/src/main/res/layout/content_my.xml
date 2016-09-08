@@ -66,6 +66,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textAlignment="center"
+                android:onClick="onClickHomeBtn"
                 android:text="首页"
                 android:id="@+id/menu_title_1" />
         </LinearLayout>
@@ -90,6 +91,7 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:layout_toRightOf="@id/menu_title_1"
                 android:textAlignment="center"
+                android:onClick="onClickMessageBtn"
                 android:text="消息"
                 android:id="@+id/menu_title_2" />
         </LinearLayout>
@@ -114,7 +116,8 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:layout_toRightOf="@id/menu_title_2"
                 android:textAlignment="center"
-                android:text="对话"
+                android:onClick="onClickCovBtn"
+                android:text="聊天"
                 android:id="@+id/menu_title_3" />
         </LinearLayout>
 
@@ -160,6 +163,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textAlignment="center"
+                android:onClick="onClickMeBtn"
                 android:text="我"
                 android:id="@+id/menu_title_4" />
         </LinearLayout>

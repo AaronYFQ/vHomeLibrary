@@ -9,7 +9,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_bar_height"
-        android:background="@color/jmui_jpush_blue">
+        android:background="@color/colorBackgroundGreen">
 
         <TextView
             android:id="@+id/main_title_bar_title"
@@ -18,8 +18,10 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:text="Title"
+            android:textSize="20dp"
+            android:gravity="right"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/text_large_size" />
+            android:textStyle="bold"/>
 
         <ImageButton
             android:id="@+id/create_group_btn"

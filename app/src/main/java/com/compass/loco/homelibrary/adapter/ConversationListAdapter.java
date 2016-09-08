@@ -54,13 +54,15 @@ public class ConversationListAdapter extends BaseAdapter {
      * @param conv 要置顶的会话
      */
     public void setToTop(Conversation conv) {
-        for (Conversation conversation : mDatas) {
-            if (conv.getId().equals(conversation.getId())) {
-                mDatas.remove(conversation);
-                mDatas.add(0, conv);
-                mUIHandler.removeMessages(REFRESH_CONVERSATION_LIST);
-                mUIHandler.sendEmptyMessageDelayed(REFRESH_CONVERSATION_LIST, 200);
-                return;
+        if(mDatas != null) {
+            for (Conversation conversation : mDatas) {
+                if (conv.getId().equals(conversation.getId())) {
+                    mDatas.remove(conversation);
+                    mDatas.add(0, conv);
+                    mUIHandler.removeMessages(REFRESH_CONVERSATION_LIST);
+                    mUIHandler.sendEmptyMessageDelayed(REFRESH_CONVERSATION_LIST, 200);
+                    return;
+                }
             }
         }
         //如果是新的会话
@@ -77,6 +79,17 @@ public class ConversationListAdapter extends BaseAdapter {
 
     public void addNewConversation(Conversation conv) {
         mDatas.add(0, conv);
+        notifyDataSetChanged();
+    }
+
+    public void updateConversationsList(List<Conversation> data) {
+        mDatas = data;
+        notifyDataSetChanged();
+    }
+
+    public void clearConversationsList() {
+
+        mDatas.clear();
         notifyDataSetChanged();
     }
 

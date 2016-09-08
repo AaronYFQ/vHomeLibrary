@@ -44,22 +44,47 @@ public class ConversationListController implements OnClickListener,
         this.mConvListView = listView;
         this.mContext = context;
         this.mWidth = width;
-        initConvListAdapter();
     }
 
     // 得到会话列表
-    private void initConvListAdapter() {
-        mDatas = JMessageClient.getConversationList();
-        //对会话列表进行时间排序
-        if (mDatas.size() > 1) {
-            SortConvList sortList = new SortConvList();
-            Collections.sort(mDatas, sortList);
-        }
+    public void initConvListAdapter() {
 
-        mListAdapter = new ConversationListAdapter(mContext.getActivity(), mDatas);
-        mConvListView.setConvListAdapter(mListAdapter);
+       // if(JMessageClient.getMyInfo() != null) {
+            mDatas = JMessageClient.getConversationList();
+            if(mDatas != null) {
+                //对会话列表进行时间排序
+                if (mDatas.size() > 1) {
+                    SortConvList sortList = new SortConvList();
+                    Collections.sort(mDatas, sortList);
+                }
+            }
+            mListAdapter = new ConversationListAdapter(mContext.getActivity(), mDatas);
+            mConvListView.setConvListAdapter(mListAdapter);
+
     }
 
+    // 得到会话列表
+    public void updateConversationsList() {
+        // if(JMessageClient.getMyInfo() != null) {
+        mDatas = JMessageClient.getConversationList();
+        if(mDatas != null) {
+            //对会话列表进行时间排序
+            if (mDatas.size() > 1) {
+                SortConvList sortList = new SortConvList();
+                Collections.sort(mDatas, sortList);
+            }
+        }
+        mListAdapter.updateConversationsList(mDatas);
+
+    }
+
+    // 得到会话列表
+    public void clearConversationsList() {
+
+        mDatas.clear();
+        mListAdapter.clearConversationsList();
+
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

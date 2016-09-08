@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.compass.loco.homelibrary.chatting.ConversationListFragment;
 import com.compass.loco.homelibrary.chatting.receiver.NotificationClickEventReceiver;
@@ -39,12 +40,8 @@ public class MainActivity extends AppCompatActivity {
     private final HomeFragment mHomeFragment = new HomeFragment();
     private final ShowMessagesFragment mMessageFragment = new ShowMessagesFragment();
     private final MeFragment mMeFragment = new MeFragment();
-    private final ConversationListFragment mCovFragment = new ConversationListFragment();
 
-    final  GlobalParams mGlobal = new GlobalParams();
-    /*public MainActivity() {
-        mGlobal.initSharedPreferences(getSharedPreferences("com.compass.loco.homelibrary.data", Context.MODE_PRIVATE));
-    }*/
+    private  final  ConversationListFragment mCovFragment = new ConversationListFragment();;
 
     private BadgeView badge;
     private Dialog mDialog; //for Jmessage
@@ -56,17 +53,9 @@ public class MainActivity extends AppCompatActivity {
 
        
 
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
+        // get application private shared preference
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+
 
         // Check that the activity is using the layout version with
         // the fragment_container FrameLayout
@@ -202,10 +191,6 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-/*        disableAllMainMenuBtn();
-        ImageButton homeBtn = (ImageButton) findViewById(R.id.menu_1);
-        Drawable homeBtnGreen = getResources().getDrawable(R.drawable.mainmenu_home);
-        homeBtn.setBackgroundDrawable(homeBtnGreen);*/
 
         getSupportFragmentManager().beginTransaction()
                 .hide(mMeFragment)
@@ -213,15 +198,7 @@ public class MainActivity extends AppCompatActivity {
                 .hide(mCovFragment)
                 .show(mHomeFragment).commit();
 
-/*        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-        // Replace whatever is in the fragment_container view with this fragment,
-        // and add the transaction to the back stack so the user can navigate back
-        transaction.replace(R.id.fragment_container, mHomeFragment);
-        transaction.addToBackStack(null);
-
-        // Commit the transaction
-        transaction.commit();*/
     }
 
     public void onClickMessageBtn(View view) {
@@ -240,6 +217,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickCovBtn(View view) {
+
+       if (mCovFragment.isVisible()) {
+            return;
+        }
+
+
+        getSupportFragmentManager().beginTransaction()
+                .hide(mMeFragment)
+                .hide(mHomeFragment)
+                .hide(mMessageFragment)
+                .show(mCovFragment).commit();
+
+
+    }
+
+    public void showCovList() {
+
         if (mCovFragment.isVisible()) {
             return;
         }
@@ -259,10 +253,6 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-/*        disableAllMainMenuBtn();
-        ImageButton meBtn = (ImageButton) findViewById(R.id.menu_4);
-        Drawable meBtnGray = getResources().getDrawable(R.drawable.mainmenu_me);
-        meBtn.setBackgroundDrawable(meBtnGray);*/
 
         getSupportFragmentManager().beginTransaction()
                 .hide(mHomeFragment)
@@ -270,15 +260,6 @@ public class MainActivity extends AppCompatActivity {
                 .hide(mCovFragment)
                 .show(mMeFragment).commit();
 
-/*        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-        // Replace whatever is in the fragment_container view with this fragment,
-        // and add the transaction to the back stack so the user can navigate back
-        transaction.replace(R.id.fragment_container, mMeFragment);
-        transaction.addToBackStack(null);
-
-        // Commit the transaction
-        transaction.commit();*/
     }
 
     public void setBadgeNumber(int num)

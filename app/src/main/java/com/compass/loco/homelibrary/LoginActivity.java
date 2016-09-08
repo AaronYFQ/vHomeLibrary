@@ -196,6 +196,7 @@ public class LoginActivity extends BaseActivity {
             sharedata.commit();
 
             sendRegisterIDToServer(getApplicationContext());
+            SendLoginBroadcast(getApplicationContext());
         }
         //intent.putExtra(MainActivity.INTENT_KEY_LOGIN_RESULT, isSuccess);
         //startActivity(intent);
@@ -228,7 +229,7 @@ public class LoginActivity extends BaseActivity {
                     } else {
 
                         Log.v("Login_Register", ":" + "login/register error");
-                        recoverLoginRegbutton(type);
+                        RecoverLoginRegbutton(type);
                     }
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
@@ -240,23 +241,21 @@ public class LoginActivity extends BaseActivity {
         HttpUtil httptd = new HttpUtil();
 
         if (type == ActionType.LOGIN) {
-            //login in action
+            //login  action
             httptd.submitAsyncHttpClientPostLogin(username, password, handler);
             Log.v("Login_Register", "Login  request");
         } else if (type == ActionType.REGISTER) {
-            //register in action
+            //register action
             httptd.submitAsyncHttpClientPostRegisterUser(username, password, handler);
             Log.v("Login_Register", "Register request");
         }
-        mButtonView.setClickable(false);
-        mButtonView.setBackgroundResource(R.color.colorBackgroundGray);
-        mButtonView.setTextColor(Color.BLACK);
 
     }
 
     private void connectJmessageServer(final String username, final String password, final ActionType type) {
 
-        Log.i("JMessageApplication", "connect Jmessage server" + username);
+        Log.i("JMessageApplication", "connect Jmessage server " + username);
+        DisableLoginRegButton();
         if (type == ActionType.REGISTER) {
             JMessageClient.register(username, GlobalParams.JCHAT_USER_PASSWORD, new BasicCallback() {
                 @Override
@@ -274,14 +273,14 @@ public class LoginActivity extends BaseActivity {
                                     Log.v("JMessageApplication", "login failure");
                                     mJMLoginSuccess = false;
                                     HandleResponseCode.onHandle(getApplicationContext(), status, false);
-                                    recoverLoginRegbutton(type);
+                                    RecoverLoginRegbutton(type);
                                 }
                             }
                         });
                     } else {
                         Log.v("JMessageApplication", "register failure");
                         HandleResponseCode.onHandle(getApplicationContext(), status, false);
-                        recoverLoginRegbutton(type);
+                        RecoverLoginRegbutton(type);
                     }
                 }
             });
@@ -297,7 +296,7 @@ public class LoginActivity extends BaseActivity {
                         Log.v("JMessageApplication", "login failure");
                         mJMLoginSuccess = false;
                         HandleResponseCode.onHandle(getApplicationContext(), status, false);
-                        recoverLoginRegbutton(type);
+                        RecoverLoginRegbutton(type);
                     }
                 }
             });
@@ -305,7 +304,7 @@ public class LoginActivity extends BaseActivity {
 
     }
 
-    private void recoverLoginRegbutton(final ActionType type)
+    private void RecoverLoginRegbutton(final ActionType type)
     {
         if (type == ActionType.REGISTER) {
             mLoginRegUsernameView.setError(getString(R.string.error_existed_username));
@@ -319,6 +318,12 @@ public class LoginActivity extends BaseActivity {
         mButtonView.setTextColor(Color.WHITE);
     }
 
+    private void DisableLoginRegButton() {
+        mButtonView.setClickable(false);
+        mButtonView.setBackgroundResource(R.color.colorBackgroundGray);
+        mButtonView.setTextColor(Color.BLACK);
+    }
+
     private void sendRegisterIDToServer(Context context)
     {
         String regid = JPushInterface.getRegistrationID(context);
@@ -330,6 +335,14 @@ public class LoginActivity extends BaseActivity {
             Log.v("Login", "Send register ID.");
         }
     }
+
+    private void SendLoginBroadcast(Context context){
+
+        Intent intent = new Intent();
+        intent.setAction(GlobalParams.LOGIN_ACTION);
+        context.sendBroadcast(intent);
+    }
+
 }
 
 
