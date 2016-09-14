@@ -44,6 +44,7 @@ import cn.jpush.im.android.api.model.Conversation;
 import cn.jpush.im.android.api.model.GroupInfo;
 import cn.jpush.im.android.api.model.Message;
 import cn.jpush.im.android.api.model.UserInfo;
+import cn.jpush.im.api.BasicCallback;
 import de.greenrobot.event.EventBus;
 
 /*
@@ -74,6 +75,8 @@ public class ConversationListFragment extends BaseFragment {
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         mRootView = layoutInflater.inflate(R.layout.fragment_conv_list,
                 (ViewGroup) getActivity().findViewById(R.id.main_view), false);
+
+
         mConvListView = new ConversationListView(mRootView, this.getActivity());
         mConvListView.initModule();
 
@@ -82,7 +85,6 @@ public class ConversationListFragment extends BaseFragment {
         mBackgroundHandler = new BackgroundHandler(mThread.getLooper());
         mMenuView = getActivity().getLayoutInflater().inflate(R.layout.jmui_drop_down_menu, null);
         mConvListController = new ConversationListController(mConvListView, this, mWidth);
-        mConvListController.initConvListAdapter();
         mConvListView.setListener(mConvListController);
         mConvListView.setItemListeners(mConvListController);
         mConvListView.setLongClickListener(mConvListController);
@@ -90,8 +92,8 @@ public class ConversationListFragment extends BaseFragment {
                 WindowManager.LayoutParams.WRAP_CONTENT, true);
         mMenuItemView = new MenuItemView(mMenuView);
         mMenuItemView.initModule();
-        mMenuController = new MenuItemController(mMenuItemView, this, mConvListController, mWidth);
-        mMenuItemView.setListeners(mMenuController);
+        // mMenuController = new MenuItemController(mMenuItemView, this, mConvListController, mWidth);
+        //mMenuItemView.setListeners(mMenuController);
         ConnectivityManager manager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeInfo = manager.getActiveNetworkInfo();
         if (null == activeInfo) {
@@ -100,7 +102,7 @@ public class ConversationListFragment extends BaseFragment {
             mConvListView.dismissHeaderView();
         }
         initReceiver();
-        initViewAndController();
+        JMessageLogin();
 
     }
 
@@ -113,14 +115,14 @@ public class ConversationListFragment extends BaseFragment {
         mContext.registerReceiver(mReceiver, filter);
     }
 
-    private void initViewAndController() {
 
-        SharedPreferences sharedPref = getActivity().getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
-        String token = sharedPref.getString("token", "");
-        if(!token.isEmpty()) {
-            mConvListView.initModule();
-            mConvListController.initConvListAdapter();
-        }
+    private void initController() {
+
+        Log.v(TAG, "initController !");
+        mConvListController.initConvListAdapter();
+        mMenuController = new MenuItemController(mMenuItemView, this, mConvListController, mWidth);
+        mMenuItemView.setListeners(mMenuController);
+
     }
 
 
@@ -129,7 +131,7 @@ public class ConversationListFragment extends BaseFragment {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            String  action = intent.getAction();
+            String action = intent.getAction();
             //for network state change
             if (intent != null && action.equals("android.net.conn.CONNECTIVITY_CHANGE")) {
                 ConnectivityManager manager = (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -142,16 +144,13 @@ public class ConversationListFragment extends BaseFragment {
             }
             // for login
             if (intent != null && GlobalParams.LOGIN_ACTION.equals(action)) {
-                Log.v("ConversationListFragment", "Handle login in action");
-
+                Log.v(TAG, "ConversationListFragment: Handle login in action");
                 mConvListController.updateConversationsList();
 
             }
-
             // for logout
             if (intent != null && GlobalParams.LOGOUT_ACTION.equals(action)) {
-
-                Log.v("ConversationListFragment", "Handle login out action");
+                Log.v(TAG, "ConversationListFragment: Handle login out action");
                 mConvListController.clearConversationsList();
             }
         }
@@ -163,6 +162,30 @@ public class ConversationListFragment extends BaseFragment {
         // TODO Auto-generated method stub
         super.onActivityCreated(savedInstanceState);
 
+    }
+
+    public void JMessageLogin() {
+
+        if (JMessageClient.getMyInfo() != null) {
+            SharedPreferences sharedPref = getContext().getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
+            String username = sharedPref.getString("username", null);
+            JMessageClient.login(username, GlobalParams.JCHAT_USER_PASSWORD, new BasicCallback() {
+                @Override
+                public void gotResult(int status, String desc) {
+                    if (status == 0) {
+                        Log.v(TAG, "JMessageLogin: login success");
+                        initController();
+                    } else {
+                        Log.v(TAG, "JMessageLogin: login failure");
+                        Toast.makeText(getContext(),
+                                "连接JmessageServer 失败.",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        } else {
+            initController();
+        }
     }
 
     //显示下拉菜单
@@ -272,6 +295,7 @@ public class ConversationListFragment extends BaseFragment {
 
     /**
      * 收到保存为草稿事件
+     *
      * @param event 从event中得到Conversation Id及草稿内容
      */
     public void onEventMainThread(Event.DraftEvent event) {
@@ -289,7 +313,7 @@ public class ConversationListFragment extends BaseFragment {
         if (!TextUtils.isEmpty(draft)) {
             mConvListController.getAdapter().putDraftToMap(conv.getId(), draft);
             mConvListController.getAdapter().setToTop(conv);
-        //否则删除
+            //否则删除
         } else {
             mConvListController.getAdapter().delDraftFromMap(conv.getId());
         }
@@ -330,11 +354,11 @@ public class ConversationListFragment extends BaseFragment {
     }
 
 
-    public void StartCreateGroupActivity() {
+    /*public void StartCreateGroupActivity() {
         Intent intent = new Intent();
         intent.setClass(getActivity(), CreateGroupActivity.class);
         startActivity(intent);
-    }
+    }*/
 
     public void sortConvList() {
         if (mConvListController != null) {
@@ -348,17 +372,14 @@ public class ConversationListFragment extends BaseFragment {
         super.onHiddenChanged(hidden);
 
         FragmentActivity activity = getActivity();
-        if(hidden)
-        {
-            if(activity != null) {
+        if (hidden) {
+            if (activity != null) {
                 ImageButton messageBtn = (ImageButton) getActivity().findViewById(R.id.menu_3);
                 Drawable messageBtnGray = getResources().getDrawable(R.drawable.mainmenu_chat_gray);
                 messageBtn.setBackgroundDrawable(messageBtnGray);
             }
-        }
-        else
-        {
-            if(activity != null) {
+        } else {
+            if (activity != null) {
                 ImageButton messageBtn = (ImageButton) getActivity().findViewById(R.id.menu_3);
                 Drawable messageBtnGreen = getResources().getDrawable(R.drawable.mainmenu_chat_green);
                 messageBtn.setBackgroundDrawable(messageBtnGreen);

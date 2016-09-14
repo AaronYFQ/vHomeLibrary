@@ -55,4 +55,6 @@
     <color name="conv_list_split_line_color">#d6d6d6</color>
     <color name="menu_item_back_pres_color">#3773cb</color>
     <color name="menu_item_click_color">#346fc3</color>
+    <color name="jmui_reset_password_title_color">#4e4e4e</color>
+    <color name="item_click_bg_color">#dddddd</color>
 </resources>

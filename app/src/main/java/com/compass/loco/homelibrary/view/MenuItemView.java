@@ -19,12 +19,12 @@ public class MenuItemView {
     }
 
     public void initModule() {
-        mCreateGroupLl = (LinearLayout) mView.findViewById(R.id.create_group_ll);
+       // mCreateGroupLl = (LinearLayout) mView.findViewById(R.id.create_group_ll);
         mAddFriendLl = (LinearLayout) mView.findViewById(R.id.add_friend_ll);
     }
 
     public void setListeners(View.OnClickListener listener) {
-        mCreateGroupLl.setOnClickListener(listener);
+      //  mCreateGroupLl.setOnClickListener(listener);
         mAddFriendLl.setOnClickListener(listener);
     }
 }

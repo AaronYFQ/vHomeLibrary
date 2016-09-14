@@ -219,4 +219,7 @@
     <string name="type_custom">[自定义消息]</string>
     <string name="draft">[草稿]</string>
     <string name="hundreds_of_unread_msgs">...</string>
+    <string name="jmui_delete_conv">删除该聊天</string>
+    <string name="username_hit">用户名</string>
+    <string name="password_hit">用户密码</string>
 </resources>

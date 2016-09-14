@@ -38,6 +38,7 @@ public class ConversationListController implements OnClickListener,
     private ConversationListAdapter mListAdapter;
     private int mWidth;
     private Dialog mDialog;
+    String TAG = ConversationListController.class.getSimpleName();
 
     public ConversationListController(ConversationListView listView, ConversationListFragment context,
                                       int width) {
@@ -50,10 +51,12 @@ public class ConversationListController implements OnClickListener,
     public void initConvListAdapter() {
 
        // if(JMessageClient.getMyInfo() != null) {
+        Log.i(TAG, "initConvListAdapter !" );
             mDatas = JMessageClient.getConversationList();
             if(mDatas != null) {
                 //对会话列表进行时间排序
                 if (mDatas.size() > 1) {
+                    Log.i(TAG, "initConvListAdapter , size is " + mDatas.size() );
                     SortConvList sortList = new SortConvList();
                     Collections.sort(mDatas, sortList);
                 }
@@ -65,11 +68,18 @@ public class ConversationListController implements OnClickListener,
 
     // 得到会话列表
     public void updateConversationsList() {
-        // if(JMessageClient.getMyInfo() != null) {
+        Log.i(TAG, "updateConversationsList !" );
+        if(mDatas != null ) {
+            if (mDatas.size() > 1) {
+                mDatas.clear();
+            }
+        }
+
         mDatas = JMessageClient.getConversationList();
         if(mDatas != null) {
             //对会话列表进行时间排序
             if (mDatas.size() > 1) {
+                Log.i(TAG, "updateConversationsList , size is " + mDatas.size() );
                 SortConvList sortList = new SortConvList();
                 Collections.sort(mDatas, sortList);
             }
@@ -81,8 +91,11 @@ public class ConversationListController implements OnClickListener,
     // 得到会话列表
     public void clearConversationsList() {
 
-        mDatas.clear();
-        mListAdapter.clearConversationsList();
+        if(mDatas != null) {
+
+            mDatas.clear();
+            mListAdapter.clearConversationsList();
+        }
 
     }
     @Override
@@ -100,6 +113,7 @@ public class ConversationListController implements OnClickListener,
         // TODO Auto-generated method stub
         final Intent intent = new Intent();
         if (position > 0) {
+            Log.i(TAG,"position is " + position);
             Conversation conv = mDatas.get(position - 1);
             if (null != conv) {
                 // 当前点击的会话是否为群组
@@ -114,7 +128,7 @@ public class ConversationListController implements OnClickListener,
                     String targetId = ((UserInfo) conv.getTargetInfo()).getUserName();
                     intent.putExtra(GlobalParams.TARGET_ID, targetId);
                     intent.putExtra(GlobalParams.TARGET_APP_KEY, conv.getTargetAppKey());
-                    Log.d("ConversationList", "Target app key from conversation: " + conv.getTargetAppKey());
+                    Log.d("TAG", "Target app key from conversation: " + conv.getTargetAppKey());
                     intent.putExtra(GlobalParams.DRAFT, getAdapter().getDraft(conv.getId()));
                 }
                 intent.setClass(mContext.getActivity(), ChatActivity.class);

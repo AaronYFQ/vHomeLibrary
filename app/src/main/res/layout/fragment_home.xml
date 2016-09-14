@@ -131,7 +131,7 @@
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textAlignment="center"
-                        android:text="借书"
+                        android:text="借书记录"
                         android:id="@+id/btn_title_2" />
                 </LinearLayout>
 
@@ -152,11 +152,12 @@
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textAlignment="center"
-                        android:text="读书笔记"
+                        android:text="排行榜"
                         android:id="@+id/btn_title_3" />
                 </LinearLayout>
 
-                <LinearLayout
+            </LinearLayout>
+                <!--LinearLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -175,8 +176,8 @@
                         android:textAlignment="center"
                         android:text="同城读书"
                         android:id="@+id/btn_title_4" />
-                </LinearLayout>
-            </LinearLayout>
+                </LinearLayout > -->
+
 
             <!--include layout="@layout/slide_panel" />
 

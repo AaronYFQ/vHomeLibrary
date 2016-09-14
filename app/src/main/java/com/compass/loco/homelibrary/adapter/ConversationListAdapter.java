@@ -42,12 +42,12 @@ public class ConversationListAdapter extends BaseAdapter {
     private Map<String, String> mDraftMap = new HashMap<String, String>();
     private UIHandler mUIHandler = new UIHandler(this);
     private static final int REFRESH_CONVERSATION_LIST = 0x3001;
+    String TAG = ConversationListAdapter.class.getSimpleName();
 
     public ConversationListAdapter(Activity context, List<Conversation> data) {
         this.mContext = context;
         this.mDatas = data;
     }
-
     /**
      * 收到消息后将会话置顶
      *
@@ -88,9 +88,10 @@ public class ConversationListAdapter extends BaseAdapter {
     }
 
     public void clearConversationsList() {
-
-        mDatas.clear();
-        notifyDataSetChanged();
+        if(mDatas !=null) {
+            mDatas.clear();
+            notifyDataSetChanged();
+        }
     }
 
     public void deleteConversation(long groupId) {
@@ -129,6 +130,7 @@ public class ConversationListAdapter extends BaseAdapter {
         if (mDatas == null) {
             return null;
         }
+        Log.i(TAG, "getItem , position is " + position );
         return mDatas.get(position);
     }
 
@@ -140,6 +142,7 @@ public class ConversationListAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         final Conversation convItem = mDatas.get(position);
+        Log.i(TAG, "getView , position is " + position );
         final ViewHolder viewHolder;
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.conversation_list_item,

@@ -26,6 +26,8 @@ import java.util.ArrayList;
  */
 public class ListViewAdapterBrowseBook extends BaseAdapter {
 
+    String TAG = ListViewAdapterBrowseBook.class.getSimpleName();
+
     // Andorid objects
     private Activity activity;
 
@@ -67,13 +69,13 @@ public class ListViewAdapterBrowseBook extends BaseAdapter {
 
         if(convertView == null)
         {
-            Log.v("convertView null, position=", new Integer(position).toString());
+            Log.v(TAG,"convertView null, position="+ new Integer(position).toString());
 
             LayoutInflater inflater = activity.getLayoutInflater();
             convertView = inflater.inflate(R.layout.activity_browse_library_book_row, null);
         }
         else {
-            Log.v("convertView not null, position=", new Integer(position).toString());
+            Log.v(TAG,"convertView not null, position=" + new Integer(position).toString());
         }
 
         textViewBookName = (TextView)convertView.findViewById(R.id.textViewBookName);

@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -27,6 +28,7 @@ import cn.jpush.im.api.BasicCallback;
 
 public class LoginActivity extends BaseActivity {
 
+    String TAG = LoginActivity.class.getSimpleName();
     TabHost tabHost;
     // UI references.
     private EditText mLoginRegUsernameView;
@@ -37,7 +39,6 @@ public class LoginActivity extends BaseActivity {
     String mShopname;
     enum ActionType {LOGIN, REGISTER};
     Button mButtonView;
-    private boolean mJMLoginSuccess = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +90,7 @@ public class LoginActivity extends BaseActivity {
         mLoginRegUsernameView = (EditText) findViewById(R.id.login_username);
         mLoginRegPasswordView = (EditText) findViewById(R.id.login_password);
         mLoginRegisterFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+        //mProgressView = findViewById(R.id.login_progress);
         mButtonView = (Button)findViewById(R.id.sign_in_button);
         // Store values at the time of the login attempt.
         String username = mLoginRegUsernameView.getText().toString();
@@ -145,7 +146,7 @@ public class LoginActivity extends BaseActivity {
         mLoginRegUsernameView = (EditText) findViewById(R.id.register_username);
         mLoginRegPasswordView = (EditText) findViewById(R.id.register_password);
         mLoginRegisterFormView = findViewById(R.id.register_form);
-        mProgressView = findViewById(R.id.register_progress);
+       // mProgressView = findViewById(R.id.register_progress);
         mButtonView = (Button)findViewById(R.id.register_button);
         // Store values at the time of the login attempt.
         String username = mLoginRegUsernameView.getText().toString();
@@ -213,10 +214,9 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void handleMessage(Message msg) {
                 String json = msg.getData().getString("responseBody");
-                Log.v("Login_Register", json);
+                Log.v(TAG,"connectHttpServer :"+ json);
                 try {
                     // handler item from Json
-                    Log.v("Login_Register", "username" + ":" + username);
                     JSONObject item = new JSONObject(json);
                     String comment = item.getString("result");
                     if (comment.equals("success")) {
@@ -224,11 +224,11 @@ public class LoginActivity extends BaseActivity {
                         if (type == ActionType.LOGIN) {
                             mShopname = item.getString("shopname");
                         }
-                        Log.v("Login_Register", "token" + ": " + mToken + "shop name" + ":" + mShopname);
+                        Log.v(TAG,"connectHttpServer result"+ "token" + ": " + mToken + "shop name" + ":" + mShopname);
                         backToMainActivity(true, username);
                     } else {
 
-                        Log.v("Login_Register", ":" + "login/register error");
+                        Log.v(TAG,"connectHttpServer :"+ "login/register error");
                         RecoverLoginRegbutton(type);
                     }
                 } catch (JSONException e) {
@@ -243,11 +243,11 @@ public class LoginActivity extends BaseActivity {
         if (type == ActionType.LOGIN) {
             //login  action
             httptd.submitAsyncHttpClientPostLogin(username, password, handler);
-            Log.v("Login_Register", "Login  request");
+            Log.v(TAG,"connectHttpServer: " + "Login  request");
         } else if (type == ActionType.REGISTER) {
             //register action
             httptd.submitAsyncHttpClientPostRegisterUser(username, password, handler);
-            Log.v("Login_Register", "Register request");
+            Log.v(TAG,"connectHttpServer: " + "Register request");
         }
 
     }
@@ -261,24 +261,22 @@ public class LoginActivity extends BaseActivity {
                 @Override
                 public void gotResult(int status, String desc) {
                     if (status == 0) {
-                        Log.v("JMessageApplication", "register success");
+                        Log.v(TAG,"connectJmessageServer: "+ "register success");
                         JMessageClient.login(username, GlobalParams.JCHAT_USER_PASSWORD, new BasicCallback() {
                             @Override
                             public void gotResult(int status, String desc) {
                                 if (status == 0) {
-                                    Log.v("JMessageApplication", "login sucess");
-                                    mJMLoginSuccess = true;
+                                    Log.v(TAG,"connectJmessageServer: "+ "login sucess");
                                     connectHttpServer(username, password, ActionType.REGISTER);
                                 } else {
-                                    Log.v("JMessageApplication", "login failure");
-                                    mJMLoginSuccess = false;
+                                    Log.v(TAG,"connectJmessageServer: "+ "login failure");
                                     HandleResponseCode.onHandle(getApplicationContext(), status, false);
                                     RecoverLoginRegbutton(type);
                                 }
                             }
                         });
                     } else {
-                        Log.v("JMessageApplication", "register failure");
+                        Log.v(TAG,"connectJmessageServer: "+ "register failure");
                         HandleResponseCode.onHandle(getApplicationContext(), status, false);
                         RecoverLoginRegbutton(type);
                     }
@@ -289,12 +287,10 @@ public class LoginActivity extends BaseActivity {
                 @Override
                 public void gotResult(int status, String desc) {
                     if (status == 0) {
-                        Log.v("JMessageApplication", "login success");
-                        mJMLoginSuccess = true;
+                        Log.v(TAG,"connectJmessageServer: "+ "login success");
                         connectHttpServer(username, password, ActionType.LOGIN);
                     } else {
-                        Log.v("JMessageApplication", "login failure");
-                        mJMLoginSuccess = false;
+                        Log.v(TAG,"connectJmessageServer: "+ "login failure");
                         HandleResponseCode.onHandle(getApplicationContext(), status, false);
                         RecoverLoginRegbutton(type);
                     }
@@ -332,7 +328,7 @@ public class LoginActivity extends BaseActivity {
             HttpUtil httptd = new HttpUtil();
             httptd.submitAsyncHttpClientPostRegisterID(mToken, regid, null);
 
-            Log.v("Login", "Send register ID.");
+            Log.v(TAG,"sendRegisterIDToServer:" + "Send register ID.");
         }
     }
 

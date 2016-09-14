@@ -6,8 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -16,7 +14,6 @@ import android.view.WindowManager;
 import java.io.File;
 
 import com.compass.loco.homelibrary.LoginActivity;
-import com.compass.loco.homelibrary.MainActivity;
 import com.compass.loco.homelibrary.chatting.utils.DialogCreator;
 import com.compass.loco.homelibrary.chatting.utils.FileHelper;
 import com.compass.loco.homelibrary.chatting.utils.IdHelper;

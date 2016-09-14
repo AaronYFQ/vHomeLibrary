@@ -51,7 +51,7 @@ public class MenuItemController implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.create_group_ll:
+            /*case R.id.create_group_ll:
                 mContext.dismissPopWindow();
 //                mContext.StartCreateGroupActivity();
                 mLoadingDialog = DialogCreator.createLoadingDialog(mContext.getActivity(),
@@ -78,56 +78,64 @@ public class MenuItemController implements View.OnClickListener {
                         }
                     }
                 });
-                break;
+                break;*/
             case R.id.add_friend_ll:
-                mContext.dismissPopWindow();
-                mAddFriendDialog = new Dialog(mContext.getActivity(), R.style.jmui_default_dialog_style);
-                final View view = LayoutInflater.from(mContext.getActivity())
-                        .inflate(R.layout.dialog_add_friend_to_conv_list, null);
-                mAddFriendDialog.setContentView(view);
-                mAddFriendDialog.getWindow().setLayout((int) (0.8 * mWidth), WindowManager.LayoutParams.WRAP_CONTENT);
-                mAddFriendDialog.show();
-                final EditText userNameEt = (EditText) view.findViewById(R.id.user_name_et);
-                final Button cancel = (Button) view.findViewById(R.id.jmui_cancel_btn);
-                final Button commit = (Button) view.findViewById(R.id.jmui_commit_btn);
-                View.OnClickListener listener = new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        switch (view.getId()) {
-                            case R.id.jmui_cancel_btn:
-                                mAddFriendDialog.cancel();
-                                break;
-                            case R.id.jmui_commit_btn:
-                                String targetId = userNameEt.getText().toString().trim();
-                                Log.i("MenuItemController", "targetID " + targetId);
-                                if (TextUtils.isEmpty(targetId)) {
-                                    HandleResponseCode.onHandle(mContext.getContext(), 801001, true);
+                if(JMessageClient.getMyInfo() != null) {
+                    mContext.dismissPopWindow();
+                    mAddFriendDialog = new Dialog(mContext.getActivity(), R.style.jmui_default_dialog_style);
+                    final View view = LayoutInflater.from(mContext.getActivity())
+                            .inflate(R.layout.dialog_add_friend_to_conv_list, null);
+                    mAddFriendDialog.setContentView(view);
+                    mAddFriendDialog.getWindow().setLayout((int) (0.8 * mWidth), WindowManager.LayoutParams.WRAP_CONTENT);
+                    mAddFriendDialog.show();
+                    final EditText userNameEt = (EditText) view.findViewById(R.id.user_name_et);
+                    final Button cancel = (Button) view.findViewById(R.id.jmui_cancel_btn);
+                    final Button commit = (Button) view.findViewById(R.id.jmui_commit_btn);
+                    View.OnClickListener listener = new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            switch (view.getId()) {
+                                case R.id.jmui_cancel_btn:
+                                    mAddFriendDialog.cancel();
                                     break;
-                                } else if (targetId.equals(JMessageClient.getMyInfo().getUserName())
-                                        || targetId.equals(JMessageClient.getMyInfo().getNickname())) {
-                                    Toast.makeText(mContext.getActivity(),
-                                            mContext.getString(R.string.user_add_self_toast),
-                                            Toast.LENGTH_SHORT).show();
-                                    return;
-                                } else if (isExistConv(targetId)) {
-                                    Toast.makeText(mContext.getActivity(),
-                                            mContext.getString(R.string.jmui_user_already_exist_toast),
-                                            Toast.LENGTH_SHORT).show();
-                                    userNameEt.setText("");
+                                case R.id.jmui_commit_btn:
+                                    String targetId = userNameEt.getText().toString().trim();
+                                    Log.i("MenuItemController", "targetID " + targetId);
+                                    if (TextUtils.isEmpty(targetId)) {
+                                        HandleResponseCode.onHandle(mContext.getContext(), 801001, true);
+                                        break;
+                                    } else if (targetId.equals(JMessageClient.getMyInfo().getUserName())
+                                            || targetId.equals(JMessageClient.getMyInfo().getNickname())) {
+                                        Toast.makeText(mContext.getActivity(),
+                                                mContext.getString(R.string.user_add_self_toast),
+                                                Toast.LENGTH_SHORT).show();
+                                        return;
+                                    } else if (isExistConv(targetId)) {
+                                        Toast.makeText(mContext.getActivity(),
+                                                mContext.getString(R.string.jmui_user_already_exist_toast),
+                                                Toast.LENGTH_SHORT).show();
+                                        userNameEt.setText("");
+                                        break;
+                                    } else {
+                                        mLoadingDialog = DialogCreator.createLoadingDialog(mContext.getActivity(),
+                                                mContext.getString(R.string.adding_hint));
+                                        mLoadingDialog.show();
+                                        dismissSoftInput();
+                                        getUserInfo(targetId);
+                                    }
                                     break;
-                                } else {
-                                    mLoadingDialog = DialogCreator.createLoadingDialog(mContext.getActivity(),
-                                            mContext.getString(R.string.adding_hint));
-                                    mLoadingDialog.show();
-                                    dismissSoftInput();
-                                    getUserInfo(targetId);
-                                }
-                                break;
+                            }
                         }
-                    }
-                };
-                cancel.setOnClickListener(listener);
-                commit.setOnClickListener(listener);
+                    };
+                    cancel.setOnClickListener(listener);
+                    commit.setOnClickListener(listener);
+                }else
+                {
+                    Toast.makeText(v.getContext(),
+                            "请先登录",
+                            Toast.LENGTH_SHORT).show();
+                }
+
                 break;
         }
     }

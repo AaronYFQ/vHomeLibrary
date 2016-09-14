@@ -26,6 +26,14 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:id="@+id/toolbar_title"/>
+            <android.support.v7.widget.AppCompatTextView
+                android:text="关注"
+                android:textSize="20sp"
+                android:textColor="@android:color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:id="@+id/toolbar_addInterest"/>
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
