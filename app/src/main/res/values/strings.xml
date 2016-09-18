@@ -55,6 +55,11 @@
         <item>书名 </item>
     </string-array>
 
+    <string-array name="picture_choice">
+        <item>拍照</item>
+        <item>从相册中选择</item>
+    </string-array>
+
     <!-- TODO: Remove or change this placeholder text -->
     <!-- Strings related to login -->
     <string name="prompt_email">邮箱</string>

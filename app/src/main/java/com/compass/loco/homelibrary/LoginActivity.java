@@ -1,5 +1,6 @@
 package com.compass.loco.homelibrary;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -201,7 +202,7 @@ public class LoginActivity extends BaseActivity {
         }
         //intent.putExtra(MainActivity.INTENT_KEY_LOGIN_RESULT, isSuccess);
         //startActivity(intent);
-        setResult(0);
+        setResult(Activity.RESULT_OK);
         finish();
     }
 
