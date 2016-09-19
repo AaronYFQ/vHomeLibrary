@@ -70,6 +70,7 @@ public class ConversationListFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
+        Log.v(TAG, "onCreate !");
         mContext = this.getActivity();
         EventBus.getDefault().register(this);
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
@@ -159,6 +160,7 @@ public class ConversationListFragment extends BaseFragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+        Log.v(TAG,"onActivityCreated");
         // TODO Auto-generated method stub
         super.onActivityCreated(savedInstanceState);
 
@@ -166,24 +168,28 @@ public class ConversationListFragment extends BaseFragment {
 
     public void JMessageLogin() {
 
-        if (JMessageClient.getMyInfo() != null) {
+        if (JMessageClient.getMyInfo() == null) {
             SharedPreferences sharedPref = getContext().getSharedPreferences(GlobalParams.PREF_NAME, Context.MODE_PRIVATE);
             String username = sharedPref.getString("username", null);
-            JMessageClient.login(username, GlobalParams.JCHAT_USER_PASSWORD, new BasicCallback() {
-                @Override
-                public void gotResult(int status, String desc) {
-                    if (status == 0) {
-                        Log.v(TAG, "JMessageLogin: login success");
-                        initController();
-                    } else {
-                        Log.v(TAG, "JMessageLogin: login failure");
-                        Toast.makeText(getContext(),
-                                "连接JmessageServer 失败.",
-                                Toast.LENGTH_SHORT).show();
+            if((username != null) && (username != "")) {
+                Log.v(TAG, "JMessageLogin: request login");
+                JMessageClient.login(username, GlobalParams.JCHAT_USER_PASSWORD, new BasicCallback() {
+                    @Override
+                    public void gotResult(int status, String desc) {
+                        if (status == 0) {
+                            Log.v(TAG, "JMessageLogin: login success");
+                            initController();
+                        } else {
+                            Log.v(TAG, "JMessageLogin: login failure");
+                            Toast.makeText(getContext(),
+                                    "连接JmessageServer 失败.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
                     }
-                }
-            });
+                });
+            }
         } else {
+            Log.v(TAG, "User logined, init Controller directly");
             initController();
         }
     }
@@ -322,6 +328,7 @@ public class ConversationListFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.v(TAG, "onCreateView !");
         // TODO Auto-generated method stub
         //mRootView = inflater.inflate(R.layout.fragment_conv_list, container, false);
         ViewGroup p = (ViewGroup) mRootView.getParent();
@@ -333,8 +340,10 @@ public class ConversationListFragment extends BaseFragment {
 
     @Override
     public void onResume() {
+        Log.v(TAG, "onResume !");
         dismissPopWindow();
         super.onResume();
+
     }
 
     public void dismissPopWindow() {
@@ -343,9 +352,37 @@ public class ConversationListFragment extends BaseFragment {
         }
     }
 
+    @Override
+    public void onStart()
+    {
+        Log.v(TAG, "onStart !");
+        super.onStart();
+        if (JMessageClient.getMyInfo() != null) {
+            mConvListController.updateConversationsList();
+        }
+
+
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        Log.v(TAG, "onPause !");
+
+    }
+
+    @Override
+    public void onStop()
+    {
+        super.onStop();
+        Log.v(TAG, "onStop !");
+
+    }
 
     @Override
     public void onDestroy() {
+        Log.v(TAG, "onDestroy !");
         EventBus.getDefault().unregister(this);
         mContext.unregisterReceiver(mReceiver);
         mBackgroundHandler.removeCallbacksAndMessages(null);
@@ -369,8 +406,8 @@ public class ConversationListFragment extends BaseFragment {
 
     @Override
     public void onHiddenChanged(boolean hidden) {
+        Log.v(TAG, "onHiddenChanged !");
         super.onHiddenChanged(hidden);
-
         FragmentActivity activity = getActivity();
         if (hidden) {
             if (activity != null) {
