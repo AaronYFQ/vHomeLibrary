@@ -1,15 +1,12 @@
 package com.compass.loco.homelibrary;
 
 import android.app.Application;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.compass.loco.homelibrary.chatting.receiver.NotificationClickEventReceiver;
-import com.compass.loco.homelibrary.chatting.utils.AssetsDatabaseManager;
+import com.compass.loco.homelibrary.model.AssetsDatabaseManager;
 import com.compass.loco.homelibrary.chatting.utils.SharePreferenceManager;
-
-import java.io.UnsupportedEncodingException;
 
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.im.android.api.JMessageClient;

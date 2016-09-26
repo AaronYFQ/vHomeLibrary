@@ -1,4 +1,4 @@
-package com.compass.loco.homelibrary.chatting.utils;
+package com.compass.loco.homelibrary.model;
 
 import android.content.Context;
 import android.content.SharedPreferences;
