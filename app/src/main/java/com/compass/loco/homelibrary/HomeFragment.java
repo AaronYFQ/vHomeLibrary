@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
@@ -30,6 +31,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+//        CollapsingToolbarLayout collapsingToolbar =
+//                (CollapsingToolbarLayout) view.findViewById(R.id.collapsingToolbar);
+//        collapsingToolbar.setTitle("V书房");
+
         mSelectCityBtn = (Button)view.findViewById(R.id.city_btn);
         mSelectCityBtn.setOnClickListener(this);
 

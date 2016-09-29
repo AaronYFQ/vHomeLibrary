@@ -20,6 +20,7 @@ android {
             minifyEnabled false
         }
     }
+    //this is used for SO for baidu LBS
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs']
