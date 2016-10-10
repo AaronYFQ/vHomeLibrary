@@ -66,4 +66,6 @@ dependencies {
     compile 'com.google.code.gson:gson:2.6.2'
     compile files('libs/BaiduLBS_Android.jar')
     compile 'com.github.bumptech.glide:glide:3.6.1'
+    //for the transparent notification bar
+    compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
 }

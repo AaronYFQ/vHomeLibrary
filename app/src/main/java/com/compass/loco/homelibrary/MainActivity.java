@@ -1,29 +1,24 @@
 package com.compass.loco.homelibrary;
 
 import android.app.Dialog;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Environment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
 import com.compass.loco.homelibrary.chatting.ConversationListFragment;
-import com.compass.loco.homelibrary.chatting.receiver.NotificationClickEventReceiver;
 import com.compass.loco.homelibrary.chatting.utils.DialogCreator;
-import com.compass.loco.homelibrary.chatting.utils.SharePreferenceManager;
 
-import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.event.UserLogoutEvent;
 
 
@@ -60,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Check that the activity is using the layout version with
         // the fragment_container FrameLayout
+
         if (findViewById(R.id.fragment_container) != null) {
 
             // However, if we're being restored from a previous state,
@@ -148,6 +144,20 @@ public class MainActivity extends AppCompatActivity {
 
         //start bg service
         //MessageIntentService.startActionPoll(this);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+//        Intent intent = getIntent();
+//        String selectedCity = intent.getStringExtra("selectedCity");
+//        mHomeFragment.setSelectedCity(selectedCity);
+//        Log.i("mainActivity", "selectedCity :"+selectedCity);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
