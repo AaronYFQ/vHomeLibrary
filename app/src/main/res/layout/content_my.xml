@@ -14,24 +14,8 @@
         android:layout_height="match_parent"
         android:layout_weight="1" >
 
-        <!--fragment android:name="com.compass.loco.homelibrary.HomeFragment"
-            android:id="@+id/home_fragment"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            tools:layout="@layout/fragment_home" /-->
-
-        <!--fragment android:name="com.compass.loco.homelibrary.MessageFragment"
-            android:id="@+id/message_fragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:layout="@layout/fragment_message" /-->
-
-        <!--fragment android:name="com.compass.loco.homelibrary.MeFragment"
-            android:id="@+id/me_fragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:layout="@layout/fragment_me" /-->
     </FrameLayout>
+
 
     <LinearLayout
         android:orientation="vertical"
@@ -121,28 +105,6 @@
                 android:id="@+id/menu_title_3" />
         </LinearLayout>
 
-        <!--LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_weight="1">
-            <ImageButton
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_toRightOf="@id/menu_2"
-                android:background="@drawable/mainmenu_community"
-                android:id="@+id/menu_3" />
-
-            <TextView
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textAlignment="center"
-                android:layout_toRightOf="@id/menu_title_2"
-                android:text="社区"
-                android:id="@+id/menu_title_3" />
-        </LinearLayout-->
 
         <LinearLayout
             android:orientation="vertical"

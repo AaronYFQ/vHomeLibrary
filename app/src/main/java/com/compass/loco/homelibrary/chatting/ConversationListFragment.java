@@ -358,8 +358,8 @@ public class ConversationListFragment extends BaseFragment {
         Log.v(TAG, "onStart !");
         super.onStart();
         if (JMessageClient.getMyInfo() != null) {
-            mConvListController.updateConversationsList();
-        }
+        mConvListController.updateConversationsList();
+    }
 
 
     }

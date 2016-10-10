@@ -301,8 +301,6 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
                         }*/
                     }
                 }
-
-
             }
         };
         HttpUtil httptd = new HttpUtil();
@@ -354,8 +352,8 @@ public class SearchMainActivity extends AppCompatActivity implements com.compass
                                             jsonObj.getString("name"),
                                             jsonObj.getString("addr"),
                                             jsonObj.getString("username"),
-                                            jsonObj.getString("bookcnt")
-
+                                            jsonObj.getString("bookcnt"),
+                                            "100"
                                     ));
                         }
 

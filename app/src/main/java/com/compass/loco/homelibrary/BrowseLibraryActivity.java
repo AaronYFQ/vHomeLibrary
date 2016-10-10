@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -48,9 +49,22 @@ public class BrowseLibraryActivity extends AppCompatActivity {
 
         Log.d(TAG, "onCreate() called");
 
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(BrowseLibraryActivity.this, "关注成功", Toast.LENGTH_SHORT).show();
+
+                //TODO
+                //添加到数据库
+            }
+        });
+
         init();
 
         getLibraryBooks();
+
+
     }
 
     @Override

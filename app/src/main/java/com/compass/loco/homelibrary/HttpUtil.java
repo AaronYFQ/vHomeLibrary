@@ -18,6 +18,8 @@ public class HttpUtil {
     static final String REMOTE_URL = "http://52.87.254.11:8011";
     //static final String REMOTE_URL = "http://ec2-54-204-114-208.compute-1.amazonaws.com:8000";
     //static final String REMOTE_URL = "http://123.206.62.57";
+    //static final String REMOTE_URL = "http://54.84.196.204:8013";
+    static final String REMOTE_URL = "http://52.87.254.11:8011";
     final String REGIST_URL = REMOTE_URL+"/book/regist/";
     final String LOGIN_URL = REMOTE_URL+"/book/login/";
     final String CREATESHOP_URL = REMOTE_URL+"/book/createShop/";
@@ -29,6 +31,7 @@ public class HttpUtil {
     final String ADDBOOK_URL = REMOTE_URL+"/book/addBook/";
     final String REMOVEBOOK_URL = REMOTE_URL+"/book/removeBook/";
     final String SEARCHAREA_URL = REMOTE_URL+"/book/searchArea/";
+    final String MOSTACTIVESHOP_URL = REMOTE_URL+"/book/mostActiveShop/";
 
     final String GET_ATTENTION_SHOP_URL = REMOTE_URL+"/book/getAttentionBook/";
     final String GET_ATTENTION_BOOK_URL = REMOTE_URL+"/book/getAttentionShop/";
@@ -237,4 +240,12 @@ public class HttpUtil {
 
         proxy.asyncHttpRequestPostHandler(POST_REGISTER_ID, param, handler);
     }
+
+    public void submitAsyncHttpClientGetMostActiveShops(String username,final Handler handler) {
+
+        Map<String, String> param = new HashMap<String, String>();
+        param.put("username", username);
+        proxy.asyncHttpRequestGetHandler(MOSTACTIVESHOP_URL, param, handler);
+    }
+
 }

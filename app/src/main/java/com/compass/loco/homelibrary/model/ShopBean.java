@@ -7,14 +7,16 @@ public class ShopBean {
     private String shopName;
     private String village;
     private String bookCounts ;
+    private String borrowCounts;
 
     private String username;
 
-    public ShopBean(String shopName, String village, String username,String bookCounts) {
+    public ShopBean(String shopName, String village, String username,String bookCounts, String borrowCounts) {
         this.shopName = shopName;
         this.village = village;
         this.username = username;
         this.bookCounts = bookCounts;
+        this.borrowCounts =borrowCounts;
     }
 
     public String getBookCounts() {
@@ -44,5 +46,12 @@ public class ShopBean {
     }
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getBorrowCounts() {
+        return borrowCounts;
+    }
+    public void setBorrowCounts(String borrowCounts) {
+        this.borrowCounts = borrowCounts;
     }
 }

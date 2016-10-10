@@ -6,23 +6,33 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.Toast;
 
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
+import com.compass.loco.homelibrary.adapter.SearchAearAdapter;
 import com.baidu.location.LocationClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import com.baidu.location.LocationClientOption;
-import com.baidu.location.Poi;
-
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-
+import java.util.ListIterator;
 
 public class HomeFragment extends Fragment implements View.OnClickListener{
     private final int REQUEST_CODE = 88;
@@ -35,21 +45,35 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     private ImageButton mMylibraryBtn;
     private LocationClient mLocationClient = null;
     private BDLocationListener myListener = new MyLocationListener();
+    private ListView mListView;
+    private List<ShopBean> shopList;
+
+    BookshopPushAdapter shopPushAdapter;
+
+    String TAG = HomeFragment.class.getSimpleName();
 
     public HomeFragment() {
         // Required empty public constructor
     }
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.v(TAG, "onCreate !");
+        mContext = this.getActivity();
 
+   //     getBookshopPushList();
+ //       initBookPushList();
+        // initBookArticlePushList();
+
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
-
-        mSelectCityBtn = (Button)view.findViewById(R.id.city_btn);
+        mRootView = inflater.inflate(R.layout.fragment_home, container, false);
+        mSelectCityBtn = (Button)mRootView.findViewById(R.id.city_btn);
         mSelectCityBtn.setOnClickListener(this);
 
-        mSelectSearchBtn = (Button)view.findViewById(R.id.search_btn);
+        mSelectSearchBtn = (Button)mRootView.findViewById(R.id.search_btn);
         mSelectSearchBtn.setOnClickListener(this);
 
         if(getArguments() != null) {
@@ -65,7 +89,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         mBorrowedBookBtn = (ImageButton) view.findViewById(R.id.borrowed_book_btn);
         mBorrowedBookBtn.setOnClickListener(this);
 
-        mMylibraryBtn = (ImageButton) view.findViewById(R.id.my_library_btn);
+        mMylibraryBtn = (ImageButton) mRootView.findViewById(R.id.my_library_btn);
         mMylibraryBtn.setOnClickListener(this);
 
         //trigger locating
@@ -74,8 +98,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         mLocationClient.registerLocationListener( myListener );    //注册监听函数
         initLocation();
         mLocationClient.start();
-
-        return view;
+		initListViews();
+        return mRootView;
     }
 
     private void initLocation() {
@@ -207,8 +231,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         homeBtn.setBackgroundDrawable(homeBtnGreen);*/
     }
 
-    //method to find height of the status bar
-    public int getStatusBarHeight() {
+public int getStatusBarHeight() {
         int result = 0;
         int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
         if (resourceId > 0) {
@@ -297,6 +320,85 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             }
             Log.i("BaiduLocationApiDem", sb.toString());
         }
+public void initListViews() {
+
+           final Handler handler = new Handler() {
+                @Override
+                public void handleMessage(Message msg) {
+                    String jsonText = msg.getData().getString("responseBody");
+                    Log.v(TAG, jsonText);
+                    String result = "";
+                    JSONObject jsonObj = null;
+                    try {
+                        jsonObj = new JSONObject(jsonText);
+                        result = jsonObj.getString("result");
+                    } catch (JSONException e) {
+                        Toast.makeText(getContext(), "unknown exception in result  from remote service!", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
+                    if(result.equals("success"))
+                    {
+                        if (shopList == null) {
+                            shopList = new ArrayList<>();
+                        }
+                        try {
+
+                            JSONArray jsonArray = jsonObj.getJSONArray("shops");
+                            Log.v("number of shops: ", new Integer(jsonArray.length()).toString());
+                            for (int i = 0; i < jsonArray.length(); ++i) {
+                                jsonObj = jsonArray.getJSONObject(i);
+                                //Log.v("json object to string.", jsonObj.toString());
+                                shopList.add(
+                                        new ShopBean(
+                                                jsonObj.getString("name"),
+                                                jsonObj.getString("addr"),
+                                                jsonObj.getString("username"),
+                                                "100",
+                                                jsonObj.getString("borrcnt")
+                                        ));
+                                Log.v("json object to string.", jsonObj.toString());
+                            }
+
+                        } catch (JSONException e) {
+                            Toast.makeText(getContext(), "unknown response from remote service!", Toast.LENGTH_SHORT).show();
+                            e.printStackTrace();
+                        }
+                        finally {
+
+                            if(shopList != null) {
+                                Log.v(TAG,"size of shoplist = " + shopList.size());
+                               // shopPushAdapter = new BookshopPushAdapter(getContext(), shopList, R.layout.content_bookshop_push);
+                                //mListView.setAdapter(shopPushAdapter);
+                                //shopPushAdapter.notifyDataSetChanged();
+                                setUpRecyclerView();
+                            }
+                        }
+                    }
+                    else
+                    {
+
+                        Toast.makeText(getContext(), "没有推荐的书店呢", Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+            };
+            HttpUtil httptd = new HttpUtil();
+            httptd.submitAsyncHttpClientGetMostActiveShops("", handler);
+
+
+    }
+
+    private void setUpRecyclerView() {
+
+        RecyclerView recyclerView = (RecyclerView) mRootView.findViewById(R.id.recyclerView);
+        BookshopPushAdapter adapter = new BookshopPushAdapter(getContext(), shopList);
+        recyclerView.setAdapter(adapter);
+
+        LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(getContext()); // (Context context, int spanCount)
+        mLinearLayoutManagerVertical.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
+
+        recyclerView.setItemAnimator(new DefaultItemAnimator()); // Even if we dont use it then also our items shows default animation. #Check Docs
     }
 
 

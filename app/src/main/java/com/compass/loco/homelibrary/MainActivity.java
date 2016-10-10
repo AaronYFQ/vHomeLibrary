@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -17,8 +19,11 @@ import android.widget.ImageButton;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.compass.loco.homelibrary.chatting.ConversationListFragment;
+import com.compass.loco.homelibrary.chatting.receiver.NotificationClickEventReceiver;
 import com.compass.loco.homelibrary.chatting.utils.DialogCreator;
+import com.compass.loco.homelibrary.chatting.utils.SharePreferenceManager;
 
+import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.event.UserLogoutEvent;
 
 
@@ -35,8 +40,10 @@ public class MainActivity extends AppCompatActivity {
     private final HomeFragment mHomeFragment = new HomeFragment();
     private final ShowMessagesFragment mMessageFragment = new ShowMessagesFragment();
     private final MeFragment mMeFragment = new MeFragment();
+    private  final  ConversationListFragment mCovFragment = new ConversationListFragment();
 
-    private  final  ConversationListFragment mCovFragment = new ConversationListFragment();;
+    private FragmentManager mManager;
+    FragmentTransaction mTransaction;
 
     private BadgeView badge;
     private Dialog mDialog; //for Jmessage
@@ -55,15 +62,38 @@ public class MainActivity extends AppCompatActivity {
 
         // Check that the activity is using the layout version with
         // the fragment_container FrameLayout
-
         if (findViewById(R.id.fragment_container) != null) {
 
-            // However, if we're being restored from a previous state,
-            // then we don't need to do anything and should return or else
-            // we could end up with overlapping fragments.
-/*            if (savedInstanceState != null) {
-                return;
-            }*/
+            mManager = getSupportFragmentManager();
+            mTransaction = mManager.beginTransaction();
+
+
+            if (!mMessageFragment.isAdded()) {
+                mTransaction.add(R.id.fragment_container, mMeFragment)
+                        .add(R.id.fragment_container, mHomeFragment)
+                        .add(R.id.fragment_container, mCovFragment)
+                        .add(R.id.fragment_container, mMessageFragment);
+                mTransaction.hide(mMeFragment)
+                        .hide(mMessageFragment)
+                        .hide(mCovFragment)
+                        .show(mHomeFragment).commit();
+            } else {
+                // always show home fragment
+                mTransaction.hide(mMeFragment)
+                        .hide(mMessageFragment)
+                        .hide(mCovFragment)
+                        .show(mHomeFragment).commit();
+            }
+        }
+
+        // get application private shared preference
+
+
+        // Check that the activity is using the layout version with
+        // the fragment_container FrameLayout
+        /*if (findViewById(R.id.fragment_container) != null) {
+
+
 
             if (getIntent() != null && getIntent().getExtras() != null && getIntent().getExtras().containsKey(INTENT_KEY_LOGIN_RESULT)) {
                 mMeFragment.setArguments(getIntent().getExtras());
@@ -91,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
                 Drawable messageBtnGreen = getResources().getDrawable(R.drawable.mainmenu_message);
                 messageBtn.setBackgroundDrawable(messageBtnGreen);*/
 
-                mMessageFragment.setArguments(getIntent().getExtras());
+       /*         mMessageFragment.setArguments(getIntent().getExtras());
                 if(!mMessageFragment.isAdded()) {
                     getSupportFragmentManager().beginTransaction()
                             .add(R.id.fragment_container, mMeFragment)
@@ -131,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
                 Drawable homeBtnGreen = getResources().getDrawable(R.drawable.mainmenu_home);
                 homeBtn.setBackgroundDrawable(homeBtnGreen);
             }
-        }
+        }*/
 
         badge = new BadgeView(this);
         badge.setTargetView(findViewById(R.id.menu_2));
