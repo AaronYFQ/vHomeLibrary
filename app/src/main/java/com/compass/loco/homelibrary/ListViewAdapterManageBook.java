@@ -34,7 +34,8 @@ public class ListViewAdapterManageBook extends BaseAdapter {
     private TextView textViewBookName;
     private TextView textViewBookAuthor;
     private TextView textViewBookPublisher;
-    private TextView textViewBookIsbn;
+    private TextView textViewBookNum;
+    private TextView textViewBookAvaiNum;
     private TextView textViewBookDetail;
     private TextView textViewBookState;
     private ImageView imageViewBookPicture;
@@ -81,7 +82,8 @@ public class ListViewAdapterManageBook extends BaseAdapter {
         textViewBookName = (TextView)convertView.findViewById(R.id.textViewBookName);
         textViewBookAuthor = (TextView)convertView.findViewById(R.id.textViewBookAuthor);
         textViewBookPublisher = (TextView)convertView.findViewById(R.id.textViewBookPublisher);
-        textViewBookIsbn = (TextView)convertView.findViewById(R.id.textViewBookIsbn);
+        textViewBookNum = (TextView)convertView.findViewById(R.id.textViewBookNum);
+        textViewBookAvaiNum = (TextView)convertView.findViewById(R.id.textViewBookAvaiNum);
         textViewBookDetail = (TextView)convertView.findViewById(R.id.textViewBookDetail);
         textViewBookState = (TextView)convertView.findViewById(R.id.textViewBookState);
         imageViewBookPicture = (ImageView)convertView.findViewById(R.id.imageViewBookPicture);
@@ -114,12 +116,25 @@ public class ListViewAdapterManageBook extends BaseAdapter {
         textViewBookName.setText(selectedBookInfo.getBookInfo().getName());
         textViewBookAuthor.setText("作者：" + selectedBookInfo.getBookInfo().getAuthor());
         textViewBookPublisher.setText("出版社：" +selectedBookInfo.getBookInfo().getPublisher());
-        textViewBookIsbn.setText("ISBN号：" + selectedBookInfo.getBookInfo().getIsbn());
-        textViewBookDetail.setText("简介：" + selectedBookInfo.getBookInfo().getDetail());
+        textViewBookNum.setText("共有：" + selectedBookInfo.getBookInfo().getBookNum());
+        textViewBookAvaiNum.setText("可借：" + selectedBookInfo.getBookInfo().getaVaiNum());
+        //textViewBookDetail.setText("借书者：" + );
+        String sBorrower = selectedBookInfo.getBookInfo().getBorrower();
+        if(sBorrower.equals(""))
+        {
+            //textViewBookDetail.setVisibility(View.INVISIBLE)
+            textViewBookDetail.setText("借书者：" + "暂皆在库");;
+        }
+        else
+        {
+            textViewBookDetail.setText("借书者：" + sBorrower);
+            //textViewBookDetail.setVisibility(View.VISIBLE);
+        }
 
         if(selectedBookInfo.getBookInfo().getState()) {
 
-            textViewBookState.setText("在库");
+            textViewBookState.setText("在库：" + selectedBookInfo.getBookInfo().getaVaiNum() );
+            textViewBookState.setVisibility(View.INVISIBLE);
 
         }
         else

@@ -57,12 +57,19 @@
             </TextView>
 
         </RelativeLayout>
-
+   <!-- <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">-->
         <TextView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/textViewBookAuthor"
             android:text="作者："
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:singleLine="true"
+            android:ellipsize="end"
             android:textSize="10sp">
         </TextView>
 
@@ -71,25 +78,51 @@
             android:text="出版社："
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:paddingRight="8dp"
+            android:textSize="10sp" >
+        </TextView>
+   <!-- </RelativeLayout>-->
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/textViewBookNum"
+            android:text="共计："
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
             android:textSize="10sp" >
         </TextView>
 
-        <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/textViewBookIsbn"
-            android:text="ISBN号："
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:textSize="10sp" >
-        </TextView>
+            <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/textViewBookAvaiNum"
+                android:text="借出："
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:paddingRight="8dp"
+                android:textSize="10sp" >
+            </TextView>
+
+
+    </RelativeLayout>
 
         <TextView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/textViewBookDetail"
-            android:text="简介："
+            android:text="借出人："
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
             android:ellipsize="end"
             android:maxLines="1"
-            android:textSize="8sp" >
+            android:textSize="10sp" >
         </TextView>
 
     </LinearLayout>

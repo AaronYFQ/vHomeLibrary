@@ -40,7 +40,7 @@
             </TextView>
 
             <TextView
-                android:id="@+id/textViewBookCounters"
+                android:id="@+id/textViewShopBookCounters"
                 android:text="书本数"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

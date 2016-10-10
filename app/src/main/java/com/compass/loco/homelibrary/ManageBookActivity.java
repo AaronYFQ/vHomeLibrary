@@ -1,6 +1,7 @@
 package com.compass.loco.homelibrary;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -48,7 +50,8 @@ public class ManageBookActivity extends AppCompatActivity {
 
     // Android objects
     private String mTargetId = "";
-    private Button buttonBook;
+    private Button buttonBookReq;
+
     private Button buttonChat;
     private ImageView imageViewBook;
     private TextView textViewBookState;
@@ -83,14 +86,15 @@ public class ManageBookActivity extends AppCompatActivity {
 
     private void init() {
 
-        buttonBook = (Button) findViewById(R.id.book_button);
+        buttonBookReq = (Button) findViewById(R.id.book_button_Req);
+
         buttonChat = (Button) findViewById(R.id.chat_button);
 
         imageViewBook = (ImageView) findViewById(R.id.book_image_view);
 
         textViewBookState = (TextView) findViewById(R.id.book_state);
 
-        buttonBook.setOnClickListener(new View.OnClickListener() {
+        buttonBookReq.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -104,7 +108,8 @@ public class ManageBookActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    registerReturn();
+                    DiagForReturnBookToShop();
+                    //registerReturn();
                 }
 
             }
@@ -147,39 +152,34 @@ public class ManageBookActivity extends AppCompatActivity {
 
         username = sharePref.getString("username", "");
 
-        buttonBook.setVisibility(View.INVISIBLE);
+        buttonBookReq.setVisibility(View.INVISIBLE);
+
         buttonChat.setVisibility(View.INVISIBLE);
 
         if(username.equals(user)) {
 
             if(!request.equals("borrow"))
             {
-
-                buttonBook.setText("重新入库");
+                buttonBookReq.setText("重新入库");
 
                 flag = RETURN;
-
             }
             else
             {
-
-                buttonBook.setText("同意借出");
+                buttonBookReq.setText("同意借出");
 
                 flag = AGREE;
-
             }
-
         }
         else
         {
-
-            buttonBook.setText("发借书请求");
+            buttonBookReq.setText("借书请求");
 
             flag = REQUEST;
 
             if(token.equals("")) {
 
-                buttonBook.setVisibility(View.INVISIBLE);
+                buttonBookReq.setVisibility(View.INVISIBLE);
                 buttonChat.setVisibility(View.INVISIBLE);
 
             }
@@ -218,6 +218,9 @@ public class ManageBookActivity extends AppCompatActivity {
                         Boolean state = jsonBookObj.getBoolean("state");
                         String detail = jsonBookObj.getString("detail");
                         String imageUrl = jsonBookObj.getString("imageurl");
+                        //通过avail  and booknum 判决state insiveble
+                        int booNum = jsonBookObj.getInt("bookNum");
+                        int availNum = jsonBookObj.getInt("availNum");                        
 
                         externalDoubanLink = jsonBookObj.getString("extlink");
 
@@ -228,49 +231,45 @@ public class ManageBookActivity extends AppCompatActivity {
                         ((TextView)activity.findViewById(R.id.book_state)).setText(state? "在库" : "借出");
                         ((TextView)activity.findViewById(R.id.book_summary)).setText(detail);
 
-                        buttonBook.setVisibility(View.INVISIBLE);
+                        buttonBookReq.setVisibility(View.INVISIBLE);
                         buttonChat.setVisibility(View.INVISIBLE);
 
                         if(!token.equals("")) {
 
                             if (flag == REQUEST) {
 
-                                if (state) { // state: true  在库
-
-                                    buttonBook.setVisibility(View.VISIBLE);
+                                if (availNum > 0) { // state: true  在库
+                                    buttonBookReq.setVisibility(View.VISIBLE);
                                     buttonChat.setVisibility(View.VISIBLE);
 
                                 } else {     // 借出
 
-                                    buttonBook.setVisibility(View.INVISIBLE);
+                                    buttonBookReq.setVisibility(View.INVISIBLE);
                                     buttonChat.setVisibility(View.VISIBLE);
 
                                 }
                             } else if (flag == AGREE) {
+                                //if (state) {
+                                if (availNum > 0) {
+                                    buttonBookReq.setVisibility(View.VISIBLE);
 
-                                if (state) {
-
-                                    buttonBook.setVisibility(View.VISIBLE);
                                     buttonChat.setVisibility(View.VISIBLE);
 
                                 } else {
 
-                                    buttonBook.setVisibility(View.INVISIBLE);
+                                    buttonBookReq.setVisibility(View.INVISIBLE);
                                     buttonChat.setVisibility(View.VISIBLE);
 
                                 }
-
                             } else {
 
-                                if (state) {
-
-                                    buttonBook.setVisibility(View.INVISIBLE);
+                                if (availNum < booNum) {
+                                    buttonBookReq.setVisibility(View.VISIBLE);
                                     buttonChat.setVisibility(View.INVISIBLE);
 
                                 } else {
-
-                                    buttonBook.setVisibility(View.VISIBLE);
-                                    buttonChat.setVisibility(View.VISIBLE);
+                                    buttonBookReq.setVisibility(View.INVISIBLE);
+                                    buttonChat.setVisibility(View.INVISIBLE);
 
                                 }
                             }
@@ -457,7 +456,47 @@ public class ManageBookActivity extends AppCompatActivity {
 
     }
 
-    private void registerReturn () {
+    private void DiagForReturnBookToShop()
+    {
+        if(borrower.equals(""))
+        {
+            Toast.makeText(getApplicationContext(), "ERROR：没有借书人" , Toast.LENGTH_SHORT).show();
+            return;
+        }
+        final String[] s =  borrower.split(",");
+        final boolean b[]=new boolean[s.length];
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("借书者")
+               .setMultiChoiceItems(s, b, new DialogInterface.OnMultiChoiceClickListener(){
+                   @Override
+                   //which 为用户点击的下标
+                   //isChecked用户是否被勾选中
+                   public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                       //    将客户是否被勾选的记录保存到集合中
+                       b[which] = isChecked;  //保存客户选择的属性是否被勾选
+                      // Toast.makeText(getApplicationContext(), "i = " + which + " " + isChecked, Toast.LENGTH_SHORT).show();
+                   }
+
+               })
+               .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                   @Override
+                   public void onClick(DialogInterface dialogInterface, int which ) {
+                       String item="";
+                       for(int i=0;i<s.length;i++){
+                           if(b[i]){             //如果被勾线则保存数据
+                               item+=s[i]+",";
+                           }
+                       }
+                       Toast.makeText(getApplicationContext(), item, Toast.LENGTH_SHORT).show();
+                       registerReturn(item);
+
+                   }
+               })
+               .show();
+
+    }
+
+    private void registerReturn (String item) {
 
         final Handler handler = new Handler() {
 
@@ -508,7 +547,7 @@ public class ManageBookActivity extends AppCompatActivity {
 
         HttpUtil httptd = new HttpUtil();
         
-        httptd.submitAsyncHttpClientPostReturnBook(token, shopName, bookName,  handler);
+        httptd.submitAsyncHttpClientPostReturnBook(token, shopName, bookName, item,  handler);
     }
 
     public void onDoubanLinkClick(View view) {

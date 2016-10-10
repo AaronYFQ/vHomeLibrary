@@ -28,6 +28,6 @@ public class SearchAearAdapter extends CommonAdapter<ShopBean>{
         //holder.setImageResource(R.id.textViewBookCounters,mData.get(position).getIconId())
           holder.setText(R.id.textViewShopName,mData.get(position).getShopName())
                 .setText(R.id.textViewShopAddr,mData.get(position).getVillage())
-                .setText(R.id.textViewBookCounters,mData.get(position).getBookCounts());
+                .setText(R.id.textViewShopBookCounters,mData.get(position).getBookCounts());
     }
 }

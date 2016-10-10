@@ -1,18 +1,25 @@
 package com.compass.loco.homelibrary;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -41,6 +48,10 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
     private ListView listViewBooks;
 
+    private CheckBox checkBoxAll;
+    private CheckBox checkBoxBorrow;
+    private CheckBox checkBoxLent;
+
     // selected or non-selected bookinfo arraylist
     private ArrayList<SelectedBookInfo> arrayListSelectedBookInfo;
 
@@ -52,6 +63,7 @@ public class ManageLibraryActivity extends AppCompatActivity {
     private String user;
     private String shopName;
     private String newShopName;
+    ManageLibraryActivity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +119,7 @@ public class ManageLibraryActivity extends AppCompatActivity {
     }
 
     private void init() {
-
+        activity = this;
         editTextLibraryName = (TextView) findViewById(R.id.editTextLibraryName);
 
         buttonAdd = (ImageButton) findViewById(R.id.buttonAdd);
@@ -127,7 +139,8 @@ public class ManageLibraryActivity extends AppCompatActivity {
         buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                delete();
+                //delete();
+                deleteBookDiag();
             }
         });
 
@@ -187,12 +200,107 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
         callerActivity = getIntent().getStringExtra("callerActivity");
 
+        checkBoxInit();
     }
 
+    private void  checkBoxInit()
+    {
 
+        checkBoxAll = (CheckBox)this.findViewById(R.id.checkBoxAll);
+        checkBoxBorrow = (CheckBox)this.findViewById(R.id.checkBoxBorrow);
+        checkBoxLent = (CheckBox)this.findViewById(R.id.checkBoxLent);
+
+        checkBoxAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,
+                                         boolean isChecked) {
+                if(isChecked){
+                    checkBoxBorrow.setChecked(false);
+                    checkBoxLent.setChecked(false);
+                    checkBoxAll.setChecked(true) ;
+                }else{
+                    checkBoxAll.setChecked(false);
+                }
+                if(arrayListSelectedBookInfo == null)
+                    return;
+
+               /* ArrayList<SelectedBookInfo> tempList = new ArrayList<SelectedBookInfo>() ;
+                for(SelectedBookInfo s : arrayListSelectedBookInfo )
+                {
+                    if(s.getBookInfo().getState())
+                    {
+                        tempList.add(s);
+                    }
+                }
+
+                ListViewAdapterManageBook myListViewAdapterManageBook = new ListViewAdapterManageBook(activity,tempList);*/
+                ListViewAdapterManageBook myListViewAdapterManageBook = new ListViewAdapterManageBook(activity,arrayListSelectedBookInfo);
+                listViewBooks.setAdapter(myListViewAdapterManageBook);
+
+            }
+        });
+
+        checkBoxBorrow.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,
+                                         boolean isChecked) {
+                if(isChecked){
+                    checkBoxBorrow.setChecked(true);
+                    checkBoxLent.setChecked(false);
+                    checkBoxAll.setChecked(false) ;
+                }else{
+                    checkBoxBorrow.setChecked(false);
+                }
+                if(arrayListSelectedBookInfo == null)
+                    return;
+
+                ArrayList<SelectedBookInfo> tempList = new ArrayList<SelectedBookInfo>() ;
+                for(SelectedBookInfo s : arrayListSelectedBookInfo )
+                {
+                    if(s.getBookInfo().getState())
+                    {
+                        tempList.add(s);
+                    }
+                }
+
+                ListViewAdapterManageBook myListViewAdapterManageBook = new ListViewAdapterManageBook(activity,tempList);
+                listViewBooks.setAdapter(myListViewAdapterManageBook);
+
+            }
+        });
+
+        checkBoxLent.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,
+                                         boolean isChecked) {
+                if(isChecked){
+                    checkBoxBorrow.setChecked(false);
+                    checkBoxLent.setChecked(true);
+                    checkBoxAll.setChecked(false) ;
+                }else{
+                    checkBoxLent.setChecked(false);
+                }
+                if(arrayListSelectedBookInfo == null)
+                    return;
+
+                ArrayList<SelectedBookInfo> tempList = new ArrayList<SelectedBookInfo>() ;
+                for(SelectedBookInfo s : arrayListSelectedBookInfo )
+                {
+                    if( s.getBookInfo().getaVaiNum() !=  s.getBookInfo().getBookNum())
+                    {
+                        tempList.add(s);
+                    }
+                }
+
+                ListViewAdapterManageBook myListViewAdapterManageBook = new ListViewAdapterManageBook(activity,tempList);
+                listViewBooks.setAdapter(myListViewAdapterManageBook);
+
+            }
+        });
+    }
     private void getLibraryBooks() {
 
-        final ManageLibraryActivity activity = this;
+        //final ManageLibraryActivity activity = this;
 
         final Handler handler = new Handler() {
 
@@ -235,7 +343,9 @@ public class ManageLibraryActivity extends AppCompatActivity {
                                                     jsonObj.getString("detail"),
                                                     jsonObj.getString("imageurl"),
                                                     (jsonObj.getBoolean("state")),
-                                                    jsonObj.getString("borrower")),
+                                                    jsonObj.getString("borrower"),
+                                                    (jsonObj.getInt("bookNum")),
+                                                    jsonObj.getInt("availNum")),
                                             false));
                         }
                     }
@@ -282,7 +392,7 @@ public class ManageLibraryActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void delete() {
+    private void delete(String bookName, int bookNum) {
 
         if(!BuildConfig.DEBUG) {
 
@@ -334,20 +444,9 @@ public class ManageLibraryActivity extends AppCompatActivity {
         };
 
         HttpUtil httptd = new HttpUtil();
+        httptd.submitAsyncHttpClientPostRemoveBook(token, shopName, bookName, bookNum, handler);
 
-        removeBookCount = 0;
-
-        for(SelectedBookInfo selectedBookInfo : arrayListSelectedBookInfo) {
-
-            if(selectedBookInfo.isSelected()) {
-
-                Log.d(TAG, "delete book = " + selectedBookInfo.getBookInfo().getName());
-
-                httptd.submitAsyncHttpClientPostRemoveBook(token, shopName, selectedBookInfo.getBookInfo().getName(), handler);
-
-                ++removeBookCount;
-            }
-        }
+       
     }
 
     private void save() {
@@ -425,6 +524,57 @@ public class ManageLibraryActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    private void deleteBookDiag() {
+        if(!BuildConfig.DEBUG) {
+
+            Toast.makeText(getApplicationContext(), "Delete...", Toast.LENGTH_SHORT).show();
+
+        }
+
+        removeBookCount = 0;
+
+        for(final SelectedBookInfo selectedBookInfo : arrayListSelectedBookInfo) {
+
+            if(selectedBookInfo.isSelected()) {
+
+                Log.d(TAG, "delete book = " + selectedBookInfo.getBookInfo().getName());
+                String bookNum = "" + selectedBookInfo.getBookInfo().getBookNum();
+
+                final EditText editText = new EditText(this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("请输入要删去的书本数目：")
+                        .setView(editText)
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int which ) {
+                                Editable text = editText.getText();
+                                int deleteNum =Integer.valueOf(text.toString());
+
+                                deleteNum = getDeleteBookNum(selectedBookInfo.getBookInfo(),deleteNum);
+                                Toast.makeText(getApplicationContext(), "" + deleteNum, Toast.LENGTH_SHORT).show();
+                                delete(selectedBookInfo.getBookInfo().getName(), deleteNum);
+
+                            }
+                        })
+                        .show();
+						
+                ++removeBookCount;
+            }
+        }
+
+    }
+
+    private int getDeleteBookNum(BookInfo bookInfo, int deleteNum)
+    {
+        if(bookInfo.getaVaiNum() < deleteNum)
+        {
+            Toast.makeText(getApplicationContext(), "当前在库为" +bookInfo.getaVaiNum()  , Toast.LENGTH_SHORT).show();
+            return  -1;
+        }
+
+        return deleteNum;
     }
 
 }

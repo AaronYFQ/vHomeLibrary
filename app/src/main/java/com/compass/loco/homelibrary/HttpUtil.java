@@ -15,9 +15,9 @@ import java.util.Map;
 
 
 public class HttpUtil {
-    // static final String REMOTE_URL = "http://54.204.114.208:8000";
+    static final String REMOTE_URL = "http://52.87.254.11:8011";
     //static final String REMOTE_URL = "http://ec2-54-204-114-208.compute-1.amazonaws.com:8000";
-    static final String REMOTE_URL = "http://123.206.62.57";
+    //static final String REMOTE_URL = "http://123.206.62.57";
     final String REGIST_URL = REMOTE_URL+"/book/regist/";
     final String LOGIN_URL = REMOTE_URL+"/book/login/";
     final String CREATESHOP_URL = REMOTE_URL+"/book/createShop/";
@@ -100,7 +100,7 @@ public class HttpUtil {
         proxy.asyncHttpRequestPostHandler(MODIFYSHOPNAME_URL, param, handler);
     }
     public void submitAsyncHttpClientPostAddBook(String token, String shopName, String bookName,String bookAuthor,
-                                                 String bookPublisher, String bookIsbn, String bookComments, String imageURL, String extLink, final Handler handler){
+                                                 String bookPublisher, String bookIsbn, String bookComments, String imageURL, String extLink, String bookNum, final Handler handler){
 
         Map<String, String> param = new HashMap<String, String>();
         param.put("token", token);
@@ -112,16 +112,19 @@ public class HttpUtil {
         param.put("bookcomments", bookComments);
         param.put("imageurl", imageURL);
         param.put("extlink", extLink);
+        param.put("booknum",bookNum);
+        ///param.put("availNum","1");
 
         proxy.asyncHttpRequestPostHandler(ADDBOOK_URL, param, handler);
     }
 
-    public void submitAsyncHttpClientPostRemoveBook(String token, String shopName, String bookName,  final Handler handler) {
+    public void submitAsyncHttpClientPostRemoveBook(String token, String shopName, String bookName, int bookNum,  final Handler handler) {
 
         Map<String, String> param = new HashMap<String, String>();
         param.put("token", token);
         param.put("shopname", shopName);
         param.put("bookname", bookName);
+        param.put("booknum", "" + bookNum);
 
         proxy.asyncHttpRequestPostHandler(REMOVEBOOK_URL, param, handler);
     }
@@ -160,12 +163,13 @@ public class HttpUtil {
     }
 
     public void submitAsyncHttpClientPostReturnBook(String ownerToken, String ownerShop,
-                                                    String ownerBook, final Handler handler) {
+                                                    String ownerBook, String borrows, final Handler handler) {
 
         Map<String, String> param = new HashMap<String, String>();
         param.put("token", ownerToken);
         param.put("shopname", ownerShop);
         param.put("bookname", ownerBook);
+        param.put("borrows", borrows);
 
         proxy.asyncHttpRequestPostHandler(POST_RETURN_BOOK_URL, param, handler);
     }

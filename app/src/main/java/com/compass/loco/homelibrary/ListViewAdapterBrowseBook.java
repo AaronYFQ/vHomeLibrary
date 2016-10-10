@@ -81,7 +81,7 @@ public class ListViewAdapterBrowseBook extends BaseAdapter {
         textViewBookName = (TextView)convertView.findViewById(R.id.textViewBookName);
         textViewBookAuthor = (TextView)convertView.findViewById(R.id.textViewBookAuthor);
         textViewBookPublisher = (TextView)convertView.findViewById(R.id.textViewBookPublisher);
-        textViewBookIsbn = (TextView)convertView.findViewById(R.id.textViewBookIsbn);
+        textViewBookIsbn = (TextView)convertView.findViewById(R.id.textViewBookNum);
         textViewBookDetail = (TextView)convertView.findViewById(R.id.textViewBookDetail);
         textViewBookState = (TextView)convertView.findViewById(R.id.textViewBookState);
         imageViewBookPicture = (ImageView)convertView.findViewById(R.id.imageViewBookPicture);

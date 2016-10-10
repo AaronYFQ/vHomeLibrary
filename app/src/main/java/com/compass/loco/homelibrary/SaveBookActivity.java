@@ -35,6 +35,7 @@ public class SaveBookActivity extends AppCompatActivity {
     private DoubanBook mDoubanBook;
     private String mToken;
     private String mShopName;
+    private String bookNum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +83,8 @@ public class SaveBookActivity extends AppCompatActivity {
             if (extras.containsKey(ManageLibraryActivity.INTENT_KEY_SHOPNAME)) {
                 mShopName = extras.getString(ManageLibraryActivity.INTENT_KEY_SHOPNAME);
             }
+
+            bookNum = "1";
         }
     }
 
@@ -142,7 +145,7 @@ public class SaveBookActivity extends AppCompatActivity {
             }
         }
         http.submitAsyncHttpClientPostAddBook(mToken, mShopName, mDoubanBook.getTitle(), authors.toString(), mDoubanBook.getPublisher(),
-                mDoubanBook.getIsbn13(), mDoubanBook.getSummary(), mDoubanBook.getImage(), mDoubanBook.getAlt(),  new Handler() {
+                mDoubanBook.getIsbn13(), mDoubanBook.getSummary(), mDoubanBook.getImage(), mDoubanBook.getAlt(), bookNum, new Handler() {
                     @Override
                     public void handleMessage(Message msg) {
                         super.handleMessage(msg);

@@ -169,7 +169,9 @@ public class BrowseLibraryActivity extends AppCompatActivity {
                                             jsonObj.getString("detail"),
                                             jsonObj.getString("imageurl"),
                                             (jsonObj.getBoolean("state")),
-                                            jsonObj.getString("borrower")));
+                                            jsonObj.getString("borrower"),
+                                            (jsonObj.getInt("bookNum")),
+                                            jsonObj.getInt("availNum")));
                         }
                     }
                     else

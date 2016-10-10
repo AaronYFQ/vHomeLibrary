@@ -63,7 +63,7 @@
         </TextView>
 
         <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/textViewBookIsbn"
+            android:id="@+id/textViewBookNum"
             android:text="ISBN号："
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"

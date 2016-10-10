@@ -82,6 +82,34 @@
                 android:textSize="14dp"
                 android:singleLine="true" /-->
 
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="所有"
+                android:id="@+id/checkBoxAll"
+                android:checked="true"
+                android:background="@android:color/white"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"/>
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="可借"
+                android:id="@+id/checkBoxBorrow"
+                android:layout_toRightOf="@+id/checkBoxAll"
+                android:background="@android:color/white"
+                android:layout_centerVertical="true" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="借出"
+                android:id="@+id/checkBoxLent"
+                android:layout_toRightOf="@+id/checkBoxBorrow"
+                android:background="@android:color/white"
+                android:layout_centerVertical="true"/>
+
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
