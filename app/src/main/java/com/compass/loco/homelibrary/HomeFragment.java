@@ -23,12 +23,18 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.Poi;
+import com.compass.loco.homelibrary.adapter.BookshopPushAdapter;
 import com.compass.loco.homelibrary.adapter.SearchAearAdapter;
 import com.baidu.location.LocationClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.baidu.location.LocationClientOption;
+import com.compass.loco.homelibrary.model.ShopBean;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -43,6 +49,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     private Button mSelectSearchBtn;
     private ImageButton mBorrowedBookBtn;
     private ImageButton mMylibraryBtn;
+    private View mRootView;
+    private Context mContext;
     private LocationClient mLocationClient = null;
     private BDLocationListener myListener = new MyLocationListener();
     private ListView mListView;
@@ -86,7 +94,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
 
 
-        mBorrowedBookBtn = (ImageButton) view.findViewById(R.id.borrowed_book_btn);
+        mBorrowedBookBtn = (ImageButton) mRootView.findViewById(R.id.borrowed_book_btn);
         mBorrowedBookBtn.setOnClickListener(this);
 
         mMylibraryBtn = (ImageButton) mRootView.findViewById(R.id.my_library_btn);
@@ -230,6 +238,82 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         Drawable homeBtnGreen = getResources().getDrawable(R.drawable.mainmenu_home);
         homeBtn.setBackgroundDrawable(homeBtnGreen);*/
     }
+    public void initListViews() {
+
+        final Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                String jsonText = msg.getData().getString("responseBody");
+                Log.v(TAG, jsonText);
+                String result = "";
+                JSONObject jsonObj = null;
+                try {
+                    jsonObj = new JSONObject(jsonText);
+                    result = jsonObj.getString("result");
+                } catch (JSONException e) {
+                    Toast.makeText(getContext(), "unknown exception in result  from remote service!", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+                if (result.equals("success")) {
+                    if (shopList == null) {
+                        shopList = new ArrayList<>();
+                    }
+                    try {
+
+                        JSONArray jsonArray = jsonObj.getJSONArray("shops");
+                        Log.v("number of shops: ", new Integer(jsonArray.length()).toString());
+                        for (int i = 0; i < jsonArray.length(); ++i) {
+                            jsonObj = jsonArray.getJSONObject(i);
+                            //Log.v("json object to string.", jsonObj.toString());
+                            shopList.add(
+                                    new ShopBean(
+                                            jsonObj.getString("name"),
+                                            jsonObj.getString("addr"),
+                                            jsonObj.getString("username"),
+                                            "100",
+                                            jsonObj.getString("borrcnt")
+                                    ));
+                            Log.v("json object to string.", jsonObj.toString());
+                        }
+
+                    } catch (JSONException e) {
+                        Toast.makeText(getContext(), "unknown response from remote service!", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    } finally {
+
+                        if (shopList != null) {
+                            Log.v(TAG, "size of shoplist = " + shopList.size());
+                            // shopPushAdapter = new BookshopPushAdapter(getContext(), shopList, R.layout.content_bookshop_push);
+                            //mListView.setAdapter(shopPushAdapter);
+                            //shopPushAdapter.notifyDataSetChanged();
+                            setUpRecyclerView();
+                        }
+                    }
+                } else {
+
+                    Toast.makeText(getContext(), "没有推荐的书店呢", Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        };
+        HttpUtil httptd = new HttpUtil();
+        httptd.submitAsyncHttpClientGetMostActiveShops("", handler);
+
+
+    }
+
+    private void setUpRecyclerView() {
+
+        RecyclerView recyclerView = (RecyclerView) mRootView.findViewById(R.id.recyclerView);
+        BookshopPushAdapter adapter = new BookshopPushAdapter(getContext(), shopList);
+        recyclerView.setAdapter(adapter);
+
+        LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(getContext()); // (Context context, int spanCount)
+        mLinearLayoutManagerVertical.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
+
+        recyclerView.setItemAnimator(new DefaultItemAnimator()); // Even if we dont use it then also our items shows default animation. #Check Docs
+    }
 
 public int getStatusBarHeight() {
         int result = 0;
@@ -240,7 +324,7 @@ public int getStatusBarHeight() {
         return result;
     }
 
-    public class MyLocationListener implements BDLocationListener{
+    public class MyLocationListener implements BDLocationListener {
         @Override
         public void onReceiveLocation(BDLocation location) {
             //Receive Location
@@ -255,7 +339,7 @@ public int getStatusBarHeight() {
             sb.append(location.getLongitude());
             sb.append("\nradius : ");
             sb.append(location.getRadius());
-            if (location.getLocType() == BDLocation.TypeGpsLocation){// GPS定位结果
+            if (location.getLocType() == BDLocation.TypeGpsLocation) {// GPS定位结果
                 sb.append("\nspeed : ");
                 sb.append(location.getSpeed());// 单位：公里每小时
                 sb.append("\nsatellite : ");
@@ -271,7 +355,7 @@ public int getStatusBarHeight() {
                 mLocatedCity = location.getCity();
                 // mSelectCityBtn.setText(mCityName);
 
-            } else if (location.getLocType() == BDLocation.TypeNetWorkLocation){// 网络定位结果
+            } else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {// 网络定位结果
                 sb.append("\naddr : ");
                 sb.append(location.getAddrStr());
                 sb.append("\ncity : ");
@@ -283,12 +367,9 @@ public int getStatusBarHeight() {
                 sb.append("\ndescribe : ");
                 sb.append("网络定位成功");
 
-                if(mSelectCityBtn == null)
-                {
+                if (mSelectCityBtn == null) {
                     Log.i("homeFragment", "mSelectCityBtn is null!!!!");
-                }
-                else
-                {
+                } else {
                     mSelectCityBtn.setText(mLocatedCity);
                 }
 
@@ -320,86 +401,8 @@ public int getStatusBarHeight() {
             }
             Log.i("BaiduLocationApiDem", sb.toString());
         }
-public void initListViews() {
-
-           final Handler handler = new Handler() {
-                @Override
-                public void handleMessage(Message msg) {
-                    String jsonText = msg.getData().getString("responseBody");
-                    Log.v(TAG, jsonText);
-                    String result = "";
-                    JSONObject jsonObj = null;
-                    try {
-                        jsonObj = new JSONObject(jsonText);
-                        result = jsonObj.getString("result");
-                    } catch (JSONException e) {
-                        Toast.makeText(getContext(), "unknown exception in result  from remote service!", Toast.LENGTH_SHORT).show();
-                        e.printStackTrace();
-                    }
-                    if(result.equals("success"))
-                    {
-                        if (shopList == null) {
-                            shopList = new ArrayList<>();
-                        }
-                        try {
-
-                            JSONArray jsonArray = jsonObj.getJSONArray("shops");
-                            Log.v("number of shops: ", new Integer(jsonArray.length()).toString());
-                            for (int i = 0; i < jsonArray.length(); ++i) {
-                                jsonObj = jsonArray.getJSONObject(i);
-                                //Log.v("json object to string.", jsonObj.toString());
-                                shopList.add(
-                                        new ShopBean(
-                                                jsonObj.getString("name"),
-                                                jsonObj.getString("addr"),
-                                                jsonObj.getString("username"),
-                                                "100",
-                                                jsonObj.getString("borrcnt")
-                                        ));
-                                Log.v("json object to string.", jsonObj.toString());
-                            }
-
-                        } catch (JSONException e) {
-                            Toast.makeText(getContext(), "unknown response from remote service!", Toast.LENGTH_SHORT).show();
-                            e.printStackTrace();
-                        }
-                        finally {
-
-                            if(shopList != null) {
-                                Log.v(TAG,"size of shoplist = " + shopList.size());
-                               // shopPushAdapter = new BookshopPushAdapter(getContext(), shopList, R.layout.content_bookshop_push);
-                                //mListView.setAdapter(shopPushAdapter);
-                                //shopPushAdapter.notifyDataSetChanged();
-                                setUpRecyclerView();
-                            }
-                        }
-                    }
-                    else
-                    {
-
-                        Toast.makeText(getContext(), "没有推荐的书店呢", Toast.LENGTH_SHORT).show();
-
-                    }
-                }
-            };
-            HttpUtil httptd = new HttpUtil();
-            httptd.submitAsyncHttpClientGetMostActiveShops("", handler);
 
 
     }
-
-    private void setUpRecyclerView() {
-
-        RecyclerView recyclerView = (RecyclerView) mRootView.findViewById(R.id.recyclerView);
-        BookshopPushAdapter adapter = new BookshopPushAdapter(getContext(), shopList);
-        recyclerView.setAdapter(adapter);
-
-        LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(getContext()); // (Context context, int spanCount)
-        mLinearLayoutManagerVertical.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
-
-        recyclerView.setItemAnimator(new DefaultItemAnimator()); // Even if we dont use it then also our items shows default animation. #Check Docs
-    }
-
 
 }
