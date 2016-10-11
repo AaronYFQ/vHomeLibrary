@@ -550,12 +550,22 @@ public class ManageLibraryActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int which ) {
                                 Editable text = editText.getText();
-                                int deleteNum =Integer.valueOf(text.toString());
+                                int deleteNum = 0;
 
-                                deleteNum = getDeleteBookNum(selectedBookInfo.getBookInfo(),deleteNum);
-                                Toast.makeText(getApplicationContext(), "" + deleteNum, Toast.LENGTH_SHORT).show();
-                                delete(selectedBookInfo.getBookInfo().getName(), deleteNum);
-
+                                try{
+                                    deleteNum =Integer.valueOf(text.toString());
+                                    deleteNum = getDeleteBookNum(selectedBookInfo.getBookInfo(),deleteNum);
+                                    Toast.makeText(getApplicationContext(), "" + deleteNum, Toast.LENGTH_SHORT).show();
+                                }
+                                catch (Exception e){
+                                    deleteNum = -1;
+                                    Toast.makeText(getApplicationContext(), "Get unknown delete book number!", Toast.LENGTH_SHORT).show();
+                                    e.printStackTrace();
+                                }
+                                if(deleteNum > 0)
+                                {
+                                    delete(selectedBookInfo.getBookInfo().getName(), deleteNum);
+                                }
                             }
                         })
                         .show();
@@ -563,11 +573,15 @@ public class ManageLibraryActivity extends AppCompatActivity {
                 ++removeBookCount;
             }
         }
-
     }
 
     private int getDeleteBookNum(BookInfo bookInfo, int deleteNum)
     {
+        if( deleteNum <= 0)
+        {
+            Toast.makeText(getApplicationContext(), "delete book number is " +bookInfo.getaVaiNum() + " not correct" , Toast.LENGTH_SHORT).show();
+            return  -1;
+        }
         if(bookInfo.getaVaiNum() < deleteNum)
         {
             Toast.makeText(getApplicationContext(), "当前在库为" +bookInfo.getaVaiNum()  , Toast.LENGTH_SHORT).show();
